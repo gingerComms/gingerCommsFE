@@ -88,7 +88,7 @@
                         {{ item[header.value] }}
                       </span>
                       <span v-if="header.value == 'utils'">
-                        <slot name="listUtils" :team="item"></slot>
+                        <slot name="listUtils" :object="item"></slot>
                       </span>
                     </td>
                   </tr>

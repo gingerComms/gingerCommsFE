@@ -72,8 +72,10 @@
             this.$emit('teamCreated', response.body);
             this.dialogOpen = false;
           }
+          this.formdata = {};
         }, response => {
           this.$store.commit('common/errorUpdate', { message: response.statusText, show: true })
+          this.formdata = {};
         })
       }
     },

@@ -15,7 +15,7 @@
               name="Name"
             >
               <label for="name">Name</label>
-              <input type="text" placeholder="Team Name" name="name" v-model="formdata.name" required>
+              <input type="text" placeholder="Template Name" name="name" v-model="formdata.name" required>
               <span class="error">{{ errors[0] }}</span>
             </ValidationProvider>
           </div>
@@ -77,7 +77,11 @@
           if (response.status == 201) {
             this.$emit('templateCreated', response.body);
             this.dialogOpen = false;
+            this.formdata = { canHaveChildren: false, name: '' };
           }
+        }, response => {
+          this.$store.commit('common/errorUpdate', { message: response.statusText, show: true });
+          this.formdata = { canHaveChildren: false, name: '' };
         })
       }
     },

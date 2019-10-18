@@ -24,6 +24,15 @@
           </v-card-text>
         </v-card>
       </template>
+
+      <template v-slot:listUtils="{ object }">
+        <v-btn
+          icon
+          @click="deleteTemplate(object.id)"
+        >
+          <v-icon>mdi-delete</v-icon>
+        </v-btn>
+      </template>
     </ListTabView>
 
     <create-template-dialog
@@ -101,6 +110,21 @@
       },
       templateCreated (template) {
         this.templates.push(template);
+      },
+      deleteTemplate (templateId) {
+        var template = this.templates.filter(template => template.id == templateId)[0];
+        var apiUrl = process.env.VUE_APP_API_URL + '/team/' + this.teamId + '/templates/' + template.id;
+        console.log(apiUrl)
+        this.isLoading = true;
+        this.$http.delete(apiUrl).then(response => {
+          this.isLoading = false;
+          if (response.status == 200) {
+            this.templates.splice(this.templates.indexOf(template), 1);
+          }
+        // eslint-disable-next-line
+        }, response => {
+          this.isLoading = false;
+        })
       }
     },
     created () {

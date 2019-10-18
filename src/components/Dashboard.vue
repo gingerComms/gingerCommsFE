@@ -36,7 +36,7 @@
       <template v-slot:listUtils="slotProps">
         <v-btn
           icon
-          @click="deleteTeam(slotProps.team.id)"
+          @click="deleteTeam(slotProps.object.id)"
         >
           <v-icon>mdi-delete</v-icon>
         </v-btn>
@@ -130,11 +130,16 @@
       deleteTeam (teamId) {
         var team = this.teams.filter(team => team.id === teamId)[0]
         var apiUrl = process.env.VUE_APP_API_URL + '/team/'+team.id
+        this.isLoading = true;
 
         this.$http.delete(apiUrl).then(response => {
           if (response.status == 200) {
             this.teams.splice(this.teams.indexOf(team), 1)
           }
+          this.isLoading = false;
+        // eslint-disable-next-line
+        }, response => {
+          this.isLoading = false;
         })
       }
     },
