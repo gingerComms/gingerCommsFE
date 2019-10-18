@@ -1,0 +1,62 @@
+$margins: (
+    auto: auto,
+    05: 0.5em,
+    1: 1em,
+    2: 2em,
+    3: 3em
+);
+
+$text-aligns: (
+    left: left,
+    center: center,
+    right: right
+);
+
+$colors: (
+    primary: $blue,
+    secondary: $grey,
+    light: $base-white,
+    dark: $base-black,
+    light-blue: $light-blue,
+    purple: $purple
+);
+
+@each $margin, $value in $margins {
+    .ml-#{$margin} {
+        margin-left: $value;
+    }
+
+    .mr-#{$margin} {
+        margin-right: $value;
+    }
+
+    .mt-#{$margin} {
+        margin-top: $value;
+    }
+
+    .mb-#{$margin} {
+        margin-bottom: $value;
+    }
+}
+
+@each $align, $value in $text-aligns {
+    .text-#{$align} {
+        text-align: $value;
+    }
+}
+
+@each $color, $value in $colors {
+    .bg-#{$color} {
+        background-color: $value;
+    }
+
+    .text-#{$color} {
+        color: $value;
+    }
+}
+
+.align-items-center {
+    align-items: center !important;
+    -ms-flex-align: center !important;
+}
+

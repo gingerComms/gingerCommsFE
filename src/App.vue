@@ -1,28 +1,58 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <v-snackbar
+      v-model="snackbarError.show"
+      :timeout="snackbarTimeout"
+    >
+      {{ snackbarError.message }}
+      <v-btn
+        color="blue"
+        text
+        @click="closeSnackbar"
+      >
+        Close
+      </v-btn>
+    </v-snackbar>
+
+    <v-app>
+      <router-view></router-view>
+      <side-nav @click="errorSnackbar=true"></side-nav>
+    </v-app>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import { VSnackbar, VApp } from 'vuetify/lib';
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    'v-snackbar': VSnackbar,
+    'v-app': VApp
+  },
+  data () {
+    return {
+      snackbarTimeout: 2000
+    }
+  },
+  computed: {
+    snackbarError () {
+      return this.$store.state.common.snackbarError
+    }
+  },
+  methods: {
+    closeSnackbar () {
+      this.$store.commit('common/errorUpdate', { message: '', show: false })
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
+<style lang="scss">
+  @import "./assets/css/vendor/bootstrap-reboot.css";
+  @import "./assets/css/vendor/bootstrap.css";
+</style>
+
+<style lang="scss">
+  @import "./styles/main.scss";
 </style>

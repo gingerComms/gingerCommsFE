@@ -1,0 +1,161 @@
+#list-tab-view {
+    width: 100%;
+    height: 100%;
+
+    .content-container {
+        width: 100%;
+        height: 100%;  
+    }
+
+    .list-col {
+        padding: 10px 0;
+
+        .object-row {
+            cursor: pointer;
+        }
+    }
+
+    .tab-col {
+        .tab-object-container {
+            background: #fff;
+            padding: 30px;
+            margin: 0 0 30px;
+            -moz-box-shadow: 0 0 15px rgba(0,0,0, 0.05);
+            -webkit-box-shadow: 0 0 15px rgba(0,0,0, 0.05);
+            box-shadow: 0 0 15px rgba(0,0,0, 0.05);
+            -moz-border-radius: 8px;
+            -webkit-border-radius: 8px;
+            border-radius: 8px;
+
+            &:hover {
+                position: relative;
+                z-index: 1;
+                -moz-box-shadow: 0 40px 60px rgba(26,67,82, 0.15);
+                -webkit-box-shadow: 0 40px 60px rgba(26,67,82, 0.15);
+                box-shadow: 0 40px 60px rgba(26,67,82, 0.15);
+            }
+
+            h3 {
+                font-size: 18px;
+                margin: 0 0 20px;
+
+                a {
+                    display: inline-block;
+                    color: #000;
+                    // padding-left: 28px;
+                    // position: relative;
+                }
+            }
+
+            .count {
+                text-align: center;
+                padding: 11px 5px;
+                font-weight: 600;
+                color: #000;
+                font-size: 26px;
+                margin: 0 0 20px;
+                -moz-border-radius: 8px;
+                -webkit-border-radius: 8px;
+                border-radius: 8px;
+
+                span.label {
+                    font-size: 12px;
+                    display: block;
+                    opacity: 0.3;
+                }
+            }
+
+            .tab-footer {
+                width: 100%;
+
+                .row.align-items-center {
+                    margin: 0;
+                }
+
+                .row {
+                    width: 100%;
+
+                    .tab-badges {
+                        ul {
+                            display: flex;
+                            flex-wrap: wrap;
+                            align-items: center;
+
+                            li {
+                                &li:first-child div {
+                                    margin-left: 0;
+                                }
+
+                                div {
+                                    height: 36px;
+                                    border: 2px solid $pure-white;
+                                    margin-left: -10px;
+                                    -moz-border-radius: 50%;
+                                    -webkit-border-radius: 50%;
+                                    border-radius: 50%;
+                                }
+                            }
+                        }
+
+                        ul, ul li {
+                            list-style: none;
+                            margin: 0;
+                            padding: 0;
+                        }
+                    }
+
+                    .chat-icon {
+                        text-align: right;
+                        padding: 0;
+                        padding-right: 5px;
+
+                        div {
+                            text-align: right;
+                            a {
+                                background: $grey;
+                                width: 45px;
+                                height: 45px;
+                                line-height: 45px;
+                                text-align: center;
+                                display: inline-block;
+                                -moz-border-radius: 50%;
+                                -webkit-border-radius: 50%;
+                                border-radius: 50%;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+@media ($breakpoint-large) {
+    .count {
+        padding: 7px 3px;
+
+        strong {
+            font-size: 20px;
+            margin: 0;
+        }
+
+        span.label {
+            font-size: 10px;
+        }
+    }
+
+    .tab-footer {
+        .row {
+            .tab-badges {
+                ul {
+                    li {
+                        div {
+                            width: 25px;
+                            height: 25px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

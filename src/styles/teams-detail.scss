@@ -1,0 +1,25 @@
+#teams-detail {
+    #templates-list {
+        .v-skeleton-loader {
+            display: flex;
+            flex-direction: row;
+
+            .v-skeleton-loader__table-cell {
+                flex: auto;
+            }
+
+            .v-skeleton-loader__table-cell:not(:first-child) {
+                margin-left: 1em;
+            }
+        }
+
+        .list-container {
+            padding: 0;
+
+            table {
+                table-layout: fixed;
+                word-wrap: break-word;
+            }
+        }
+    }
+}

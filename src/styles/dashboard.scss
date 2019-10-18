@@ -1,0 +1,43 @@
+@import "variables";
+@import "list-tab-view";
+
+#dashboard {
+    width: 100%;
+
+    .create-team-button {
+        &::before {
+            width: 40px;
+            height: 40px;
+            content: " ";
+            background: $primary;
+            position: absolute;
+            border-radius: 50%;
+            top: 0; left: 0;
+        }
+
+        &::before:hover {
+            filter: saturate(50%)
+        }
+
+        &::after {
+            font-size: 12px;
+            left: 12px;
+            top: 12px;
+            content: "\e145";
+            position: absolute;
+            color: #fff;
+            font: normal normal normal 16px 'Material Icons';
+        }
+
+        padding-left: 35px;
+
+        h2 {
+            color: $dark;
+            font-size: 18px;
+        }
+    }
+
+    .display-switch {
+        padding: 0;
+    }
+}
