@@ -29,7 +29,7 @@ npm run lint
 
 Global environment variables are stored in `.env`, development variables in `.env.development` and production in `.env.production`
 
-Run/Build using the `--mode=<development|production` to apply the env files.
+Run/Build using the `--mode=development|production` to apply the env files.
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
