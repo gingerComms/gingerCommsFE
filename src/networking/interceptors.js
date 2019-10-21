@@ -15,7 +15,7 @@ var authenticationInterceptor = function (request) {
     
     // Redirect to auth if Token expires/Log errors
     return function (response) {
-        console.log(response.body);
+        console.log(response.status, response.body);
 
         if (response.status == 401 && response.body.msg == 'Token has expired') {
             store.commit('common/resetStore');
@@ -25,9 +25,11 @@ var authenticationInterceptor = function (request) {
         }
 
         if (response.status >= 400) {
-            var message = response.body.status || response.body.msg || response.body.message;
+            var message = response.body.status || response.body.msg || response.body.message || response.body.error;
             if (message != undefined) {
                 store.commit('common/errorUpdate', { message: message, show: true })
+            } else {
+                store.commit('common/errorUpdate', { message: response.statusText, show: true })
             }
         }
     }

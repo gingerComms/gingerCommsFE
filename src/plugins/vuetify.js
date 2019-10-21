@@ -23,7 +23,16 @@ import Vuetify, {
   VMenu,
   VDataTable,
   VCheckbox,
-  VOverflowBtn
+  VOverflowBtn,
+  VBadge,
+  VTabs,
+  VTab,
+  VTabsSlider,
+  VTabItem,
+  VTabsItems,
+  VSelect,
+  VEditDialog,
+  VTextField
 } from 'vuetify/lib'
 
 Vue.use(Vuetify, {
@@ -48,7 +57,16 @@ Vue.use(Vuetify, {
     VListItemTitle,
     VDataTable,
     VCheckbox,
-    VOverflowBtn
+    VOverflowBtn,
+    VBadge,
+    VTabs,
+    VTab,
+    VTabsSlider,
+    VTabItem,
+    VTabsItems,
+    VSelect,
+    VEditDialog,
+    VTextField
   }
 })
 

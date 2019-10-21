@@ -1,46 +1,44 @@
 <template>
   <div id="templates-list">
-    <ListTabView
-      :headers="templateHeaders"
-      :objects="listTabViewFormattedData"
-      mode="list"
-      :isLoading="isLoading"
-    >
-      <slot v-slot:listUtils="{ slotProps }">
-        {{ slotProps }}
-      </slot>
+    <v-card-text>
+      <ListTabView
+        :headers="templateHeaders"
+        :objects="listTabViewFormattedData"
+        mode="list"
+        :isLoading="isLoading"
+      >
+        <template v-slot:listTopContent>
+          <v-card flat>
+            <v-card-text>
+              <v-btn
+                color="#55cec7"
+                raised
+                dark
+                @click="showDialog=true"
+              >
+                Create Template
+              </v-btn>
+            </v-card-text>
+          </v-card>
+        </template>
 
-      <template v-slot:listTopContent>
-        <v-card outlined>
-          <v-card-text>
-            <v-btn
-              color="#55cec7"
-              raised
-              dark
-              @click="showDialog=true"
-            >
-              Create Template
-            </v-btn>
-          </v-card-text>
-        </v-card>
-      </template>
+        <template v-slot:listUtils="{ object }">
+          <v-btn
+            icon
+            @click="deleteTemplate(object.id)"
+          >
+            <v-icon>mdi-delete</v-icon>
+          </v-btn>
+        </template>
+      </ListTabView>
 
-      <template v-slot:listUtils="{ object }">
-        <v-btn
-          icon
-          @click="deleteTemplate(object.id)"
-        >
-          <v-icon>mdi-delete</v-icon>
-        </v-btn>
-      </template>
-    </ListTabView>
-
-    <create-template-dialog
-      :showDialog="showDialog"
-      :teamId="teamId"
-      @dialogToggled="showDialog=false"
-      @templateCreated="templateCreated"
-    ></create-template-dialog>
+      <create-template-dialog
+        :showDialog="showDialog"
+        :teamId="team.id"
+        @dialogToggled="showDialog=false"
+        @templateCreated="templateCreated"
+      ></create-template-dialog>
+    </v-card-text>
   </div>
 </template>
 
@@ -51,7 +49,8 @@
   export default {
     name: 'templates-list',
     props: {
-      teamId: String
+      team: Object,
+      templates: Array
     },
     components: {
       ListTabView,
@@ -63,7 +62,7 @@
           var objects = [];
           var currentThis = this;
           this.templates.forEach(function (template) {
-            var route = '/team/'+currentThis.teamId+'/'+template.name+'/'+template.id;
+            var route = '/teams/'+currentThis.team.id+'/templates/'+template.id;
             var listData = {
               name: template.name,
               route: route,
@@ -83,8 +82,7 @@
     },
     data () {
       return {
-        templates: [],
-        isLoading: true,
+        isLoading: false,
         templateHeaders: [
           { text: 'Name', value: 'name' },
           { text: 'Number of Topics', value: 'topicsCount' },
@@ -95,7 +93,7 @@
     },
     methods: {
       getTemplates () {
-        var nodeId = this.teamId;
+        var nodeId = this.team.id;
         var apiUrl = process.env.VUE_APP_API_URL + '/team/' + nodeId + '/templates';
         this.isLoading = true;
         this.$http.get(apiUrl).then(response => {
@@ -109,11 +107,11 @@
         })
       },
       templateCreated (template) {
-        this.templates.push(template);
+        this.$emit('templateCreated', template);
       },
       deleteTemplate (templateId) {
         var template = this.templates.filter(template => template.id == templateId)[0];
-        var apiUrl = process.env.VUE_APP_API_URL + '/team/' + this.teamId + '/templates/' + template.id;
+        var apiUrl = process.env.VUE_APP_API_URL + '/team/' + this.team.id + '/templates/' + template.id;
         console.log(apiUrl)
         this.isLoading = true;
         this.$http.delete(apiUrl).then(response => {
@@ -126,9 +124,6 @@
           this.isLoading = false;
         })
       }
-    },
-    created () {
-      this.getTemplates();
     }
   }
 </script>

@@ -85,7 +85,12 @@
                   <tr v-for="item in items" :key="item.id">
                     <td v-for="header in headers" :key="header.value">
                       <span v-if="header.value != 'utils'" @click="goToDetail(item)">
-                        {{ item[header.value] }}
+                        <span v-if="!header.editable">
+                          {{ item[header.value] }}
+                        </span>
+                        <span v-if="header.editable">
+                          <slot :name="'listItem.' + header.value + '.editable'" :object="item"></slot>
+                        </span>
                       </span>
                       <span v-if="header.value == 'utils'">
                         <slot name="listUtils" :object="item"></slot>
@@ -142,7 +147,7 @@
     },
     methods: {
       goToDetail (object) {
-        if (object.route !== null) {
+        if (object.route !== null && object.route != undefined) {
           this.$router.push({ path: object.route })
         }
       }
@@ -181,9 +186,12 @@
         [
           {
             text: String, // DisplayName
-            value: String // Value it maps to on object
+            value: String // Value it maps to on object,
+            editable: Boolean
           }
         ]
+
+      It is expected that all Editable headers will have their own listItem.<header.name>.editable prop supplied
 
     At the end, object should be formatted as:
       {
