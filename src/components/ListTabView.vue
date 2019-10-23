@@ -97,21 +97,19 @@
                       </span>
                     </td>
                   </tr>
+                  <slot name="appendedRow"></slot>
                 </tbody>
-                <tbody v-if="items.length == 0">
+                <tbody v-if="appendedRowSlot == undefined && items.length == 0">
                   <tr class="v-data-table__empty-wrapper">
                     <td colspan="6">No data available</td>
                   </tr>
                 </tbody>
               </template>
 
-              <template v-slot:no-data>
-                No data
-              </template>
-
               <template v-slot:top>
                 <slot name="listTopContent"></slot>
               </template>
+
             </v-data-table>
           </div>
         </div>
@@ -143,6 +141,9 @@
           data.push(object.listData);
         })
         return data;
+      },
+      appendedRowSlot () {
+        return this.$scopedSlots.appendedRow;
       }
     },
     methods: {

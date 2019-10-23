@@ -149,7 +149,7 @@
         };
         this.$http.put(apiUrl, formdata).then(response => {
           if (response.status == 200) {
-            this.template.properties[this.template.properties.indexOf(property)] = response.body;
+            this.$emit("propertyChanged", property, response.body);
           }
         })
       }

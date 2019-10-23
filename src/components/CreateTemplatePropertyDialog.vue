@@ -5,7 +5,7 @@
     id="create-template-property-dialog"
   >
     <v-card>
-      <v-card-title class="headline">Create Template</v-card-title>
+      <v-card-title class="headline">Create Template Property</v-card-title>
 
       <ValidationObserver v-slot="{ valid }">
         <v-card-text>
@@ -80,13 +80,15 @@
       createTemplateProperty () {
         var apiUrl = process.env.VUE_APP_API_URL;
         apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.templateId+'/properties';
+        this.formdata.value = this.valuefyProperty(this.formdata.name);
         this.$http.post(apiUrl, this.formdata).then(response => {
           if (response.status == 201) {
             this.$emit('propertyAdded', response.body);
             this.$emit('dialogToggled', false);
             this.formdata = {
               name: '',
-              fieldType: 'string'
+              fieldType: 'string',
+              value: ''
             };
           }
         })
@@ -96,7 +98,8 @@
       return {
         formdata: {
           name: '',
-          fieldType: 'string'
+          fieldType: 'string',
+          value: ''
         },
       }
     }

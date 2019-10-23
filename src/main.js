@@ -15,6 +15,7 @@ import router from './router/router';
 import store from './store';
 import SideNav from './components/SideNav.vue';
 import networking from './networking/interceptors';
+import './utils/globalUtils';
 
 networking.addInterceptors();
 

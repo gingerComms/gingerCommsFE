@@ -43,7 +43,6 @@
             Topics
             <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
-
           <v-tabs-items v-model="tab">
             <v-tab-item value="details">
               <template-edit
@@ -57,11 +56,14 @@
                 :template="template"
                 @propertyAdded="propertyAdded"
                 @propertyRemoved="propertyRemoved"
+                @propertyChanged="propertyChanged"
               ></template-properties-list>
             </v-tab-item>
 
             <v-tab-item value="nodes">
-              Nodes
+              <nodes-list
+                :template="template"
+              ></nodes-list>
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
@@ -73,6 +75,7 @@
 <script>
   import TemplateEdit from './TemplateEdit';
   import TemplatePropertiesList from './TemplatePropertiesList';
+  import NodesList from './NodesList';
   require("../styles/templates-detail.scss");
 
   export default {
@@ -80,7 +83,8 @@
     props: [],
     components: {
       TemplateEdit,
-      TemplatePropertiesList
+      TemplatePropertiesList,
+      NodesList
     },
     methods: {
       getTemplate () {
@@ -100,6 +104,9 @@
       },
       propertyRemoved (property) {
         this.template.properties.splice(this.template.properties.indexOf(property));
+      },
+      propertyChanged (property, newValue) {
+        this.template.properties[this.template.properties.indexOf(property)] = newValue;
       }
     },
     data () {
