@@ -166,7 +166,7 @@
                     <v-btn
                       text
                       color="primary"
-                      @click="openMenus[prop.value] = false"
+                      @click="openMenus[object.id+'Date'] = false"
                     >OK</v-btn>
                   </v-date-picker>
                 </v-menu>
