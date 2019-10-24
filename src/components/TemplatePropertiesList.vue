@@ -27,6 +27,14 @@
           <template v-slot:listUtils="{ object }">
             <v-btn
               icon
+              @click="showSelectEditDialog(object)"
+              v-if="object.fieldType == 'select'"
+            >
+              <v-icon>mdi-pen</v-icon>
+            </v-btn>
+
+            <v-btn
+              icon
               @click="deleteProperty(object.id)"
             >
               <v-icon>mdi-delete</v-icon>
@@ -79,6 +87,52 @@
 
       </v-card-text>
     </v-card>
+
+    <v-dialog
+      v-model="propertyEditDialogOpen"
+      max-width="500"
+      id="select-property-edit-dialog"
+      v-if="propertyBeingEditted != null"
+    >
+      <v-card>
+        <v-card-title class="headline">
+          Edit Property Options
+        </v-card-title>
+
+        <v-card-text>
+          <div v-if="propertyBeingEditted.fieldType == 'select'">
+            {{ propertyBeingEditted }}
+            <v-combobox
+              v-model="propertyBeingEditted.propertyOptions.options"
+              label="Select Choices"
+              multiple
+              small-chips
+            >
+            </v-combobox>
+          </div>
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="propertyEditDialogOpen=false; propertyBeingEditted = null;"
+          >
+            Cancel
+          </v-btn>
+
+          <v-btn
+            color="green darken-1"
+            text
+            @click="propertyOptionsChanged(propertyBeingEditted)"
+          >
+            Save
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </div>
 </template>
 
@@ -124,34 +178,69 @@
         this.showDialog = newValue
       },
       propertyAdded (property) {
+        console.log('Added', property)
         this.$emit('propertyAdded', property);
       },
       deleteProperty (propertyId) {
         var property = this.templateProperties.filter(item => item.id == propertyId)[0];
-        console.log("DELETE", propertyId, property)
         var apiUrl = process.env.VUE_APP_API_URL;
         apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
         apiUrl += '/properties/'+property.id;
         this.$http.delete(apiUrl).then(response => {
           if (response.status == 200) {
-            this.template.properties.splice(this.template.properties.indexOf(property), 1);
+            this.$emit('propertyRemoved', property);
           }
         })
       },
-      propertyEditted (changedProperty) {
-        var property = this.template.properties.filter(item => item.id == changedProperty.id)[0]
+      propertyEditted (item) {
+        var property = this.template.properties.filter(prop => prop.id == item.id)[0]
         var apiUrl = process.env.VUE_APP_API_URL;
         apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
         apiUrl += '/properties/'+property.id;
         var formdata = {
-          name: changedProperty.name,
-          fieldType: changedProperty.fieldType
+          name: item.name,
+          value: this.valuefyProperty(item.name),
+          fieldType: item.fieldType,
+          propertyOptions: property.propertyOptions
         };
+        if (typeof(formdata.propertyOptions) != 'string') {
+          formdata.propertyOptions = JSON.stringify(formdata.propertyOptions);
+        }
+
         this.$http.put(apiUrl, formdata).then(response => {
           if (response.status == 200) {
-            this.$emit("propertyChanged", property, response.body);
+            var changedProperty = response.body;
+            this.$emit("propertyChanged", property, changedProperty);
           }
         })
+      },
+      showSelectEditDialog (item) {
+        // Shows the select edit dialog for the given property with the fieldType `Select`
+        var property = this.template.properties.filter(prop => prop.id == item.id)[0];
+        this.propertyBeingEditted = this.clone(property);
+        this.propertyEditDialogOpen = true;
+      },
+      propertyOptionsChanged (property) {
+        var apiUrl = process.env.VUE_APP_API_URL;
+        apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
+        apiUrl += '/properties/'+property.id;
+
+        var formdata = {
+          name: property.name,
+          fieldType: property.fieldType,
+          propertyOptions: JSON.stringify(property.propertyOptions)
+        }
+        this.$http.put(apiUrl, formdata).then(response => {
+          if (response.status == 200) {
+            var changedProperty = response.body;
+            this.$emit("propertyChanged", property, changedProperty);
+            this.propertyEditDialogOpen = false;
+            this.propertyBeingEditted = null;
+          }
+        })
+      },
+      getproperties () {
+        return this.template.properties
       }
     },
     data () {
@@ -164,9 +253,12 @@
         ],
         propertyFieldTypes: [
           { text: "String", value: "string" },
-          { text: "Number", value: "number" }
+          { text: "Number", value: "number" },
+          { text: "Select", value: "select" }
         ],
-        isLoading: false
+        isLoading: false,
+        propertyEditDialogOpen: false,
+        propertyBeingEditted: null
       }
     }
   }  

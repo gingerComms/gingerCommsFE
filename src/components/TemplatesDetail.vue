@@ -63,6 +63,7 @@
             <v-tab-item value="nodes">
               <nodes-list
                 :template="template"
+                :key="nodesKey"
               ></nodes-list>
             </v-tab-item>
           </v-tabs-items>
@@ -92,7 +93,13 @@
         apiUrl += '/team/' + this.$route.params.teamId + '/templates/' + this.$route.params.templateId;
         this.$http.get(apiUrl).then(response => {
           if (response.status == 200) {
-            this.template = response.body;
+            var template = response.body;
+            template.properties.forEach(function (prop) {
+              if (typeof(prop.propertyOptions) == 'string') {
+                prop.propertyOptions = JSON.parse(prop.propertyOptions)
+              }
+            })
+            this.template = template;
           }
         })
       },
@@ -103,16 +110,25 @@
         this.template.properties.push(property);
       },
       propertyRemoved (property) {
-        this.template.properties.splice(this.template.properties.indexOf(property));
+        this.template.properties.splice(this.template.properties.indexOf(property), 1);
       },
       propertyChanged (property, newValue) {
-        this.template.properties[this.template.properties.indexOf(property)] = newValue;
+        property = this.template.properties.filter(prop => prop.id == property.id)[0];
+        var propertyId = this.template.properties.indexOf(property);
+        // Confirm that the newValue has the JSON parsed, and parse it if it doesn't
+        if (typeof(newValue.propertyOptions) == 'string') {
+          newValue.propertyOptions = JSON.parse(newValue.propertyOptions)
+        }
+        this.template.properties[propertyId] = newValue;
+        console.log('Changed', this.template.properties)
+        this.nodesKey += 1;
       }
     },
     data () {
       return {
         template: {},
-        tab: null
+        tab: null,
+        nodesKey: 1 // Used to force update the nodes-list view
       }
     },
     created () {

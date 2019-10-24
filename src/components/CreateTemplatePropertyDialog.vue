@@ -81,14 +81,20 @@
         var apiUrl = process.env.VUE_APP_API_URL;
         apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.templateId+'/properties';
         this.formdata.value = this.valuefyProperty(this.formdata.name);
+        this.formdata.propertyOptions = this.fieldTypeToPropertyOptions[this.formdata.fieldType];
+
+        console.log('New Property')
         this.$http.post(apiUrl, this.formdata).then(response => {
           if (response.status == 201) {
-            this.$emit('propertyAdded', response.body);
+            var property = response.body;
+            property.propertyOptions = JSON.parse(property.propertyOptions);
+            this.$emit('propertyAdded', property);
             this.$emit('dialogToggled', false);
             this.formdata = {
               name: '',
               fieldType: 'string',
-              value: ''
+              value: '',
+              propertyOptions: '{}'
             };
           }
         })
@@ -99,8 +105,14 @@
         formdata: {
           name: '',
           fieldType: 'string',
-          value: ''
+          value: '',
+          propertyOptions: '{}' // This gets a default value based on the fieldType
         },
+        fieldTypeToPropertyOptions: {
+          'string': '{}',
+          'number': '{}',
+          'select': '{"options": []}'
+        }
       }
     }
   }

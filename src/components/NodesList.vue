@@ -32,6 +32,16 @@
                     v-if="prop.fieldType == 'number'"
                     type="number"
                   ></v-text-field>
+                  <v-select
+                    v-if="prop.fieldType == 'select'"
+                    v-model="newNodeData.templateData[prop.value]"
+                    :items="getPropertyOptions(prop.value).options"
+                    filled
+                    :label="prop.text"
+                    single-line
+                    background-color="#f7f9fc"
+                    color="green darken-1"
+                  ></v-select>
                 </span>
               </td>
               <td>
@@ -97,6 +107,17 @@
                   v-if="fieldTypeFromPropertyValue(property.value) == 'number'"
                   type="number"
                 ></v-text-field>
+                <v-select
+                  v-if="fieldTypeFromPropertyValue(property.value) == 'select'"
+                  v-model="object[property.value]"
+                  :items="getPropertyOptions(property.value).options"
+                  filled
+                  :label="property.text"
+                  single-line
+                  background-color="#f7f9fc"
+                  color="green darken-1"
+                  @change="nodeEditted(object)"
+                ></v-select>
               </template>
             </v-edit-dialog>
           </template>
@@ -260,11 +281,20 @@
         var prop = this.editableTemplateProperties().filter(prop => prop.value == value)[0];
         return prop.fieldType;
       },
+      getPropertyOptions (value) {
+        var prop = this.editableTemplateProperties().filter(prop => prop.value == value)[0];
+        return prop.propertyOptions 
+      },
       editableTemplateProperties () {
         // List of template properties that are all modifiable
         var props = [];
         this.template.properties.forEach(function (property) {
-          props.push({ text: property.name, value: property.value, fieldType: property.fieldType });
+          props.push({
+            text: property.name,
+            value: property.value,
+            fieldType: property.fieldType,
+            propertyOptions: property.propertyOptions
+          });
         })
         return props;
       },

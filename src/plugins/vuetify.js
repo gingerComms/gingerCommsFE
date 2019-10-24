@@ -32,7 +32,8 @@ import Vuetify, {
   VTabsItems,
   VSelect,
   VEditDialog,
-  VTextField
+  VTextField,
+  VCombobox
 } from 'vuetify/lib'
 
 Vue.use(Vuetify, {
@@ -66,7 +67,8 @@ Vue.use(Vuetify, {
     VTabsItems,
     VSelect,
     VEditDialog,
-    VTextField
+    VTextField,
+    VCombobox
   }
 })
 
