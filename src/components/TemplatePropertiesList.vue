@@ -254,7 +254,8 @@
         propertyFieldTypes: [
           { text: "String", value: "string" },
           { text: "Number", value: "number" },
-          { text: "Select", value: "select" }
+          { text: "Select", value: "select" },
+          { text: "Date", value: "date" }
         ],
         isLoading: false,
         propertyEditDialogOpen: false,

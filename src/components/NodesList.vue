@@ -42,6 +42,32 @@
                     background-color="#f7f9fc"
                     color="green darken-1"
                   ></v-select>
+                  <v-menu
+                    v-if="prop.fieldType == 'date'"
+                    v-model="openMenus[prop.value]"
+                    :close-on-content-click="false"
+                    transition="scale-transition"
+                    offset-y
+                    min-width="290px"
+                  >
+                    <template v-slot:activator="{ on }">
+                      <v-text-field
+                        v-model="newNodeData.templateData[prop.value]"
+                        :label="prop.text"
+                        prepend-icon="event"
+                        readonly
+                        v-on="on"
+                      ></v-text-field>
+                    </template>
+                    <v-date-picker v-model="newNodeData.templateData[prop.value]" no-title scrollable>
+                      <v-spacer></v-spacer>
+                      <v-btn
+                        text
+                        color="primary"
+                        @click="openMenus[prop.value] = false"
+                      >OK</v-btn>
+                    </v-date-picker>
+                  </v-menu>
                 </span>
               </td>
               <td>
@@ -118,6 +144,32 @@
                   color="green darken-1"
                   @change="nodeEditted(object)"
                 ></v-select>
+                <v-menu
+                  v-if="fieldTypeFromPropertyValue(property.value) == 'date'"
+                  v-model="openMenus[object.id+'Date']"
+                  :close-on-content-click="false"
+                  transition="scale-transition"
+                  offset-y
+                  min-width="290px"
+                >
+                  <template v-slot:activator="{ on }">
+                    <v-text-field
+                      v-model="object[property.value]"
+                      :label="property.text"
+                      prepend-icon="event"
+                      readonly
+                      v-on="on"
+                    ></v-text-field>
+                  </template>
+                  <v-date-picker v-model="object[property.value]" no-title scrollable>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      text
+                      color="primary"
+                      @click="openMenus[prop.value] = false"
+                    >OK</v-btn>
+                  </v-date-picker>
+                </v-menu>
               </template>
             </v-edit-dialog>
           </template>
@@ -211,15 +263,32 @@
       }
     },
     methods: {
+      cleanNode (node) {
+        // Applies any validation/cleanup that may be required after a
+        // property modification
+        if (typeof(node.templateData) == 'string') {
+          node.templateData = JSON.parse(node.templateData);
+        }
+
+        var that = this;
+        var dateRegex = /\d\d\d\d-\d\d-\d\d/;
+
+        Object.keys(node.templateData).forEach(function (prop) {
+          if (that.fieldTypeFromPropertyValue(prop) == 'date' &&
+              !dateRegex.test(node.templateData[prop])) {
+            node.templateData[prop] = '';
+          }
+        })
+
+        return node;
+      },
       getNodes () {
         var that = this;
         this.$http.get(this.apiUrl).then(response => {
           if (response.status == 200) {
             var nodes = response.body;
             nodes.forEach(function (node) {
-              if (typeof(node.templateData) == 'string') {
-                node.templateData = JSON.parse(node.templateData);
-              }
+              node = that.cleanNode(node);
               that.nodes.push(node)
             })
           }
@@ -278,12 +347,20 @@
         return 'listItem.'+value+'.editable'
       },
       fieldTypeFromPropertyValue (value) {
-        var prop = this.editableTemplateProperties().filter(prop => prop.value == value)[0];
-        return prop.fieldType;
+        var prop = this.editableTemplateProperties().filter(prop => prop.value == value);
+        if (prop.length == 0) {
+          return undefined;
+        } else {
+          return prop[0].fieldType;
+        } 
       },
       getPropertyOptions (value) {
-        var prop = this.editableTemplateProperties().filter(prop => prop.value == value)[0];
-        return prop.propertyOptions 
+        var prop = this.editableTemplateProperties().filter(prop => prop.value == value);
+        if (prop.length == 0) {
+          return undefined;
+        } else {
+          return prop[0].propertyOptions;
+        } 
       },
       editableTemplateProperties () {
         // List of template properties that are all modifiable
@@ -307,7 +384,8 @@
           templateData: {}
         },
         isLoading: false,
-        createOpen: false
+        createOpen: false,
+        openMenus: {}  // Used to keep track of menus that are open 
       }
     },
     created () {

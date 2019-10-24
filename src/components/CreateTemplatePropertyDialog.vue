@@ -111,7 +111,8 @@
         fieldTypeToPropertyOptions: {
           'string': '{}',
           'number': '{}',
-          'select': '{"options": []}'
+          'select': '{"options": []}',
+          'date': '{}'
         }
       }
     }
