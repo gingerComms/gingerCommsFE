@@ -116,7 +116,9 @@
   export default {
     name: 'nodes-list',
     props: {
-      template: Object
+      template: Object,
+      parentType: String,
+      parentId: String
     },
     components: {
       ListTabView,
@@ -180,8 +182,8 @@
       },
       apiUrl () {
         var apiUrl = process.env.VUE_APP_API_URL;
-        apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
-        apiUrl += '/nodes/';
+        apiUrl += '/'+this.parentType+'/'+this.parentId+'/templates/'+this.template.id;
+        apiUrl += '/nodes';
         return apiUrl;
       }
     },

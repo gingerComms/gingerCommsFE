@@ -17,8 +17,14 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 
-      <v-card-title class="headline">
+      <v-card-title class="headline" style="display: block;">
         {{ node.title }}
+        <div>
+          <v-chip
+            color="primary"
+            small
+          >Topic: {{ template.name }}</v-chip>
+        </div>
       </v-card-title>
 
       <v-card-text>
@@ -36,7 +42,7 @@
             <v-icon>mdi-pen</v-icon>
           </v-tab>
 
-          <v-tab href="#nodes">
+          <v-tab v-if="nodeCanHaveChildren" href="#nodes" @click="nodesKey += 1">
             Topics
             <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
@@ -80,8 +86,13 @@
               </v-card>
             </v-tab-item>
 
-            <v-tab-item value="nodes">
-              Nodes
+            <v-tab-item v-if="nodeCanHaveChildren" value="nodes">
+              <nodes-list
+                :template="template"
+                :key="nodesKey"
+                :parentType="'coreVertex'"
+                :parentId="$route.params.nodeId"
+              ></nodes-list>
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
@@ -92,15 +103,23 @@
 
 <script>
   import TemplatePropertyInput from './TemplatePropertyInput';
+  import NodesList from './NodesList';
   import _ from 'lodash';
 
   export default {
     name: 'nodes-detail',
     props: [],
     components: {
-      TemplatePropertyInput
+      TemplatePropertyInput,
+      NodesList
     },
     computed: {
+      nodeCanHaveChildren () {
+        if (this.template.canHaveChildren) {
+          return true;
+        }
+        return false
+      },
       detailUrl () {
         var nodeId = this.$route.params.nodeId;
         return process.env.VUE_APP_API_URL + '/coreVertex/'+nodeId;
@@ -173,7 +192,8 @@
         node: null,
         template: null,
         tab: null,
-        formdata: null
+        formdata: null,
+        nodesKey: 1
       }
     },
     created () {

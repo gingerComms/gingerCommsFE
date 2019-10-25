@@ -34,7 +34,8 @@ import Vuetify, {
   VEditDialog,
   VTextField,
   VCombobox,
-  VDatePicker
+  VDatePicker,
+  VChip
 } from 'vuetify/lib'
 
 Vue.use(Vuetify, {
@@ -70,7 +71,8 @@ Vue.use(Vuetify, {
     VEditDialog,
     VTextField,
     VCombobox,
-    VDatePicker
+    VDatePicker,
+    VChip
   }
 })
 

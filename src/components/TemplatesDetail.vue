@@ -17,8 +17,14 @@
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
 
-      <v-card-title class="headline">
-        {{ template.name }}
+      <v-card-title class="headline" style="display: block;">
+        <div>{{ template.name }}</div>
+        <div>
+          <v-chip
+            color="primary"
+            small
+          >Template</v-chip>
+        </div>
       </v-card-title>
 
       <v-card-text>
@@ -64,6 +70,8 @@
               <nodes-list
                 :template="template"
                 :key="nodesKey"
+                :parentType="'team'"
+                :parentId="$route.params.teamId"
               ></nodes-list>
             </v-tab-item>
           </v-tabs-items>
