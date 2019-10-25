@@ -4,6 +4,7 @@ import Signup from '../components/Signup';
 import Dashboard from '../components/Dashboard';
 import TeamsDetail from '../components/TeamsDetail';
 import TemplatesDetail from '../components/TemplatesDetail';
+import NodesDetail from '../components/NodesDetail';
 
 const routes = [
   { path: '/', component: Index },
@@ -11,7 +12,8 @@ const routes = [
   { path: '/sign-up', component: Signup },
   { path: '/dashboard', component: Dashboard },
   { path: '/teams/:teamId', component: TeamsDetail },
-  { path: '/teams/:teamId/templates/:templateId', component: TemplatesDetail }
+  { path: '/teams/:teamId/templates/:templateId', component: TemplatesDetail },
+  { path: '/templates/:templateId/:nodeId', component: NodesDetail }
 ]
 
 export default routes

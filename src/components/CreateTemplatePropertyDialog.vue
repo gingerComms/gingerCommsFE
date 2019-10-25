@@ -80,7 +80,8 @@
       createTemplateProperty () {
         var apiUrl = process.env.VUE_APP_API_URL;
         apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.templateId+'/properties';
-        this.formdata.value = this.valuefyProperty(this.formdata.name);
+        // Changed so that the property.value is the property ID
+        // this.formdata.value = this.valuefyProperty(this.formdata.name);
         this.formdata.propertyOptions = this.fieldTypeToPropertyOptions[this.formdata.fieldType];
 
         console.log('New Property')

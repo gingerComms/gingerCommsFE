@@ -199,7 +199,8 @@
         apiUrl += '/properties/'+property.id;
         var formdata = {
           name: item.name,
-          value: this.valuefyProperty(item.name),
+          // Changed so that the prop value is the prop id
+          // value: this.valuefyProperty(item.name),
           fieldType: item.fieldType,
           propertyOptions: property.propertyOptions
         };

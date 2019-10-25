@@ -19,55 +19,14 @@
                   v-if="createOpen"
                 ></v-text-field>
               </td>
-              <td v-for="prop in editableTemplateProperties()" v-bind:key="prop.value">
+              <td v-for="prop in editableTemplateProperties()" v-bind:key="prop.id">
                 <span v-if="createOpen">
-                  <v-text-field
-                    dense
-                    v-model="newNodeData.templateData[prop.value]"
-                    v-if="prop.fieldType == 'string'"
-                  ></v-text-field>
-                  <v-text-field
-                    dense
-                    v-model="newNodeData.templateData[prop.value]"
-                    v-if="prop.fieldType == 'number'"
-                    type="number"
-                  ></v-text-field>
-                  <v-select
-                    v-if="prop.fieldType == 'select'"
-                    v-model="newNodeData.templateData[prop.value]"
-                    :items="getPropertyOptions(prop.value).options"
-                    filled
+                  <template-property-input
+                    :fieldType="prop.fieldType"
+                    v-model="newNodeData.templateData[prop.id]"
                     :label="prop.text"
-                    single-line
-                    background-color="#f7f9fc"
-                    color="green darken-1"
-                  ></v-select>
-                  <v-menu
-                    v-if="prop.fieldType == 'date'"
-                    v-model="openMenus[prop.value]"
-                    :close-on-content-click="false"
-                    transition="scale-transition"
-                    offset-y
-                    min-width="290px"
-                  >
-                    <template v-slot:activator="{ on }">
-                      <v-text-field
-                        v-model="newNodeData.templateData[prop.value]"
-                        :label="prop.text"
-                        prepend-icon="event"
-                        readonly
-                        v-on="on"
-                      ></v-text-field>
-                    </template>
-                    <v-date-picker v-model="newNodeData.templateData[prop.value]" no-title scrollable>
-                      <v-spacer></v-spacer>
-                      <v-btn
-                        text
-                        color="primary"
-                        @click="openMenus[prop.value] = false"
-                      >OK</v-btn>
-                    </v-date-picker>
-                  </v-menu>
+                    :propertyOptions="getPropertyOptions(prop.id)"
+                  ></template-property-input>
                 </span>
               </td>
               <td>
@@ -114,67 +73,29 @@
               </template>
             </v-edit-dialog>
           </template>
-          <template v-for="property in editableTemplateProperties()" v-slot:[propertySlotName(property.value)]="{ object }">
+          <template v-for="property in editableTemplateProperties()" v-slot:[propertySlotName(property.id)]="{ object }">
             <v-edit-dialog
-              v-bind:key="property.value"
+              v-bind:key="property.id"
               @close="nodeEditted(object)"
-            > {{ object[property.value] }}
+            > {{ object[property.id] }}
               <template v-slot:input>
-                <v-text-field
-                  v-model="object[property.value]"
-                  label="Edit"
-                  single-line
-                  v-if="fieldTypeFromPropertyValue(property.value) == 'string'"
-                ></v-text-field>
-                <v-text-field
-                  v-model="object[property.value]"
-                  label="Edit"
-                  single-line
-                  v-if="fieldTypeFromPropertyValue(property.value) == 'number'"
-                  type="number"
-                ></v-text-field>
-                <v-select
-                  v-if="fieldTypeFromPropertyValue(property.value) == 'select'"
-                  v-model="object[property.value]"
-                  :items="getPropertyOptions(property.value).options"
-                  filled
+                <template-property-input
+                  :fieldType="fieldTypeFromPropertyId(property.id)"
+                  v-model="object[property.id]"
                   :label="property.text"
-                  single-line
-                  background-color="#f7f9fc"
-                  color="green darken-1"
-                  @change="nodeEditted(object)"
-                ></v-select>
-                <v-menu
-                  v-if="fieldTypeFromPropertyValue(property.value) == 'date'"
-                  v-model="openMenus[object.id+'Date']"
-                  :close-on-content-click="false"
-                  transition="scale-transition"
-                  offset-y
-                  min-width="290px"
-                >
-                  <template v-slot:activator="{ on }">
-                    <v-text-field
-                      v-model="object[property.value]"
-                      :label="property.text"
-                      prepend-icon="event"
-                      readonly
-                      v-on="on"
-                    ></v-text-field>
-                  </template>
-                  <v-date-picker v-model="object[property.value]" no-title scrollable>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      text
-                      color="primary"
-                      @click="openMenus[object.id+'Date'] = false"
-                    >OK</v-btn>
-                  </v-date-picker>
-                </v-menu>
+                  :propertyOptions="getPropertyOptions(property.id)"
+                ></template-property-input>
               </template>
             </v-edit-dialog>
           </template>
 
           <template v-slot:listUtils="{ object }">
+            <v-btn
+              icon
+              :to="'/templates/'+template.id+'/'+object.id"
+            >
+              <v-icon>mdi-pen</v-icon>
+            </v-btn>
             <v-btn
               icon
               @click="deleteNode(object.id)"
@@ -190,6 +111,7 @@
 
 <script>
   import ListTabView from './ListTabView';
+  import TemplatePropertyInput from './TemplatePropertyInput';
 
   export default {
     name: 'nodes-list',
@@ -197,15 +119,15 @@
       template: Object
     },
     components: {
-      ListTabView
+      ListTabView,
+      TemplatePropertyInput
     },
     computed: {
       topicHeaders () {
         // Headers for the topics table
         var headers = [ { text: 'Title', value: 'title', editable: true } ];
-        var that = this;
         this.template.properties.forEach(function (property) {
-          headers.push({ text: property.name, value: that.valuefyProperty(property.name), editable: true });
+          headers.push({ text: property.name, value: property.id, editable: true });
         })
         headers.push({ text: 'Utils', value: 'utils', editable: false })
         return headers;
@@ -214,16 +136,17 @@
         get () {
           var objects = [];
           var that = this;
+          var templateId = this.template.id;
           this.nodes.forEach(function (node) {
-            var route = null;
+            var route = '/templates/'+templateId+'/'+node.id;
             var listData = {
               id: node.id,
               title: node.title
             }
             var nodeProperties = node.templateData;
-            that.topicHeaders.forEach(function (header) {
-              if (header.value != 'title') {
-                listData[header.value] = nodeProperties[header.value];
+            that.editableTemplateProperties().forEach(function (prop) {
+              if (prop.name != 'Title') {
+                listData[prop.id] = nodeProperties[prop.id];
               }
             })
             objects.push({
@@ -241,14 +164,14 @@
         var that = this;
         this.editableTemplateProperties().forEach(function (prop) {
           if (prop.fieldType == 'string') {
-            if (that.newNodeData.templateData[prop.value] == '' ||
-                that.newNodeData.templateData[prop.value] == undefined) {
+            if (that.newNodeData.templateData[prop.id] == '' ||
+                that.newNodeData.templateData[prop.id] == undefined) {
               valid = false;
             }
           } else if (prop.fieldType == 'number') {
-            if (that.newNodeData.templateData[prop.value] == '' ||
-                that.newNodeData.templateData[prop.value] == null ||
-                that.newNodeData.templateData[prop.value] == undefined) {
+            if (that.newNodeData.templateData[prop.id] == '' ||
+                that.newNodeData.templateData[prop.id] == null ||
+                that.newNodeData.templateData[prop.id] == undefined) {
               valid = false;
             }
           }
@@ -273,10 +196,10 @@
         var that = this;
         var dateRegex = /\d\d\d\d-\d\d-\d\d/;
 
-        Object.keys(node.templateData).forEach(function (prop) {
-          if (that.fieldTypeFromPropertyValue(prop) == 'date' &&
-              !dateRegex.test(node.templateData[prop])) {
-            node.templateData[prop] = '';
+        Object.keys(node.templateData).forEach(function (propId) {
+          if (that.fieldTypeFromPropertyId(propId) == 'date' &&
+              !dateRegex.test(node.templateData[propId])) {
+            node.templateData[propId] = '';
           }
         })
 
@@ -331,7 +254,7 @@
       nodeEditted (object) {
         var formdata = { title: object.title, templateData: {} };
         this.editableTemplateProperties().forEach(function (prop) {
-          formdata.templateData[prop.value] = object[prop.value];
+          formdata.templateData[prop.id] = object[prop.id];
         })
         formdata.templateData = JSON.stringify(formdata.templateData);
 
@@ -343,19 +266,19 @@
           }
         })
       },
-      propertySlotName (value) {
-        return 'listItem.'+value+'.editable'
+      propertySlotName (id) {
+        return 'listItem.'+id+'.editable'
       },
-      fieldTypeFromPropertyValue (value) {
-        var prop = this.editableTemplateProperties().filter(prop => prop.value == value);
+      fieldTypeFromPropertyId (id) {
+        var prop = this.editableTemplateProperties().filter(prop => prop.id == id);
         if (prop.length == 0) {
           return undefined;
         } else {
           return prop[0].fieldType;
         } 
       },
-      getPropertyOptions (value) {
-        var prop = this.editableTemplateProperties().filter(prop => prop.value == value);
+      getPropertyOptions (id) {
+        var prop = this.editableTemplateProperties().filter(prop => prop.id == id);
         if (prop.length == 0) {
           return undefined;
         } else {
@@ -368,9 +291,9 @@
         this.template.properties.forEach(function (property) {
           props.push({
             text: property.name,
-            value: property.value,
             fieldType: property.fieldType,
-            propertyOptions: property.propertyOptions
+            propertyOptions: property.propertyOptions,
+            id: property.id
           });
         })
         return props;
