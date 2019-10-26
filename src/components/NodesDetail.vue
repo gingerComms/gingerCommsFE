@@ -67,6 +67,16 @@
                       :propertyOptions="property.propertyOptions"
                     ></template-property-input>
                   </div>
+
+                  <div>
+                    <label>Content</label>
+                    <tiptap-vuetify
+                      v-model="formdata.content"
+                      :extensions="editorExtensions"
+                      height="300"
+                    >
+                    </tiptap-vuetify>
+                  </div>
                 </v-card-text>
 
                 <v-card-actions>
@@ -104,6 +114,7 @@
 <script>
   import TemplatePropertyInput from './TemplatePropertyInput';
   import NodesList from './NodesList';
+  import { TiptapVuetify, Heading, Bold, Italic, Strike, Underline, Code, Paragraph, BulletList, OrderedList, ListItem, Link, Blockquote, HardBreak, HorizontalRule, History } from 'tiptap-vuetify';
   import _ from 'lodash';
 
   export default {
@@ -111,7 +122,8 @@
     props: [],
     components: {
       TemplatePropertyInput,
-      NodesList
+      NodesList,
+      TiptapVuetify
     },
     computed: {
       nodeCanHaveChildren () {
@@ -152,6 +164,7 @@
         this.template.properties.forEach(function (prop) {
           formdata.templateData[prop.id] = that.node.templateData[prop.id] || ''
         })
+        formdata['content'] = this.node.content;
         return formdata
       },
       getNode () {
@@ -173,7 +186,8 @@
       updateNode () {
         var formdata = {
           title: this.formdata.title,
-          templateData: JSON.stringify(this.formdata.templateData)
+          templateData: JSON.stringify(this.formdata.templateData),
+          content: this.formdata.content
         }
         this.$http.put(this.detailUrl, formdata).then(response => {
           if (response.status == 200) {
@@ -193,7 +207,28 @@
         template: null,
         tab: null,
         formdata: null,
-        nodesKey: 1
+        nodesKey: 1,
+        editorExtensions: [
+          History,
+          Blockquote,
+          Link,
+          Underline,
+          Strike,
+          Italic,
+          ListItem,
+          BulletList,
+          OrderedList,
+          [Heading, {
+            options: {
+              levels: [1, 2, 3]
+            }
+          }],
+          Bold,
+          Code,
+          HorizontalRule,
+          Paragraph,
+          HardBreak
+        ],
       }
     },
     created () {

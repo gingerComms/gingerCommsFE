@@ -143,7 +143,8 @@
             var route = '/templates/'+templateId+'/'+node.id;
             var listData = {
               id: node.id,
-              title: node.title
+              title: node.title,
+              content: node.content
             }
             var nodeProperties = node.templateData;
             that.editableTemplateProperties().forEach(function (prop) {
@@ -226,7 +227,8 @@
           if (response.status == 201) {
             that.newNodeData = {
               title: '',
-              templateData: {}
+              templateData: {},
+              content: ''
             };
             var node = response.body;
             if (typeof(node.templateData) == 'string') {
@@ -254,7 +256,8 @@
         })
       },
       nodeEditted (object) {
-        var formdata = { title: object.title, templateData: {} };
+        console.log(object)
+        var formdata = { title: object.title, templateData: {}, content: object.content };
         this.editableTemplateProperties().forEach(function (prop) {
           formdata.templateData[prop.id] = object[prop.id];
         })
@@ -306,7 +309,8 @@
         nodes: [],
         newNodeData: {
           title: '',
-          templateData: {}
+          templateData: {},
+          content: ''
         },
         isLoading: false,
         createOpen: false,
