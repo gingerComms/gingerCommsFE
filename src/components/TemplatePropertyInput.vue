@@ -8,6 +8,7 @@
       :label="label"
       :placeholder="label"
       v-if="fieldType == 'string'"
+      filled
     ></v-text-field>
     <v-text-field
       v-model="propertyValue"
@@ -15,6 +16,7 @@
       :placeholder="label"
       v-if="fieldType == 'number'"
       type="number"
+      filled
     >
     </v-text-field>
     <v-select
@@ -23,7 +25,6 @@
       :items="propertyOptions.options"
       filled
       :label="label"
-      background-color="#f7f9fc"
       color="green darken-1"
     ></v-select>
     <v-menu
@@ -41,6 +42,7 @@
           prepend-icon="event"
           readonly
           v-on="on"
+          filled
         ></v-text-field>
       </template>
       <v-date-picker v-model="propertyValue" no-title scrollable>

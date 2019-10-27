@@ -81,8 +81,16 @@
               class="elevation-1"
             >
               <template v-slot:body="{ items }">
-                <tbody v-if="items.length >= 0">
-                  <tr v-for="item in items" :key="item.id">
+                <component
+                  :is="draggableComponent"
+                  :group="'listItems'"
+                  :list="items"
+                  v-if="items.length >= 0"
+                  tag="tbody"
+                  @end="orderChanged(items)"
+                  draggable=".listItem"
+                >
+                  <tr v-for="item in items" :key="item.id" class="listItem">
                     <td v-for="header in headers" :key="header.value">
                       <span v-if="header.value != 'utils'" @click="goToDetail(item)">
                         <span v-if="!header.editable">
@@ -98,7 +106,7 @@
                     </td>
                   </tr>
                   <slot name="appendedRow"></slot>
-                </tbody>
+                </component>
                 <tbody v-if="appendedRowSlot == undefined && items.length == 0">
                   <tr class="v-data-table__empty-wrapper">
                     <td colspan="6">No data available</td>
@@ -120,13 +128,19 @@
 </template>
 
 <script>
+  import draggable from 'vuedraggable'
+
   export default {
     name: 'ListTabView',
     props: {
       objects: Array,
       mode: String,
       headers: Array,
-      isLoading: Boolean
+      isLoading: Boolean,
+      isDraggable: Boolean
+    },
+    components: {
+      draggable
     },
     computed: {
       tabMode () {
@@ -144,6 +158,12 @@
       },
       appendedRowSlot () {
         return this.$scopedSlots.appendedRow;
+      },
+      draggableComponent () {
+        if (this.isDraggable === true) {
+          return 'draggable';
+        }
+        return 'tbody'
       }
     },
     methods: {
@@ -151,11 +171,14 @@
         if (object.route !== null && object.route != undefined) {
           this.$router.push({ path: object.route })
         }
+      },
+      orderChanged (items) {
+        this.$emit('orderChanged', items);
       }
     },
     data () {
       return {
-
+        list: []
       }
     }
   }

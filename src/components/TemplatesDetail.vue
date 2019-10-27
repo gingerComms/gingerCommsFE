@@ -63,6 +63,7 @@
                 @propertyAdded="propertyAdded"
                 @propertyRemoved="propertyRemoved"
                 @propertyChanged="propertyChanged"
+                @propertiesOrderChanged="propertiesOrderChanged"
               ></template-properties-list>
             </v-tab-item>
 
@@ -130,6 +131,15 @@
         this.template.properties[propertyId] = newValue;
         console.log('Changed', this.template.properties)
         this.nodesKey += 1;
+      },
+      propertiesOrderChanged (newValue) {
+        var properties = newValue;
+        properties.forEach(function (prop) {
+          if (typeof(prop.propertyOptions) == 'string') {
+            prop.propertyOptions = JSON.parse(prop.propertyOptions);
+          }
+        })
+        this.template.properties = properties;
       }
     },
     data () {

@@ -10,6 +10,8 @@
           :objects="listTabViewFormattedData"
           mode="list"
           :isLoading="isLoading"
+          :isDraggable="true"
+          @orderChanged="orderChanged"
         >
           <template v-slot:listTopContent>
             <v-card flat>
@@ -151,6 +153,10 @@
     },
     computed: {
       templateProperties () {
+        var props = this.template.properties;
+        props.sort(function (a, b) {
+          return a.index - b.index
+        })
         return this.template.properties;
       },
       listTabViewFormattedData: {
@@ -240,8 +246,19 @@
           }
         })
       },
-      getproperties () {
-        return this.template.properties
+      orderChanged (properties) {
+        console.log('Order Changed', properties);
+        var formdata = {
+            properties: properties
+        }
+        var apiUrl = process.env.VUE_APP_API_URL;
+        apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
+        apiUrl += '/properties_index'
+        this.$http.put(apiUrl, formdata).then(response => {
+          if (response.status == 200) {
+            this.$emit('propertiesOrderChanged', response.body);
+          }
+        })
       }
     },
     data () {

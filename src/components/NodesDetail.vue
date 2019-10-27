@@ -54,19 +54,29 @@
                 tile
               >
                 <v-card-text>
-                  <v-text-field
-                    v-model="formdata.title"
-                    label="Title"
-                    placeholder="Title"
-                  ></v-text-field>
-                  <div v-for="property in sortedProperties" v-bind:key="property.id">
-                    <template-property-input
-                      :fieldType="property.fieldType"
-                      v-model="formdata.templateData[property.id]"
-                      :label="property.name"
-                      :propertyOptions="property.propertyOptions"
-                    ></template-property-input>
-                  </div>
+                  <v-row>
+                    <v-col cols="6" xs="12">
+                      <v-text-field
+                        v-model="formdata.title"
+                        label="Title"
+                        placeholder="Title"
+                        filled
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      v-for="property in sortedProperties"
+                      v-bind:key="property.id"
+                      cols="6"
+                      xs="12"
+                    >
+                      <template-property-input
+                        :fieldType="property.fieldType"
+                        v-model="formdata.templateData[property.id]"
+                        :label="property.name"
+                        :propertyOptions="property.propertyOptions"
+                      ></template-property-input>
+                    </v-col>
+                  </v-row>
 
                   <div>
                     <label>Content</label>
@@ -137,12 +147,18 @@
         return process.env.VUE_APP_API_URL + '/coreVertex/'+nodeId;
       },
       sortedProperties () {
-        // TODO: Implement sorting and return sorted template Props by index
-        this.template.properties.forEach(function (prop) {
+        var props = this.template.properties;
+
+        props.forEach(function (prop) {
           if (typeof(prop.propertyOptions) == 'string') {
             prop.propertyOptions = JSON.parse(prop.propertyOptions);
           }
         })
+
+        props.sort((a, b) => {
+          return a.index - b.index
+        })
+
         return this.template.properties
       },
       formdataChanged () {
