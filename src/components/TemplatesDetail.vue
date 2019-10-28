@@ -21,8 +21,9 @@
         <div>{{ template.name }}</div>
         <div>
           <v-chip
-            color="primary"
+            :color="template.pillBackgroundColor"
             small
+            :style="{ 'color': template.pillForegroundColor }"
           >Template</v-chip>
         </div>
       </v-card-title>
@@ -52,6 +53,7 @@
           <v-tabs-items v-model="tab">
             <v-tab-item value="details">
               <template-edit
+                v-if="template"
                 :template="template"
                 @templateEditted="templateEditted"
               ></template-edit>
@@ -113,7 +115,7 @@
         })
       },
       templateEditted (template) {
-        this.template.name = template.name;
+        this.template = template;
       },
       propertyAdded (property) {
         this.template.properties.push(property);

@@ -64,7 +64,8 @@
     props: {
       templateId: String,
       showDialog: Boolean,
-      fieldTypes: Array
+      fieldTypes: Array,
+      templateProperties: Array
     },
     computed: {
       dialogOpen: {
@@ -83,6 +84,7 @@
         // Changed so that the property.value is the property ID
         // this.formdata.value = this.valuefyProperty(this.formdata.name);
         this.formdata.propertyOptions = this.fieldTypeToPropertyOptions[this.formdata.fieldType];
+        this.formdata.index = this.templateProperties.length;
 
         console.log('New Property')
         this.$http.post(apiUrl, this.formdata).then(response => {
@@ -94,7 +96,7 @@
             this.formdata = {
               name: '',
               fieldType: 'string',
-              value: '',
+              index: this.templateProperties.length,
               propertyOptions: '{}'
             };
           }
@@ -106,7 +108,7 @@
         formdata: {
           name: '',
           fieldType: 'string',
-          value: '',
+          index: '',
           propertyOptions: '{}' // This gets a default value based on the fieldType
         },
         fieldTypeToPropertyOptions: {

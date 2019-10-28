@@ -20,6 +20,48 @@
             </ValidationProvider>
           </div>
           <div>
+            <v-menu
+              v-model="openMenus['pillFg']"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="formdata.pillForegroundColor"
+                  label="Pill Foreground Color"
+                  prepend-icon="mdi-format-color-fill"
+                  readonly
+                  v-on="on"
+                  backgroundColor="#f7f9fc"
+                  filled
+                ></v-text-field>
+              </template>
+              <v-color-picker v-model="formdata.pillForegroundColor"></v-color-picker>
+            </v-menu>
+            <v-menu
+              v-model="openMenus['pillBg']"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="formdata.pillBackgroundColor"
+                  label="Pill Background Color"
+                  prepend-icon="mdi-format-color-fill"
+                  readonly
+                  v-on="on"
+                  backgroundColor="#f7f9fc"
+                  filled
+                ></v-text-field>
+              </template>
+              <v-color-picker v-model="formdata.pillBackgroundColor"></v-color-picker>
+            </v-menu>
+          </div>
+          <div>
             <v-checkbox
               v-model="formdata.canHaveChildren"
               label="Can Have Children"
@@ -77,11 +119,15 @@
           if (response.status == 201) {
             this.$emit('templateCreated', response.body);
             this.dialogOpen = false;
-            this.formdata = { canHaveChildren: false, name: '' };
+            this.formdata = {
+              canHaveChildren: false, name: '', pillBackgroundColor: '#55CEC7', pillForegroundColor: '#FFFFFFFF'
+            };
           }
         }, response => {
           this.$store.commit('common/errorUpdate', { message: response.statusText, show: true });
-          this.formdata = { canHaveChildren: false, name: '' };
+          this.formdata = {
+            canHaveChildren: false, name: '', pillBackgroundColor: '#55CEC7', pillForegroundColor: '#FFFFFFFF'
+          };
         })
       }
     },
@@ -89,8 +135,11 @@
       return {
         formdata: {
           name: '',
-          canHaveChildren: false
-        }
+          canHaveChildren: false,
+          pillBackgroundColor: '#55CEC7',
+          pillForegroundColor: '#FFFFFFFF'
+        },
+        openMenus: {}
       }
     }
   }

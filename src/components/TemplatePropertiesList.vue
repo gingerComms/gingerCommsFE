@@ -83,6 +83,7 @@
           :showDialog="showDialog"
           :templateId="template.id"
           :fieldTypes="propertyFieldTypes"
+          :templateProperties="template.properties"
           @propertyAdded="propertyAdded"
           @dialogToggled="dialogToggled"
         ></create-template-property-dialog>

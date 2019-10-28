@@ -21,8 +21,9 @@
         {{ node.title }}
         <div>
           <v-chip
-            color="primary"
+            :color="template.pillBackgroundColor"
             small
+            :style="{ 'color': template.pillForegroundColor }"
           >Topic: {{ template.name }}</v-chip>
         </div>
       </v-card-title>

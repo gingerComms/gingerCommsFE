@@ -1,5 +1,5 @@
 <template>
-  <div id="template-edit">
+  <div id="template-edit" v-if="template">
     <v-card
       flat
     >
@@ -15,6 +15,49 @@
               <input type="text" :placeholder="template.name" name="name" v-model="formdata.name" required>
               <span class="error">{{ errors[0] }}</span>
             </ValidationProvider>
+          </div>
+
+          <div>
+            <v-menu
+              v-model="openMenus['pillFg']"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="formdata.pillForegroundColor"
+                  label="Pill Foreground Color"
+                  prepend-icon="mdi-format-color-fill"
+                  readonly
+                  v-on="on"
+                  backgroundColor="#f7f9fc"
+                  filled
+                ></v-text-field>
+              </template>
+              <v-color-picker v-model="formdata.pillForegroundColor"></v-color-picker>
+            </v-menu>
+            <v-menu
+              v-model="openMenus['pillBg']"
+              :close-on-content-click="false"
+              transition="scale-transition"
+              offset-y
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on }">
+                <v-text-field
+                  v-model="formdata.pillBackgroundColor"
+                  label="Pill Background Color"
+                  prepend-icon="mdi-format-color-fill"
+                  readonly
+                  v-on="on"
+                  backgroundColor="#f7f9fc"
+                  filled
+                ></v-text-field>
+              </template>
+              <v-color-picker v-model="formdata.pillBackgroundColor"></v-color-picker>
+            </v-menu>
           </div>
         </v-card-text>
 
@@ -59,11 +102,18 @@
     },
     data () {
       return {
-        formdata: {}
+        formdata: {},
+        openMenus: {}
       }
     },
-    created () {
-      this.formdata.name = this.template.name;
+    watch: {
+      template (newVal) {
+        this.formdata = {
+          name: newVal.name,
+          pillForegroundColor: newVal.pillForegroundColor,
+          pillBackgroundColor: newVal.pillBackgroundColor
+        }
+      }
     }
   }
 </script>

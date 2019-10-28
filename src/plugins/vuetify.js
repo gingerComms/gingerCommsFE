@@ -39,7 +39,8 @@ import Vuetify, {
   VCombobox,
   VDatePicker,
   VChip,
-  VCol
+  VCol,
+  VColorPicker
 } from 'vuetify/lib'
 
 const vuetify = new Vuetify()
@@ -79,7 +80,8 @@ Vue.use(Vuetify, {
     VCombobox,
     VDatePicker,
     VChip,
-    VCol
+    VCol,
+    VColorPicker
   }
 })
 
