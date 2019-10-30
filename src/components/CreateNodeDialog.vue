@@ -103,10 +103,12 @@
         var that = this;
         this.$http.post(apiUrl, this.formdata).then(response => {
           if (response.status == 201) {
+            var template = response.body.template;
+            console.log(template)
             var createdNode = {
               id: response.body.id,
               children: [],
-              template: that.targetedTemplate,
+              template: template,
               templateData: response.body.templateData,
               title: response.body.title
             }
