@@ -35,7 +35,7 @@
                 <v-btn
                   icon
                   @click="openCreateDialog(item.id)"
-                  v-if="nodes.indexOf(item) >= 0"
+                  v-if="nodes.indexOf(item) >= 0 && item.template.canHaveChildren"
                 >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
