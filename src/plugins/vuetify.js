@@ -40,7 +40,8 @@ import Vuetify, {
   VDatePicker,
   VChip,
   VCol,
-  VColorPicker
+  VColorPicker,
+  VTreeview
 } from 'vuetify/lib'
 
 const vuetify = new Vuetify()
@@ -81,7 +82,8 @@ Vue.use(Vuetify, {
     VDatePicker,
     VChip,
     VCol,
-    VColorPicker
+    VColorPicker,
+    VTreeview
   }
 })
 

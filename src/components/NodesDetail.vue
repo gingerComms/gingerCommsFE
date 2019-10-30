@@ -108,12 +108,10 @@
             </v-tab-item>
 
             <v-tab-item v-if="nodeCanHaveChildren" value="nodes">
-              <nodes-list
-                :template="template"
-                :key="nodesKey"
-                :parentType="'coreVertex'"
-                :parentId="$route.params.nodeId"
-              ></nodes-list>
+              <nodes-tree-view
+                :parentNodeType="'coreVertex'"
+                :parentNodeId="$route.params.nodeId"
+              ></nodes-tree-view>
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
@@ -124,7 +122,7 @@
 
 <script>
   import TemplatePropertyInput from './TemplatePropertyInput';
-  import NodesList from './NodesList';
+  import NodesTreeView from './NodesTreeView';
   import { TiptapVuetify, Heading, Bold, Italic, Strike, Underline, Code, Paragraph, BulletList, OrderedList, ListItem, Link, Blockquote, HardBreak, HorizontalRule, History } from 'tiptap-vuetify';
   import _ from 'lodash';
 
@@ -133,8 +131,8 @@
     props: [],
     components: {
       TemplatePropertyInput,
-      NodesList,
-      TiptapVuetify
+      TiptapVuetify,
+      NodesTreeView
     },
     computed: {
       nodeCanHaveChildren () {

@@ -92,7 +92,7 @@
           <template v-slot:listUtils="{ object }">
             <v-btn
               icon
-              :to="'/templates/'+template.id+'/'+object.id"
+              :to="'/teams/'+$route.params.teamId+'/templates/'+template.id+'/'+object.id"
             >
               <v-icon>mdi-pen</v-icon>
             </v-btn>

@@ -15,7 +15,7 @@
     </v-snackbar>
 
     <v-app>
-      <router-view></router-view>
+      <router-view :key="$route.fullPath"></router-view>
       <side-nav @click="errorSnackbar=true"></side-nav>
     </v-app>
   </div>
