@@ -3,6 +3,13 @@
     <v-card>
       <v-card-text>
         <v-btn
+          icon
+          @click="nodeMoved({ id: parentNodeId })"
+          v-if="movingNode != null && !nodeIsAtRoot(movingNode)"
+        >
+          <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
+        </v-btn>
+        <v-btn
           raised
           color="#55cec7"
           dark
@@ -51,6 +58,30 @@
 
           <template v-slot:label="{ item }">
             <strong>{{ item.title }}</strong>
+          </template>
+
+          <template v-slot:prepend="{ item }">
+            <v-btn
+              icon
+              @click="movingNode = item.id;"
+              v-if="movingNode == null && movingNode != item.id"
+            >
+              <v-icon>mdi-cursor-move</v-icon>
+            </v-btn>
+            <v-btn
+              icon
+              @click="movingNode = null;"
+              v-if="movingNode == item.id"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+            <v-btn
+              icon
+              @click="nodeMoved(item)"
+              v-if="movingNode != null && movingNode != item.id"
+            >
+              <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
+            </v-btn>
           </template>
         </v-treeview>
       </v-card-text>
@@ -105,6 +136,41 @@
         } else {
           this.nodes.push(node);
         }
+      },
+      nodeMoved (dropLocation) {
+        var apiUrl = process.env.VUE_APP_API_URL + '/coreVertex/' + this.movingNode + '/change_parent';
+        var that = this;
+        // eslint-disable-next-line
+        this.$http.put(apiUrl, {newParent: dropLocation.id}).then(response => {
+          that.getNodesWithChildren();
+          that.movingNode = null;
+          /*
+          var movedNode = that.nodes.filter(node => node.id == that.movingNode)[0];
+          var movedNodeIndex = that.nodes.indexOf(movedNode);
+          var droppedAtNode = that.nodes.filter(node => node.id == dropLocation.id)[0];
+          var droppedAtNodeIndex = that.nodes.indexOf(droppedAtNode);
+
+          if (movedNodeIndex >= 0) {
+            that.nodes.splice(movedNodeIndex, 1);
+          } else {
+            that.nodes[droppedAtNodeIndex].children.splice(
+              that.nodes[droppedAtNodeIndex].children.indexOf(
+                that.nodes[droppedAtNodeIndex].children.filter(child => child.id == that.movingNode)[0]
+              )
+            )
+          }
+          if (droppedAtNodeIndex >= 0) {
+            that.nodes[droppedAtNodeIndex].children.push(movedNode);
+          }
+          that.movingNode = null;
+          */
+        })
+      },
+      nodeIsAtRoot (nodeId) {
+        if (this.nodes.filter(node => node.id == nodeId)[0] != undefined) {
+          return true;
+        }
+        return false;
       }
     },
     data () {
@@ -113,7 +179,8 @@
         open: [], // All nodes that are toggled open right now
         nodes: [],
         createTargetParentNode: null,
-        showCreateDialog: false
+        showCreateDialog: false,
+        movingNode: null
       }
     },
     created () {
