@@ -5,7 +5,7 @@
         <v-btn
           icon
           @click="nodeMoved({ id: parentNodeId })"
-          v-if="movingNode != null && !nodeIsAtRoot(movingNode)"
+          v-if="movingNode != null && !nodeIsAtRoot(movingNode) && parentCanHaveChildren"
         >
           <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
         </v-btn>
@@ -78,7 +78,7 @@
             <v-btn
               icon
               @click="nodeMoved(item)"
-              v-if="movingNode != null && movingNode != item.id"
+              v-if="movingNode != null && movingNode != item.id && item.template.canHaveChildren"
             >
               <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
             </v-btn>
@@ -106,6 +106,7 @@
     props: {
       parentNodeType: String,
       parentNodeId: String,
+      parentCanHaveChildren: Boolean
     },
     components: {
       'create-node-dialog': CreateNodeDialog

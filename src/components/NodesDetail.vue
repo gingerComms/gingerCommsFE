@@ -111,6 +111,7 @@
               <nodes-tree-view
                 :parentNodeType="'coreVertex'"
                 :parentNodeId="$route.params.nodeId"
+                :parentCanHaveChildren="nodeCanHaveChildren"
               ></nodes-tree-view>
             </v-tab-item>
           </v-tabs-items>
