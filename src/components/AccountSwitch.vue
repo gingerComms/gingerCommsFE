@@ -41,7 +41,7 @@
       }
     },
     created () {
-      // this.loadAccounts();
+      this.loadAccounts();
     }
   }
 </script>
