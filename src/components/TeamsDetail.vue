@@ -61,11 +61,10 @@
             </v-tab-item>
 
             <v-tab-item value="members">
-              <v-card flat>
-                <v-card-text>
-                  <members-list :nodeId="$route.params.teamId"></members-list>
-                </v-card-text>
-              </v-card>
+              <assignees-list
+                :nodeId="$route.params.teamId"
+                :nodeType="'team'"
+              ></assignees-list>
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
@@ -78,15 +77,15 @@
   require("../styles/teams-detail.scss");
 
   import TemplatesList from "./TemplatesList";
-  import MembersList from './MembersList';
   import TeamEdit from './TeamEdit';
+  import AssigneesList from './AssigneesList';
 
   export default {
     name: 'teams-detail',
     components: {
       TemplatesList,
-      MembersList,
-      TeamEdit
+      TeamEdit,
+      AssigneesList
     },
     props: [],
     methods: {

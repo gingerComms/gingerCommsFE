@@ -29,6 +29,7 @@
         </v-tooltip>
       </li>
 
+
       <li v-if="isAuthenticated" class="end">
         <v-tooltip right>
           <template v-slot:activator="{ on }">

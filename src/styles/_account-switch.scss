@@ -3,16 +3,20 @@
 
     #accounts-container {
         display: flex;
+        flex: auto;
         flex-direction: row;
         position: absolute;
+        left: 0; right: 0;
         background-color: $blue;
-        max-width: 100vh;
         overflow-x: none;
         
         .img-container {
             padding: 10px 10px 10px 10px;
             transition: all 0.6s ease 0s, visibility 0s linear 0.5s;
             position: relative;
+            flex-basis: 46px;
+            flex-grow: 0;
+            flex-shrink: 0;
 
             img {
                 height: 36px; width: 36px;
@@ -44,8 +48,10 @@
 
         &:hover {
             overflow-x: auto;
+            width: 50vh;
 
             .img-container:not(:first-child) {
+                flex-basis: 58px;
                 visibility: visible;
                 opacity: 1;
                 transition-delay: 0s;

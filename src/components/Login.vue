@@ -80,7 +80,7 @@
           // Setting the Auth global vars if the login is successful
           if (response.status == 200) {
             this.loginSubmitted = true;
-            this.$store.commit('common/updateUser', response.body.token, response.body.user)
+            this.$store.commit('common/updateUser', { authToken: response.body.token, userObj: response.body.user })
             this.$router.push("/dashboard");
           }
         })

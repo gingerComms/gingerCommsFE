@@ -98,7 +98,7 @@
           // Setting the global auth variables if the registration is successful
           if (response.status === 201) {
             this.signUpStatus = true;
-            this.$store.commit('common/updateUser', response.body.token, response.body.user)
+            this.$store.commit('common/updateUser', { authToken: response.body.token, userObj: response.body.user })
             this.$router.push("/dashboard");
           }
         })

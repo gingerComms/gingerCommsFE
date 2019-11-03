@@ -2,7 +2,7 @@
   <div id="account-switch">
     <div id="accounts-container">
       <div @click="accountSwitched(account)" class="img-container" v-for="account in accounts" v-bind:key="account.id">
-        <img src="../assets/images/user-placeholder-sm.png"> <!-- TODO: Add IMG to accounts -->
+        <img src="../assets/images/user-placeholder-sm.png" :title="account.title"> <!-- TODO: Add IMG to accounts -->
       </div>
     </div>
   </div>

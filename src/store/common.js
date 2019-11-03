@@ -26,7 +26,7 @@ export default {
       state = Object.assign(state, defaults);
     },
     // Update User
-    updateUser (state, authToken, userObj) {
+    updateUser (state, { authToken, userObj }) {
       state.authToken = authToken;
       state.user = userObj;
     },
