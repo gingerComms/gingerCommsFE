@@ -13,7 +13,7 @@ const routes = [
   { path: '/dashboard', component: Dashboard },
   { path: '/teams/:teamId', component: TeamsDetail },
   { path: '/teams/:teamId/templates/:templateId', component: TemplatesDetail },
-  { path: '/teams/:teamId/templates/:templateId/:nodeId', component: NodesDetail }
+  { path: '/teams/:teamId/:nodeId', component: NodesDetail }
 ]
 
 export default routes

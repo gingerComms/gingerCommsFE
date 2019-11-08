@@ -92,7 +92,7 @@
           <template v-slot:listUtils="{ object }">
             <v-btn
               icon
-              :to="'/teams/'+$route.params.teamId+'/templates/'+template.id+'/'+object.id"
+              :to="'/teams/'+$route.params.teamId+'/'+object.id"
             >
               <v-icon>mdi-pen</v-icon>
             </v-btn>
@@ -138,9 +138,8 @@
         get () {
           var objects = [];
           var that = this;
-          var templateId = this.template.id;
           this.nodes.forEach(function (node) {
-            var route = '/templates/'+templateId+'/'+node.id;
+            var route = null;
             var listData = {
               id: node.id,
               title: node.title,

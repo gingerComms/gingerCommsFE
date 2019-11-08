@@ -18,6 +18,10 @@
       </v-btn>
 
       <v-card-title class="headline" style="display: block;">
+        <div id="breadcrumbs">
+          <v-breadcrumbs :items="breadcrumbsData">
+          </v-breadcrumbs>
+        </div>
         {{ node.title }}
         <div>
           <v-chip
@@ -127,6 +131,8 @@
   import { TiptapVuetify, Heading, Bold, Italic, Strike, Underline, Code, Paragraph, BulletList, OrderedList, ListItem, Link, Blockquote, HardBreak, HorizontalRule, History } from 'tiptap-vuetify';
   import _ from 'lodash';
 
+  require("../styles/nodes-detail.scss");
+
   export default {
     name: 'nodes-detail',
     props: [],
@@ -169,6 +175,27 @@
           return true;
         }
         return false;
+      },
+      breadcrumbsData () {
+        var items = [];
+        var that = this;
+        this.node.path.forEach(node => {
+          if (node.label == "coreVertex") {
+            items.push({
+              text: node.displayName,
+              disabled: false,
+              to: '/teams/'+that.node.path[0].id+'/'+node.id
+            })
+          } else {
+            items.push({
+              text: node.displayName,
+              disabled: false,
+              href: '/#/teams/'+node.id,
+              link: false
+            })
+          }
+        })
+        return items;
       }
     },
     methods: {
@@ -211,7 +238,9 @@
             if (typeof(node.templateData) == 'string') {
               node.templateData = JSON.parse(node.templateData);
             }
-            this.node = node;
+            this.node.title = node.title;
+            this.node.content = node.content;
+            this.node.templateData = node.templateData;
             this.formdata = this.generateBlankFormdata();
           }
         })

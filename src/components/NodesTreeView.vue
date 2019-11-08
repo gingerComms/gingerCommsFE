@@ -48,7 +48,7 @@
                 </v-btn>
                 <v-btn
                   icon
-                  :to="'/teams/'+$route.params.teamId+'/templates/'+item.template.id+'/'+item.id"
+                  :to="'/teams/'+$route.params.teamId+'/'+item.id"
                 >
                   <v-icon>mdi-pen</v-icon>
                 </v-btn>
