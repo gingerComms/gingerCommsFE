@@ -42,7 +42,8 @@ import Vuetify, {
   VCol,
   VColorPicker,
   VTreeview,
-  VBreadcrumbs
+  VBreadcrumbs,
+  Scroll
 } from 'vuetify/lib'
 
 const vuetify = new Vuetify()
@@ -86,6 +87,9 @@ Vue.use(Vuetify, {
     VColorPicker,
     VTreeview,
     VBreadcrumbs
+  },
+  directives: {
+    Scroll
   }
 })
 

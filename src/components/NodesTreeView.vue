@@ -28,7 +28,7 @@
           <template v-slot:append="{ item }">
             <v-row>
               <v-col
-                cols="9"
+                :cols="nodes.indexOf(item) >= 0 && item.template.canHaveChildren ? 8:9"
                 style="text-align: left;">
                 <v-chip
                   :color="item.template.pillBackgroundColor"
@@ -38,7 +38,8 @@
               </v-col>
 
               <v-col
-                cols="3">
+                :cols="nodes.indexOf(item) >= 0 && item.template.canHaveChildren ? 4:3"
+                style="text-align: right;">
                 <v-btn
                   icon
                   @click="openCreateDialog(item.id)"
@@ -46,6 +47,12 @@
                 >
                   <v-icon>mdi-plus</v-icon>
                 </v-btn>
+                <favorite-node-star
+                  :isFavorite="item.isFavorite"
+                  :nodeId="item.id"
+                  :nodeType="'coreVertex'"
+                  @nodeFavoriteToggled="nodeFavoriteToggled"
+                ></favorite-node-star>
                 <v-btn
                   icon
                   :to="'/teams/'+$route.params.teamId+'/'+item.id"
@@ -100,6 +107,7 @@
 
 <script>
   import CreateNodeDialog from './CreateNodeDialog';
+  import FavoriteNodeStar from './FavoriteNodeStar';
 
   export default {
     name: 'nodes-tree-view',
@@ -109,7 +117,8 @@
       parentCanHaveChildren: Boolean
     },
     components: {
-      'create-node-dialog': CreateNodeDialog
+      'create-node-dialog': CreateNodeDialog,
+      FavoriteNodeStar
     },
     computed: {
       apiUrl () {
@@ -121,6 +130,22 @@
         this.$http.get(this.apiUrl).then(response => {
           this.nodes = response.body;
         })
+      },
+      nodeFavoriteToggled (nodeId) {
+        var node = this.nodes.filter(node => node.id == nodeId)[0];
+        var index = this.nodes.indexOf(node);
+        if (index <= -1) {
+          this.nodes.forEach(function (node) {
+            node.children.forEach(function (child) {
+              if (child.id == nodeId) {
+                child.isFavorite = !child.isFavorite
+                console.log('Child', child)
+              }
+            })
+          })
+        } else {
+          this.nodes[index].isFavorite = !this.nodes[index].isFavorite;
+        }
       },
       openCreateDialog (nodeId) {
         this.createTargetParentNode = { id: nodeId };

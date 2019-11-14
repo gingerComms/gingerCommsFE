@@ -1,0 +1,28 @@
+@import "variables";
+
+#node-messages {
+    height: 69vh;
+
+    .v-card__text {
+        height: 100%;
+
+        #messages-list {
+            height: 90%;
+            overflow-y: scroll;
+
+            .message {
+                margin-bottom: 0.7em;
+
+                .msgDetails {
+                    .author {
+                        font-weight: 800;
+                    }
+                }
+
+                .text {
+                    color: $dark;
+                }
+            }
+        }
+    }
+}

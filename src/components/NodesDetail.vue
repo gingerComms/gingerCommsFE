@@ -52,6 +52,11 @@
             <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
 
+          <v-tab href="#node-messages">
+            Messages
+            <v-icon>mdi-android-messages</v-icon>
+          </v-tab>
+
           <v-tabs-items v-model="tab">
             <v-tab-item value="details">
               <v-card
@@ -118,6 +123,13 @@
                 :parentCanHaveChildren="nodeCanHaveChildren"
               ></nodes-tree-view>
             </v-tab-item>
+
+            <v-tab-item value="node-messages">
+              <node-messages
+                :nodeId="$route.params.nodeId"
+                :nodeType="'coreVertex'"
+              ></node-messages>
+            </v-tab-item>
           </v-tabs-items>
         </v-tabs>
       </v-card-text>
@@ -128,6 +140,7 @@
 <script>
   import TemplatePropertyInput from './TemplatePropertyInput';
   import NodesTreeView from './NodesTreeView';
+  import NodeMessages from './NodeMessages';
   import { TiptapVuetify, Heading, Bold, Italic, Strike, Underline, Code, Paragraph, BulletList, OrderedList, ListItem, Link, Blockquote, HardBreak, HorizontalRule, History } from 'tiptap-vuetify';
   import _ from 'lodash';
 
@@ -139,7 +152,8 @@
     components: {
       TemplatePropertyInput,
       TiptapVuetify,
-      NodesTreeView
+      NodesTreeView,
+      NodeMessages
     },
     computed: {
       nodeCanHaveChildren () {
