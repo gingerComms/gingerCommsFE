@@ -62,6 +62,20 @@
     }
 }
 
+#inbox-table {
+    td:nth-child(1) {
+        width: 340px;
+    }
+
+    td:nth-child(2) {
+        width: 120px;
+    }
+
+    td:nth-child(3) {
+        width: 530px;
+    }
+}
+
 .row {
     display: flex;
     flex-wrap: wrap;

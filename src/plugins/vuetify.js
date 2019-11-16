@@ -43,7 +43,10 @@ import Vuetify, {
   VColorPicker,
   VTreeview,
   VBreadcrumbs,
-  Scroll
+  Scroll,
+  VToolbar,
+  VToolbarTitle,
+  VToolbarItems
 } from 'vuetify/lib'
 
 const vuetify = new Vuetify()
@@ -86,7 +89,10 @@ Vue.use(Vuetify, {
     VCol,
     VColorPicker,
     VTreeview,
-    VBreadcrumbs
+    VBreadcrumbs,
+    VToolbar,
+    VToolbarTitle,
+    VToolbarItems
   },
   directives: {
     Scroll

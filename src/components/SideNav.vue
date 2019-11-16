@@ -15,8 +15,23 @@
       </li>
 
       <li v-if="isAuthenticated">
+        <v-tooltip right>
+          <template v-slot:activator="{ on }">
+            <i
+              class="material-icons md-36"
+              style="color: white; cursor: pointer;"
+              v-on="on"
+              @click="showInbox">mail</i>
+          </template>
+          <span>Inbox</span>
+        </v-tooltip>
+      </li>
+
+      <li v-if="isAuthenticated">
         <account-switch></account-switch>
       </li>
+
+      
 
       <li v-if="!isAuthenticated" class="end">
         <v-tooltip right>
@@ -61,6 +76,9 @@
       logout () {
         this.$store.commit('common/resetStore');
         this.$router.push('/logout')
+      },
+      showInbox () {
+        this.$emit('showInbox', true);
       }
     },
     data () {
