@@ -51,6 +51,7 @@
                   :isFavorite="item.isFavorite"
                   :nodeId="item.id"
                   :nodeType="'coreVertex'"
+                  :key="favoritesKey"
                   @nodeFavoriteToggled="nodeFavoriteToggled"
                 ></favorite-node-star>
                 <v-btn
@@ -139,13 +140,13 @@
             node.children.forEach(function (child) {
               if (child.id == nodeId) {
                 child.isFavorite = !child.isFavorite
-                console.log('Child', child)
               }
             })
           })
         } else {
           this.nodes[index].isFavorite = !this.nodes[index].isFavorite;
         }
+        this.favoritesKey += 1;
       },
       openCreateDialog (nodeId) {
         this.createTargetParentNode = { id: nodeId };
@@ -206,7 +207,8 @@
         nodes: [],
         createTargetParentNode: null,
         showCreateDialog: false,
-        movingNode: null
+        movingNode: null,
+        favoritesKey: 1
       }
     },
     created () {

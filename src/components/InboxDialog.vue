@@ -27,7 +27,12 @@
           <template v-slot:body="{ items }">
             <tbody>
               <tr v-for="item in items" :key="item.id">
-                <td>{{ item.name }}</td>
+                <td>
+                  <router-link :to="getNodeLink(item)">
+                    {{ item.name }}
+                  </router-link>
+                </td>
+                
                 <td>
                   <v-chip
                     :color="item.template.pillBackgroundColor"
@@ -35,8 +40,12 @@
                     :style="{ 'color': item.template.pillForegroundColor }"
                   >{{ item.template.name }}</v-chip>
                 </td>
-                <td>{{ item.lastMessage.text.slice(0, 65) }}</td>
-                <td>{{ item.lastMessage.sent_at }}</td>
+                
+                <td v-if="item.last_message">{{ item.last_message.text.slice(0, 65) }}</td>
+                <td v-if="!item.last_message"></td>
+
+                <td v-if="item.last_message">{{ item.last_message.sent_at }}</td>
+                <td v-if="!item.last_message"></td>
               </tr>
             </tbody>
           </template>
@@ -60,47 +69,29 @@
         set (newValue) {
           this.$emit('closeInbox', newValue);
         }
+      },
+      apiUrl () {
+        return process.env.VUE_APP_API_URL + '/inbox_nodes';
       }
     },
     methods: {
       getInboxNodes () {
-        // todo
+        this.$http.get(this.apiUrl).then(response => {
+          this.chatNodes = response.body;
+        })
+      },
+      getNodeLink (node) {
+        console.log(node)
+        if (node.nodeType == 'team') {
+          return '/teams/'+node.id;
+        } else {
+          return '/teams/'+node.parentId+'/'+node.id;
+        }
       }
     },
     data () {
       return {
-        chatNodes: [
-          {
-            id: 'test',
-            name: 'Node',
-            nodeType: 'Team',
-            template: {
-              id: "template",
-              name: 'Deliverable',
-              pillForegroundColor: "#fff",
-              pillBackgroundColor: "#000000"
-            },
-            lastMessage: {
-              text: 'Whats up',
-              sent_at: '10:55 PM'
-            }
-          },
-          {
-            id: 'test2',
-            name: 'Node',
-            nodeType: 'Team',
-            template: {
-              id: "template",
-              name: 'Deliverable',
-              pillForegroundColor: "#fff",
-              pillBackgroundColor: "#000000"
-            },
-            lastMessage: {
-              text: 'loremsdofi aodwif uawoieu hawoif nawkefjhawejkfhab wjef hbawwekjfh waiefjh kj',
-              sent_at: '10:55 PM'
-            }
-          }
-        ],
+        chatNodes: [],
         headers: [
           { text: 'Name', value: 'name' },
           { text: 'Template', value: 'template.name' },
@@ -108,6 +99,9 @@
           { text: 'Sent At', value: 'lastMessage.sent_at' }
         ]
       }
+    },
+    created () {
+      this.getInboxNodes();
     }
   }
 </script>

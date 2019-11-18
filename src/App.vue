@@ -22,6 +22,7 @@
       <inbox-dialog
         v-if="isAuthenticated"
         :showDialog="showInbox"
+        :key="inboxKey"
         @closeInbox="showInboxToggled"
       ></inbox-dialog>
     </v-app>
@@ -42,7 +43,8 @@ export default {
   data () {
     return {
       snackbarTimeout: 2000,
-      showInbox: false
+      showInbox: false,
+      inboxKey: 1
     }
   },
   computed: {
@@ -58,6 +60,9 @@ export default {
       this.$store.commit('common/errorUpdate', { message: '', show: false })
     },
     showInboxToggled (value) {
+      if (value === true) {
+        this.inboxKey += 1;
+      }
       this.showInbox = value;
     }
   }
