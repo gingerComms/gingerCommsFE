@@ -41,7 +41,11 @@
                   >{{ item.template.name }}</v-chip>
                 </td>
                 
-                <td v-if="item.last_message">{{ item.last_message.text.slice(0, 65) }}</td>
+                <td
+                  v-if="item.last_message"
+                  v-bind:class="{ 'bold': messageIsUnread(item.last_message, item.last_seen_time) }"
+                  >
+                  {{ item.last_message.text.slice(0, 65) }}</td>
                 <td v-if="!item.last_message"></td>
 
                 <td v-if="item.last_message">{{ item.last_message.sent_at }}</td>
@@ -87,6 +91,17 @@
         } else {
           return '/teams/'+node.parentId+'/'+node.id;
         }
+      },
+      messageIsUnread (message, lastSeenTime) {
+        if (lastSeenTime == null) {
+          return true;
+        }
+
+        if (Date.parse(message.sent_at) > Date.parse(lastSeenTime)) {
+          return true;
+        }
+
+        return false;
       }
     },
     data () {

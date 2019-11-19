@@ -1,5 +1,5 @@
 <template>
-  <div id="nodes-list">
+  <div id="nodes-list" v-if="template && template.properties">
     <v-card
       flat
     >
@@ -316,8 +316,10 @@
         openMenus: {}  // Used to keep track of menus that are open 
       }
     },
-    created () {
-      this.getNodes();
+    watch: {
+      template () {
+        this.getNodes();
+      }
     }
   }
 </script>

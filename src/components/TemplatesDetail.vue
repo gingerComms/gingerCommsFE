@@ -38,6 +38,10 @@
         >
           <v-tabs-slider></v-tabs-slider>
 
+          <v-tab href="#nodes">
+            Topics
+            <v-icon>mdi-format-list-bulleted</v-icon>
+          </v-tab>
           <v-tab href="#details">
             Details
             <v-icon>mdi-pen</v-icon>
@@ -46,11 +50,16 @@
             Properties
             <v-icon>mdi-playlist-edit</v-icon>
           </v-tab>
-          <v-tab href="#nodes">
-            Topics
-            <v-icon>mdi-format-list-bulleted</v-icon>
-          </v-tab>
           <v-tabs-items v-model="tab">
+            <v-tab-item value="nodes">
+              <nodes-list
+                :template="template"
+                :key="nodesKey"
+                :parentType="'team'"
+                :parentId="$route.params.teamId"
+              ></nodes-list>
+            </v-tab-item>
+
             <v-tab-item value="details">
               <template-edit
                 v-if="template"
@@ -67,15 +76,6 @@
                 @propertyChanged="propertyChanged"
                 @propertiesOrderChanged="propertiesOrderChanged"
               ></template-properties-list>
-            </v-tab-item>
-
-            <v-tab-item value="nodes">
-              <nodes-list
-                :template="template"
-                :key="nodesKey"
-                :parentType="'team'"
-                :parentId="$route.params.teamId"
-              ></nodes-list>
             </v-tab-item>
           </v-tabs-items>
         </v-tabs>
