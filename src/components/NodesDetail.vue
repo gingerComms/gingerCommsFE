@@ -23,6 +23,13 @@
           </v-breadcrumbs>
         </div>
         {{ node.title }}
+        <favorite-node-star
+          :isFavorite="node.isFavorite"
+          :nodeId="node.id"
+          :nodeType="'coreVertex'"
+          :key="favoritesKey"
+          @nodeFavoriteToggled="nodeFavoriteToggled"
+        ></favorite-node-star>
         <div>
           <v-chip
             :color="template.pillBackgroundColor"
@@ -65,7 +72,7 @@
               >
                 <v-card-text>
                   <v-row>
-                    <v-col cols="6" xs="12">
+                    <v-col cols="6" xs="12" class="property-input-col">
                       <v-text-field
                         v-model="formdata.title"
                         label="Title"
@@ -78,6 +85,7 @@
                       v-bind:key="property.id"
                       cols="6"
                       xs="12"
+                      class="property-input-col"
                     >
                       <template-property-input
                         :fieldType="property.fieldType"
@@ -88,12 +96,11 @@
                     </v-col>
                   </v-row>
 
-                  <div>
+                  <div id="content-container">
                     <label>Content</label>
                     <tiptap-vuetify
                       v-model="formdata.content"
                       :extensions="editorExtensions"
-                      height="300"
                     >
                     </tiptap-vuetify>
                   </div>
@@ -141,6 +148,7 @@
   import TemplatePropertyInput from './TemplatePropertyInput';
   import NodesTreeView from './NodesTreeView';
   import NodeMessages from './NodeMessages';
+  import FavoriteNodeStar from './FavoriteNodeStar';
   import { TiptapVuetify, Heading, Bold, Italic, Strike, Underline, Code, Paragraph, BulletList, OrderedList, ListItem, Link, Blockquote, HardBreak, HorizontalRule, History } from 'tiptap-vuetify';
   import _ from 'lodash';
 
@@ -153,7 +161,8 @@
       TemplatePropertyInput,
       TiptapVuetify,
       NodesTreeView,
-      NodeMessages
+      NodeMessages,
+      FavoriteNodeStar
     },
     computed: {
       nodeCanHaveChildren () {
@@ -258,6 +267,10 @@
             this.formdata = this.generateBlankFormdata();
           }
         })
+      },
+      nodeFavoriteToggled () {
+        this.node.isFavorite = !this.node.isFavorite;
+        this.favoritesKey += 1;
       }
     },
     data () {
@@ -288,6 +301,7 @@
           Paragraph,
           HardBreak
         ],
+        favoritesKey: 1
       }
     },
     created () {

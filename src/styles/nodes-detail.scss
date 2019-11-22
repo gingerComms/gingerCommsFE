@@ -4,4 +4,28 @@
             padding: 5px 0 0 0;
         }
     }
+
+    .favorite-node-star i {
+        font-size: 30px;
+    }
+
+    .property-input-col {
+        padding: 4px 5px;
+
+        .v-input {
+            height: 60px;
+        }
+    }
+
+    #content-container {
+        margin-top: 0.7em;
+
+        label {
+            font-weight: 1000;
+        }
+
+        div[contenteditable=true] {
+            min-height: 250px;
+        }
+    }
 }

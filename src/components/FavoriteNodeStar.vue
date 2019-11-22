@@ -1,7 +1,9 @@
 <template>
   <v-btn
     icon
-    @click="toggleFavoriteNode()">
+    @click="toggleFavoriteNode()"
+    class="favorite-node-star"
+    :disabled="disabled">
     <v-icon v-if="!isFavorite">
       mdi-star-outline
     </v-icon>
@@ -17,7 +19,8 @@
     props: {
       isFavorite: Boolean,
       nodeId: String,
-      nodeType: String
+      nodeType: String,
+      disabled: Boolean
     },
     methods: {
       toggleFavoriteNode () {

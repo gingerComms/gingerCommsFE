@@ -28,6 +28,16 @@
             <tbody>
               <tr v-for="item in items" :key="item.id">
                 <td>
+                  <favorite-node-star
+                    :isFavorite="true"
+                    :nodeId="item.id"
+                    :nodeType="'coreVertex'"
+                    :key="favoritesKey"
+                    @nodeFavoriteToggled="nodeFavoriteToggled"
+                    :disabled="true"
+                  ></favorite-node-star>
+                </td>
+                <td>
                   <router-link :to="getNodeLink(item)">
                     {{ item.name }}
                   </router-link>
@@ -60,8 +70,13 @@
 </template>
 
 <script>
+  import FavoriteNodeStar from './FavoriteNodeStar';
+
   export default {
     name: 'inbox-dialog',
+    components: {
+      FavoriteNodeStar
+    },
     props: {
       showDialog: Boolean
     },
@@ -102,17 +117,23 @@
         }
 
         return false;
+      },
+      nodeFavoriteToggled (nodeId) {
+        var node = this.chatNodes.filter(node => node.id === nodeId);
+        this.chatNodes[this.chatNodes.indexOf(node)].isFavorite = !this.chatNodes[this.chatNodes.indexOf(node)].isFavorite;
       }
     },
     data () {
       return {
         chatNodes: [],
         headers: [
+          { text: 'Favorite Star', value: 'isFavorite' },
           { text: 'Name', value: 'name' },
           { text: 'Template', value: 'template.name' },
           { text: 'Last Message', value: 'lastMessage.text' },
           { text: 'Sent At', value: 'lastMessage.sent_at' }
-        ]
+        ],
+        favoritesKey: 1
       }
     },
     created () {
