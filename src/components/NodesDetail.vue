@@ -22,30 +22,37 @@
           <v-breadcrumbs :items="breadcrumbsData">
           </v-breadcrumbs>
         </div>
-        {{ node.title }}
-        <favorite-node-star
-          :isFavorite="node.isFavorite"
-          :nodeId="node.id"
-          :nodeType="'coreVertex'"
-          :key="favoritesKey"
-          @nodeFavoriteToggled="nodeFavoriteToggled"
-        ></favorite-node-star>
         <div>
           <v-chip
             :color="template.pillBackgroundColor"
             small
             :style="{ 'color': template.pillForegroundColor }"
-          >Topic: {{ template.name }}</v-chip>
+          >{{ template.name }}</v-chip>
+
+          <favorite-node-star
+            :isFavorite="node.isFavorite"
+            :nodeId="node.id"
+            :nodeType="'coreVertex'"
+            :key="favoritesKey"
+            @nodeFavoriteToggled="nodeFavoriteToggled"
+          ></favorite-node-star>
+
+          {{ node.title }}
         </div>
+
+
       </v-card-title>
 
       <v-card-text>
         <v-tabs
           v-model="tab"
-          background-color="#55cec7"
-          centered
-          dark
+          background-color="transparent"
+          color="#55cec7"
+          left
+          flat
           icons-and-text
+          height=64
+
         >
           <v-tabs-slider></v-tabs-slider>
 
@@ -70,6 +77,21 @@
                 outlined
                 tile
               >
+                <v-card-actions>
+                  <v-btn
+                    color="#55cec7"
+                    raised
+                    :disabled="!formdataChanged"
+                    @click="resetFormdata"
+                  >Reset</v-btn>
+                  <v-btn
+                    color="#55cec7"
+                    raised
+                    :disabled="!formdataChanged"
+                    @click="updateNode"
+                  >Update</v-btn>
+                </v-card-actions>
+
                 <v-card-text>
                   <v-row>
                     <v-col cols="6" xs="12" class="property-input-col">
@@ -78,6 +100,9 @@
                         label="Title"
                         placeholder="Title"
                         filled
+                        dense
+                        rounded
+                        background-color="#f7f9fc"
                       ></v-text-field>
                     </v-col>
                     <v-col
@@ -97,7 +122,7 @@
                   </v-row>
 
                   <div id="content-container">
-                    <label>Content</label>
+                    <!-- <label>Content</label> -->
                     <tiptap-vuetify
                       v-model="formdata.content"
                       :extensions="editorExtensions"
@@ -120,6 +145,8 @@
                     @click="updateNode"
                   >Update</v-btn>
                 </v-card-actions>
+
+
               </v-card>
             </v-tab-item>
 

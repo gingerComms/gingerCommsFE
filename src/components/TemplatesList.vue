@@ -1,6 +1,6 @@
 <template>
   <div id="templates-list">
-    <v-card-text>
+    <v-card-text v-if="templates">
       <ListTabView
         :headers="templateHeaders"
         :objects="listTabViewFormattedData"

@@ -24,15 +24,14 @@
           icons-and-text
         >
           <v-tabs-slider></v-tabs-slider>
+          <v-tab href="#templates">
+            Templates
+            <v-icon>mdi-format-list-bulleted</v-icon>
+          </v-tab>
 
           <v-tab href="#details">
             Details
             <v-icon>mdi-pen</v-icon>
-          </v-tab>
-
-          <v-tab href="#templates">
-            Templates
-            <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
 
           <v-tab href="#members">
@@ -41,15 +40,6 @@
           </v-tab>
 
           <v-tabs-items v-model="tab">
-            <v-tab-item value="details">
-              <v-card flat>
-                  <team-edit
-                    :team="team"
-                    @teamEditted="teamEditted"
-                  ></team-edit>
-              </v-card>
-            </v-tab-item>
-
             <v-tab-item value="templates">
               <v-card flat>
                 <templates-list
@@ -57,6 +47,15 @@
                   :templates="team.templates"
                   @templateCreated="templateCreated"
                 ></templates-list>
+              </v-card>
+            </v-tab-item>
+
+            <v-tab-item value="details">
+              <v-card flat>
+                  <team-edit
+                    :team="team"
+                    @teamEditted="teamEditted"
+                  ></team-edit>
               </v-card>
             </v-tab-item>
 

@@ -9,6 +9,9 @@
       :placeholder="label"
       v-if="fieldType == 'string'"
       filled
+      dense
+      rounded
+      background-color="#f7f9fc"
     ></v-text-field>
     <v-text-field
       v-model="propertyValue"
@@ -17,15 +20,22 @@
       v-if="fieldType == 'number'"
       type="number"
       filled
+      dense
+      rounded
+      background-color="#f7f9fc"
     >
     </v-text-field>
     <v-select
       v-if="fieldType == 'select'"
       v-model="propertyValue"
       :items="propertyOptions.options"
-      filled
+
       :label="label"
       color="green darken-1"
+      filled
+      dense
+      rounded
+      background-color="#f7f9fc"
     ></v-select>
     <v-menu
       v-if="fieldType == 'date'"
@@ -34,6 +44,7 @@
       transition="scale-transition"
       offset-y
       min-width="290px"
+
     >
       <template v-slot:activator="{ on }">
         <v-text-field
@@ -43,6 +54,9 @@
           readonly
           v-on="on"
           filled
+          dense
+          rounded
+          background-color="#f7f9fc"
         ></v-text-field>
       </template>
       <v-date-picker v-model="propertyValue" no-title scrollable>
