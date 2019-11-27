@@ -4,10 +4,10 @@
     @click="toggleFavoriteNode()"
     class="favorite-node-star"
     :disabled="disabled">
-    <v-icon v-if="!isFavorite">
+    <v-icon v-if="!isFavorite" color="#55cec7">
       mdi-star-outline
     </v-icon>
-    <v-icon v-if="isFavorite">
+    <v-icon v-if="isFavorite" color="orange">
       mdi-star
     </v-icon>
   </v-btn>

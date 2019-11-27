@@ -22,23 +22,26 @@
           <v-breadcrumbs :items="breadcrumbsData">
           </v-breadcrumbs>
         </div>
-        <div>
-          <v-chip
-            :color="template.pillBackgroundColor"
-            small
-            :style="{ 'color': template.pillForegroundColor }"
-          >{{ template.name }}</v-chip>
+        <v-row>
+          <v-col cols="6" xs="12">
+            {{ node.title }}
+          </v-col>
+          <v-col cols="6" xs="12" class="text-lg-right">
+            <v-chip
+              :color="template.pillBackgroundColor"
+              small
+              :style="{ 'color': template.pillForegroundColor }"
+            >{{ template.name }}</v-chip>
 
-          <favorite-node-star
-            :isFavorite="node.isFavorite"
-            :nodeId="node.id"
-            :nodeType="'coreVertex'"
-            :key="favoritesKey"
-            @nodeFavoriteToggled="nodeFavoriteToggled"
-          ></favorite-node-star>
-
-          {{ node.title }}
-        </div>
+            <favorite-node-star
+              :isFavorite="node.isFavorite"
+              :nodeId="node.id"
+              :nodeType="'coreVertex'"
+              :key="favoritesKey"
+              @nodeFavoriteToggled="nodeFavoriteToggled"
+            ></favorite-node-star>
+          </v-col>
+        </v-row>
 
 
       </v-card-title>
@@ -78,15 +81,18 @@
                 tile
               >
                 <v-card-actions>
-                  <v-btn
+                  <v-spacer></v-spacer>
+                  <v-btn small
                     color="#55cec7"
                     raised
+                    dark
                     :disabled="!formdataChanged"
                     @click="resetFormdata"
                   >Reset</v-btn>
-                  <v-btn
+                  <v-btn small
                     color="#55cec7"
                     raised
+                    dark
                     :disabled="!formdataChanged"
                     @click="updateNode"
                   >Update</v-btn>
@@ -130,22 +136,6 @@
                     </tiptap-vuetify>
                   </div>
                 </v-card-text>
-
-                <v-card-actions>
-                  <v-btn
-                    color="#55cec7"
-                    raised
-                    :disabled="!formdataChanged"
-                    @click="resetFormdata"
-                  >Reset</v-btn>
-                  <v-btn
-                    color="#55cec7"
-                    raised
-                    :disabled="!formdataChanged"
-                    @click="updateNode"
-                  >Update</v-btn>
-                </v-card-actions>
-
 
               </v-card>
             </v-tab-item>

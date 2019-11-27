@@ -34,7 +34,7 @@
                   :color="item.template.pillBackgroundColor"
                   small
                   :style="{ 'color': item.template.pillForegroundColor }"
-                >Topic: {{ item.template.name }}</v-chip>
+                >{{ item.template.name }}</v-chip>
               </v-col>
 
               <v-col
@@ -45,22 +45,24 @@
                   @click="openCreateDialog(item.id)"
                   v-if="nodes.indexOf(item) >= 0 && item.template.canHaveChildren"
                 >
-                  <v-icon>mdi-plus</v-icon>
+                  <v-icon color="#55cec7">mdi-plus</v-icon>
                 </v-btn>
                 <favorite-node-star
                   :isFavorite="item.isFavorite"
                   :nodeId="item.id"
                   :nodeType="'coreVertex'"
                   :key="favoritesKey"
+                  small
                   @nodeFavoriteToggled="nodeFavoriteToggled"
                 ></favorite-node-star>
                 <v-btn
                   icon
                   :to="'/teams/'+$route.params.teamId+'/'+item.id"
                 >
-                  <v-icon>mdi-pen</v-icon>
+                  <v-icon color="#55cec7">mdi-pen</v-icon>
                 </v-btn>
               </v-col>
+
             </v-row>
           </template>
 
@@ -74,7 +76,7 @@
               @click="movingNode = item.id;"
               v-if="movingNode == null && movingNode != item.id"
             >
-              <v-icon>mdi-cursor-move</v-icon>
+              <v-icon>more_vert</v-icon>
             </v-btn>
             <v-btn
               icon
@@ -91,6 +93,8 @@
               <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
             </v-btn>
           </template>
+          <v-divider></v-divider>
+
         </v-treeview>
       </v-card-text>
     </v-card>
