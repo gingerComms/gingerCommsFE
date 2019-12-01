@@ -156,34 +156,29 @@
             blocks.push(node);
           }
         })
-        blocks.sort(function (a, b) {
-          return a.index - b.index;
-        })
-
         return blocks;
       },
       // eslint-disable-next-line
       updateBlock (id, status, index) {
-        // var node = this.nodes.filter(i => i.id == id)[0];
         var nodes = [];
         var that = this;
         var changedNode = this.nodes.filter(node => node.id == id)[0];
         this.nodes[this.nodes.indexOf(changedNode)].templateData[that.selectedProperty].value = status;
         this.nodes[this.nodes.indexOf(changedNode)].templateData[that.selectedProperty].index = index;
-        // var negativeNodes = scrumBlocks.filter(block => block.index == -1);
+        
+        console.log(that.getSortedBlocksInStage('Option 55'))
+        console.log(that.getSortedBlocksInStage('Option 2'))
 
-        this.nodes.forEach(function (block) {
-          var templateData = block.templateData;
-          if (block.id == id) {
-            console.log(that.getSortedBlocksInStage(block.templateData[that.selectedProperty].value), block)
+        this.nodes.forEach(function (node) {
+          var templateData = node.templateData;
+          if (node.id == id) {
             templateData[that.selectedProperty].index = index;
             templateData[that.selectedProperty].value = status;
-          } else {
-            console.log(that.getSortedBlocksInStage(block.templateData[that.selectedProperty].value), block)            
-            templateData[that.selectedProperty].index = that.getSortedBlocksInStage(block.templateData[that.selectedProperty].value).indexOf(block)
+          } else if (templateData[that.selectedProperty].value == status && node.templateData[that.selectedProperty].index >= index) {
+            templateData[that.selectedProperty].index += 1
           }
           
-          nodes.push({ id: block.id, title: block.title, index: templateData[that.selectedProperty].index, templateData: JSON.stringify(templateData)})
+          nodes.push({ id: node.id, title: node.title, index: templateData[that.selectedProperty].index, templateData: JSON.stringify(templateData)})
         })
 
         console.log(nodes);
