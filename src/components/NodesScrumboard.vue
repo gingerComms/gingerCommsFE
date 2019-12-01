@@ -83,10 +83,11 @@
             title: node.title,
             status: (node.templateData[that.selectedProperty]) ? node.templateData[that.selectedProperty].value : '',
             index: (node.templateData[that.selectedProperty]) ? node.templateData[that.selectedProperty].index : -1,
+            templateData: node.templateData
           });
         })
         blocks.sort(function (a, b) {
-          return a.index - b.index
+          return a.index - b.index;
         })
         return blocks;
       }
@@ -147,21 +148,49 @@
         // TODO
         console.log(this.selectedProperty);
       },
-      updateBlock (id, status) {
-        var node = this.nodes.filter(i => i.id == id)[0];
-        var formdata = { title: node.title, templateData: {}, content: node.content };
-        this.editableTemplateProperties().forEach(function (prop) {
-          formdata.templateData[prop.id] = node[prop.id];
+      getSortedBlocksInStage (stage) {
+        var blocks = [];
+        var that = this;
+        this.nodes.forEach(function (node) {
+          if (node.templateData[that.selectedProperty].value == stage) {
+            blocks.push(node);
+          }
+        })
+        blocks.sort(function (a, b) {
+          return a.index - b.index;
         })
 
-        var index = this.scrumBlocks.indexOf(this.scrumBlocks.filter(block => block.id == id)[0])
-        formdata.templateData[this.selectedProperty] = { value: status, index: index };
-        formdata.templateData = JSON.stringify(formdata.templateData);
+        return blocks;
+      },
+      // eslint-disable-next-line
+      updateBlock (id, status, index) {
+        // var node = this.nodes.filter(i => i.id == id)[0];
+        var nodes = [];
+        var that = this;
+        var changedNode = this.nodes.filter(node => node.id == id)[0];
+        this.nodes[this.nodes.indexOf(changedNode)].templateData[that.selectedProperty].value = status;
+        this.nodes[this.nodes.indexOf(changedNode)].templateData[that.selectedProperty].index = index;
+        // var negativeNodes = scrumBlocks.filter(block => block.index == -1);
 
-        var apiUrl = process.env.VUE_APP_API_URL + '/coreVertex/'+node.id;
+        this.nodes.forEach(function (block) {
+          var templateData = block.templateData;
+          if (block.id == id) {
+            console.log(that.getSortedBlocksInStage(block.templateData[that.selectedProperty].value), block)
+            templateData[that.selectedProperty].index = index;
+            templateData[that.selectedProperty].value = status;
+          } else {
+            console.log(that.getSortedBlocksInStage(block.templateData[that.selectedProperty].value), block)            
+            templateData[that.selectedProperty].index = that.getSortedBlocksInStage(block.templateData[that.selectedProperty].value).indexOf(block)
+          }
+          
+          nodes.push({ id: block.id, title: block.title, index: templateData[that.selectedProperty].index, templateData: JSON.stringify(templateData)})
+        })
+
+        console.log(nodes);
+        var formdata = { nodes: nodes }
+        var apiUrl = process.env.VUE_APP_API_URL + '/team/'+this.parentId+'/templates/'+this.template.id+'/nodes_index';
         this.$http.put(apiUrl, formdata).then(function (response) {
           if (response.status == 200) {
-            this.nodes[this.nodes.indexOf(node)] = response.body;
             this.$emit('nodeUpdated')
           }
         })

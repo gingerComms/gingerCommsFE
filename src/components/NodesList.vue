@@ -230,7 +230,12 @@
           if (prop.fieldType != 'select') {
             templateData[prop.id] = that.newNodeData.templateData[prop.id]
           } else {
-            templateData[prop.id] = { value: that.newNodeData.templateData[prop.id], index: -1 }
+            if (that.newNodeData.templateData[prop.id]) {
+              var sameFieldNodes = that.nodes.filter(node => node.templateData[prop.id].value == that.newNodeData.templateData[prop.id])
+              templateData[prop.id] = { value: that.newNodeData.templateData[prop.id], index: sameFieldNodes.length }
+            } else {
+              templateData[prop.id] = { value: that.newNodeData.templateData[prop.id], index: 0 }
+            }
           }
         })
 
