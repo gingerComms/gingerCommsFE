@@ -15,10 +15,12 @@ import router from './router/router';
 import store from './store';
 import SideNav from './components/SideNav.vue';
 import networking from './networking/interceptors';
+import vueKanban from 'vue-kanban'
 import './utils/globalUtils';
 
 networking.addInterceptors();
 
+Vue.use(vueKanban)
 Vue.config.productionTip = false
 
 // Validation Provider

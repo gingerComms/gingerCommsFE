@@ -23,6 +23,9 @@ import Vuetify, {
   VList,
   VListItem,
   VListItemTitle,
+  VListItemGroup,
+  VListItemIcon,
+  VListItemContent,
   VMenu,
   VDataTable,
   VCheckbox,
@@ -92,7 +95,10 @@ Vue.use(Vuetify, {
     VBreadcrumbs,
     VToolbar,
     VToolbarTitle,
-    VToolbarItems
+    VToolbarItems,
+    VListItemGroup,
+    VListItemIcon,
+    VListItemContent
   },
   directives: {
     Scroll
