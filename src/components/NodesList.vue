@@ -62,7 +62,7 @@
 
           <template v-slot:listItem.title.editable="{ object }">
             <v-edit-dialog
-              @close="nodeEditted(object)"
+              @close="nodeEditted(object, 'string')"
             > {{ object.title }}
               <template v-slot:input>
                 <v-text-field
@@ -76,7 +76,7 @@
           <template v-for="property in editableTemplateProperties()" v-slot:[propertySlotName(property.id)]="{ object }">
             <v-edit-dialog
               v-bind:key="property.id"
-              @close="nodeEditted(object)"
+              @close="nodeEditted(object, property.fieldType)"
             > {{ object[property.id] }}
               <template v-slot:input>
                 <template-property-input
@@ -148,7 +148,11 @@
             var nodeProperties = node.templateData;
             that.editableTemplateProperties().forEach(function (prop) {
               if (prop.name != 'Title') {
-                listData[prop.id] = nodeProperties[prop.id];
+                if (prop.fieldType != 'select') {
+                  listData[prop.id] = nodeProperties[prop.id];
+                } else {
+                  listData[prop.id] = (nodeProperties[prop.id]) ? nodeProperties[prop.id].value : '';
+                }
               }
             })
             objects.push({
@@ -220,8 +224,22 @@
         })
       },
       createNode () {
-        this.newNodeData.templateData = JSON.stringify(this.newNodeData.templateData);
+        var templateData = {};
         var that = this;
+        this.editableTemplateProperties().forEach(function (prop) {
+          if (prop.fieldType != 'select') {
+            templateData[prop.id] = that.newNodeData.templateData[prop.id]
+          } else {
+            if (that.newNodeData.templateData[prop.id]) {
+              var sameFieldNodes = that.nodes.filter(node => node.templateData[prop.id].value == that.newNodeData.templateData[prop.id])
+              templateData[prop.id] = { value: that.newNodeData.templateData[prop.id], index: sameFieldNodes.length }
+            } else {
+              templateData[prop.id] = { value: that.newNodeData.templateData[prop.id], index: 0 }
+            }
+          }
+        })
+
+        this.newNodeData.templateData = JSON.stringify(templateData);
         this.$http.post(this.apiUrl, this.newNodeData).then(response => {
           if (response.status == 201) {
             that.newNodeData = {
@@ -258,7 +276,11 @@
         console.log(object)
         var formdata = { title: object.title, templateData: {}, content: object.content };
         this.editableTemplateProperties().forEach(function (prop) {
-          formdata.templateData[prop.id] = object[prop.id];
+          if (prop.fieldType != 'select') {
+            formdata.templateData[prop.id] = object[prop.id];
+          } else {
+            formdata.templateData[prop.id] = { value: object[prop.id], index: -1 }
+          }
         })
         formdata.templateData = JSON.stringify(formdata.templateData);
 
@@ -267,6 +289,7 @@
           if (response.status == 200) {
             var node = this.nodes.filter(node => node.id == object.id);
             this.nodes[this.nodes.indexOf(node)] = response.body;
+            this.$emit('nodeUpdated')
           }
         })
       },
@@ -314,6 +337,11 @@
         isLoading: false,
         createOpen: false,
         openMenus: {}  // Used to keep track of menus that are open 
+      }
+    },
+    created () {
+      if (this.template) {
+        this.getNodes();
       }
     },
     watch: {

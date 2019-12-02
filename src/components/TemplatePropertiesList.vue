@@ -91,57 +91,20 @@
       </v-card-text>
     </v-card>
 
-    <v-dialog
-      v-model="propertyEditDialogOpen"
-      max-width="500"
-      id="select-property-edit-dialog"
+    <template-property-edit-dialog
+      :showDialog="propertyEditDialogOpen"
+      :property="propertyBeingEditted"
       v-if="propertyBeingEditted != null"
-    >
-      <v-card>
-        <v-card-title class="headline">
-          Edit Property Options
-        </v-card-title>
-
-        <v-card-text>
-          <div v-if="propertyBeingEditted.fieldType == 'select'">
-            {{ propertyBeingEditted }}
-            <v-combobox
-              v-model="propertyBeingEditted.propertyOptions.options"
-              label="Select Choices"
-              multiple
-              small-chips
-            >
-            </v-combobox>
-          </div>
-        </v-card-text>
-
-        <v-card-actions>
-          <v-spacer></v-spacer>
-
-          <v-btn
-            color="green darken-1"
-            text
-            @click="propertyEditDialogOpen=false; propertyBeingEditted = null;"
-          >
-            Cancel
-          </v-btn>
-
-          <v-btn
-            color="green darken-1"
-            text
-            @click="propertyOptionsChanged(propertyBeingEditted)"
-          >
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
+      @propertyEditDialogClosed="propertyBeingEditted = null; propertyEditDialogOpen = false;"
+      @propertyOptionsChanged="propertyOptionsChanged"
+    ></template-property-edit-dialog>
   </div>
 </template>
 
 <script>
   import ListTabView from './ListTabView';
   import CreateTemplatePropertyDialog from './CreateTemplatePropertyDialog';
+  import TemplatePropertyEditDialog from './TemplatePropertyEditDialog';
 
   export default {
     name: 'template-properties-list',
@@ -150,7 +113,8 @@
     },
     components: {
       ListTabView,
-      CreateTemplatePropertyDialog
+      CreateTemplatePropertyDialog,
+      TemplatePropertyEditDialog
     },
     computed: {
       templateProperties () {
