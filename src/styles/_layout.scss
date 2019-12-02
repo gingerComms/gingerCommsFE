@@ -2,15 +2,17 @@
 @import "_account-switch";
 
 .template-content {
-    padding: 0 4em 0 8em;
+    padding: 1em 4em 0em 8em;
 
     #base-card.v-card {
-    padding-top: 20px
+    padding-top: 20px;
+    top: 10px;
+
     }
 
     #back-btn {
-        left: -20px;
-        top: 5px;
+        left: -10px;
+        top: 0px;
     }
 }
 

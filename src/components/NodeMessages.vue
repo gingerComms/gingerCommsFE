@@ -1,6 +1,6 @@
 <template>
   <v-card
-    outlined
+    flat
     id="node-messages">
     <v-card-text>
       <div id="messages-list" v-scroll="messagesScrolled">
@@ -50,7 +50,7 @@
     methods: {
       getMessages (loadType, timestamp) {
         var url = this.apiUrl;
-        
+
         console.log(url);
         if (loadType !== undefined && timestamp !== undefined) {
           url += '?' + loadType + '=' + timestamp;

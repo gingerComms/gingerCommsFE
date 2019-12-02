@@ -1,163 +1,166 @@
 <template>
-  <div class="template-content" id="nodes-detail">
-    <v-card
-      flat
-      id="base-card"
-      v-if="this.template && this.formdata">
+  <div class="template-content" id="nodes-detail" color="#55cec7">
+    <div v-if="this.template && this.formdata">
       <v-btn
           color="#55cec7"
           dark
           fab
           small
-          absolute
           id="back-btn"
           elevation="0"
           @click="$router.back()"
         >
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-
-      <v-card-title class="headline" style="display: block;">
-        <div id="breadcrumbs">
-          <v-breadcrumbs :items="breadcrumbsData">
-          </v-breadcrumbs>
-        </div>
-        <v-row>
-          <v-col cols="6" xs="12">
-            {{ node.title }}
-          </v-col>
-          <v-col cols="6" xs="12" class="text-lg-right">
-            <v-chip
-              :color="template.pillBackgroundColor"
-              small
-              :style="{ 'color': template.pillForegroundColor }"
-            >{{ template.name }}</v-chip>
-
-            <favorite-node-star
-              :isFavorite="node.isFavorite"
-              :nodeId="node.id"
-              :nodeType="'coreVertex'"
-              :key="favoritesKey"
-              @nodeFavoriteToggled="nodeFavoriteToggled"
-            ></favorite-node-star>
-          </v-col>
-        </v-row>
-
-
-      </v-card-title>
-
-      <v-card-text>
-        <v-tabs
-          v-model="tab"
-          background-color="transparent"
-          color="#55cec7"
-          left
-          flat
-          icons-and-text
-          height=64
-
+      <div id="breadcrumbs">
+        <v-breadcrumbs large :items="breadcrumbsData">
+        </v-breadcrumbs>
+      </div>
+      <v-card
+        raised
+        id="base-card"
         >
-          <v-tabs-slider></v-tabs-slider>
+        <v-card-title class="headline" style="display: block;">
 
-          <v-tab href="#details">
-            Details
-            <v-icon>mdi-pen</v-icon>
-          </v-tab>
+          <v-row>
+            <v-col cols="6" xs="12">
+              {{ node.title }}
+            </v-col>
+            <v-col cols="6" xs="12" class="text-lg-right">
+              <v-chip
+                :color="template.pillBackgroundColor"
+                small
+                :style="{ 'color': template.pillForegroundColor }"
+              >{{ template.name }}</v-chip>
 
-          <v-tab v-if="nodeCanHaveChildren" href="#nodes" @click="nodesKey += 1">
-            Topics
-            <v-icon>mdi-format-list-bulleted</v-icon>
-          </v-tab>
-
-          <v-tab href="#node-messages">
-            Messages
-            <v-icon>mdi-android-messages</v-icon>
-          </v-tab>
-
-          <v-tabs-items v-model="tab">
-            <v-tab-item value="details">
-              <v-card
-                outlined
-                tile
-              >
-                <v-card-actions>
-                  <v-spacer></v-spacer>
-                  <v-btn small
-                    color="#55cec7"
-                    raised
-                    dark
-                    :disabled="!formdataChanged"
-                    @click="resetFormdata"
-                  >Reset</v-btn>
-                  <v-btn small
-                    color="#55cec7"
-                    raised
-                    dark
-                    :disabled="!formdataChanged"
-                    @click="updateNode"
-                  >Update</v-btn>
-                </v-card-actions>
-
-                <v-card-text>
-                  <v-row>
-                    <v-col cols="6" xs="12" class="property-input-col">
-                      <v-text-field
-                        v-model="formdata.title"
-                        label="Title"
-                        placeholder="Title"
-                        filled
-                        dense
-                        rounded
-                        background-color="#f7f9fc"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col
-                      v-for="property in sortedProperties"
-                      v-bind:key="property.id"
-                      cols="6"
-                      xs="12"
-                      class="property-input-col"
-                    >
-                      <template-property-input
-                        :fieldType="property.fieldType"
-                        v-model="formdata.templateData[property.id]"
-                        :label="property.name"
-                        :propertyOptions="property.propertyOptions"
-                      ></template-property-input>
-                    </v-col>
-                  </v-row>
-
-                  <div id="content-container">
-                    <!-- <label>Content</label> -->
-                    <tiptap-vuetify
-                      v-model="formdata.content"
-                      :extensions="editorExtensions"
-                    >
-                    </tiptap-vuetify>
-                  </div>
-                </v-card-text>
-
-              </v-card>
-            </v-tab-item>
-
-            <v-tab-item v-if="nodeCanHaveChildren" value="nodes">
-              <nodes-tree-view
-                :parentNodeType="'coreVertex'"
-                :parentNodeId="$route.params.nodeId"
-                :parentCanHaveChildren="nodeCanHaveChildren"
-              ></nodes-tree-view>
-            </v-tab-item>
-
-            <v-tab-item value="node-messages">
-              <node-messages
-                :nodeId="$route.params.nodeId"
+              <favorite-node-star
+                :isFavorite="node.isFavorite"
+                :nodeId="node.id"
                 :nodeType="'coreVertex'"
-              ></node-messages>
-            </v-tab-item>
-          </v-tabs-items>
-        </v-tabs>
-      </v-card-text>
-    </v-card>
+                :key="favoritesKey"
+                @nodeFavoriteToggled="nodeFavoriteToggled"
+              ></favorite-node-star>
+            </v-col>
+          </v-row>
+
+
+        </v-card-title>
+
+        <v-card-text>
+          <v-tabs
+            v-model="tab"
+            background-color="transparent"
+            color="#55cec7"
+            left
+            flat
+            icons-and-text
+            height=64
+
+          >
+            <v-tabs-slider></v-tabs-slider>
+
+            <v-tab href="#details">
+              Details
+              <v-icon>mdi-pen</v-icon>
+            </v-tab>
+
+            <v-tab v-if="nodeCanHaveChildren" href="#nodes" @click="nodesKey += 1">
+              Topics
+              <v-icon>mdi-format-list-bulleted</v-icon>
+            </v-tab>
+
+            <v-tab href="#node-messages">
+              Messages
+              <v-icon>mdi-android-messages</v-icon>
+            </v-tab>
+
+            <v-tabs-items v-model="tab">
+              <v-tab-item value="details">
+                <v-card
+                  flat
+                  tile
+                >
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn small
+                      color="#55cec7"
+                      raised
+                      dark
+                      :disabled="!formdataChanged"
+                      @click="resetFormdata"
+                    >Reset</v-btn>
+                    <v-btn small
+                      color="#55cec7"
+                      raised
+                      dark
+                      :disabled="!formdataChanged"
+                      @click="updateNode"
+                    >Update</v-btn>
+                  </v-card-actions>
+
+                  <v-card-text>
+                    <v-row>
+                      <v-col cols="6" xs="12" class="property-input-col">
+                        <v-text-field
+                          v-model="formdata.title"
+                          label="Title"
+                          placeholder="Title"
+                          filled
+                          dense
+                          rounded
+                          background-color="#f7f9fc"
+                        ></v-text-field>
+                      </v-col>
+                      <v-col
+                        v-for="property in sortedProperties"
+                        v-bind:key="property.id"
+                        cols="6"
+                        xs="12"
+                        class="property-input-col"
+                      >
+                        <template-property-input
+                          :fieldType="property.fieldType"
+                          v-model="formdata.templateData[property.id]"
+                          :label="property.name"
+                          :propertyOptions="property.propertyOptions"
+                        ></template-property-input>
+                      </v-col>
+                    </v-row>
+
+                    <div id="content-container">
+                      <!-- <label>Content</label> -->
+                      <tiptap-vuetify
+                        v-model="formdata.content"
+                        :extensions="editorExtensions"
+                        class="editor-box"
+                      >
+                      </tiptap-vuetify>
+                    </div>
+                  </v-card-text>
+
+                </v-card>
+              </v-tab-item>
+
+              <v-tab-item v-if="nodeCanHaveChildren" value="nodes">
+                <nodes-tree-view
+                  :parentNodeType="'coreVertex'"
+                  :parentNodeId="$route.params.nodeId"
+                  :parentCanHaveChildren="nodeCanHaveChildren"
+                ></nodes-tree-view>
+              </v-tab-item>
+
+              <v-tab-item value="node-messages">
+                <node-messages
+                  :nodeId="$route.params.nodeId"
+                  :nodeType="'coreVertex'"
+                ></node-messages>
+              </v-tab-item>
+            </v-tabs-items>
+          </v-tabs>
+        </v-card-text>
+      </v-card>
+    </div>
+
   </div>
 </template>
 
