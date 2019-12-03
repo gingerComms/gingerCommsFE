@@ -1,6 +1,7 @@
 <template>
-  <div idd="nodes-tree-view">
-    <v-card>
+  <div id="nodes-tree-view">
+    <v-card flat>
+
       <v-card-text>
         <v-btn
           icon
@@ -52,7 +53,6 @@
                   :nodeId="item.id"
                   :nodeType="'coreVertex'"
                   :key="favoritesKey"
-                  small
                   @nodeFavoriteToggled="nodeFavoriteToggled"
                 ></favorite-node-star>
                 <v-btn
@@ -62,7 +62,6 @@
                   <v-icon color="#55cec7">mdi-pen</v-icon>
                 </v-btn>
               </v-col>
-
             </v-row>
           </template>
 
@@ -93,8 +92,6 @@
               <v-icon>mdi-arrow-down-drop-circle-outline</v-icon>
             </v-btn>
           </template>
-          <v-divider></v-divider>
-
         </v-treeview>
       </v-card-text>
     </v-card>

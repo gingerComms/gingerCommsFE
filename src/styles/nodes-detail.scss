@@ -2,6 +2,7 @@
     #breadcrumbs {
         .v-breadcrumbs {
             padding: 5px 0 0 0;
+
         }
     }
 
@@ -27,5 +28,13 @@
         div[contenteditable=true] {
             min-height: 250px;
         }
+    }
+    .editor-box> * {
+        border-color: "#f7f9fc";
+        border-radius: 0px 0px 15px 15px;
+        border-style: solid;
+        background-color: "#f7f9fc";
+        border-width: 4px;
+        box-shadow: 1px 1px 8px 1px transparent;
     }
 }
