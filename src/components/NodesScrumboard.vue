@@ -182,8 +182,8 @@
 
         var that = this;
         this.$emit("propertyChanged", { property: formdata, updateKeys: false, callback () {
-          that.setStages()
           that.setBlocks()
+          that.setStages()
         }});
       },
       blocksOrderChanged (e, newStage) {
@@ -204,6 +204,8 @@
         this.$http.put(apiUrl, formdata).then(function (response) {
           if (response.status == 200) {
             this.$emit('nodeUpdated')
+            this.setBlocks();
+            this.setStages();
           }
         })
       }
