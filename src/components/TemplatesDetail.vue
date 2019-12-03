@@ -72,6 +72,7 @@
                 :parentType="'team'"
                 :parentId="$route.params.teamId"
                 @nodeUpdated="nodesListKey += 1"
+                @propertyChanged="propertyChanged"
               ></nodes-scrumboard>
             </v-tab-item>
 
@@ -140,17 +141,38 @@
       propertyRemoved (property) {
         this.template.properties.splice(this.template.properties.indexOf(property), 1);
       },
-      propertyChanged (property, newValue) {
-        property = this.template.properties.filter(prop => prop.id == property.id)[0];
-        var propertyId = this.template.properties.indexOf(property);
-        // Confirm that the newValue has the JSON parsed, and parse it if it doesn't
-        if (typeof(newValue.propertyOptions) == 'string') {
-          newValue.propertyOptions = JSON.parse(newValue.propertyOptions)
+      propertyChanged ({ property, updateKeys, callback }) {
+        var apiUrl = process.env.VUE_APP_API_URL;
+        apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
+        apiUrl += '/properties/'+property.id;
+
+        var formdata = {
+          name: property.name,
+          fieldType: property.fieldType,
+          propertyOptions: JSON.stringify(property.propertyOptions)
         }
-        this.template.properties[propertyId] = newValue;
-        console.log('Changed', this.template.properties)
-        this.nodesListKey += 1;
-        this.nodesScrumboardKey += 1;
+
+        this.$http.put(apiUrl, formdata).then(response => {
+          if (response.status == 200) {
+            var newValue = response.body;
+
+            property = this.template.properties.filter(prop => prop.id == property.id)[0];
+            var propertyId = this.template.properties.indexOf(property);
+            // Confirm that the newValue has the JSON parsed, and parse it if it doesn't
+            if (typeof(newValue.propertyOptions) == 'string') {
+              newValue.propertyOptions = JSON.parse(newValue.propertyOptions)
+            }
+            this.template.properties[propertyId] = newValue;
+            console.log('Changed', this.template.properties);
+            if (updateKeys === true) {
+              this.nodesListKey += 1;
+              this.nodesScrumboardKey += 1;
+            }
+            if (callback) {
+              callback();
+            }
+          }
+        })
       },
       propertiesOrderChanged (newValue) {
         var properties = newValue;

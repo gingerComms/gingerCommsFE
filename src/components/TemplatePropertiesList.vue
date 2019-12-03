@@ -165,10 +165,8 @@
       },
       propertyEditted (item) {
         var property = this.template.properties.filter(prop => prop.id == item.id)[0]
-        var apiUrl = process.env.VUE_APP_API_URL;
-        apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
-        apiUrl += '/properties/'+property.id;
         var formdata = {
+          id: property.id,
           name: item.name,
           // Changed so that the prop value is the prop id
           // value: this.valuefyProperty(item.name),
@@ -179,12 +177,7 @@
           formdata.propertyOptions = JSON.stringify(formdata.propertyOptions);
         }
 
-        this.$http.put(apiUrl, formdata).then(response => {
-          if (response.status == 200) {
-            var changedProperty = response.body;
-            this.$emit("propertyChanged", property, changedProperty);
-          }
-        })
+        this.$emit("propertyChanged", { property: formdata, updateKeys: true });
       },
       showSelectEditDialog (item) {
         // Shows the select edit dialog for the given property with the fieldType `Select`
@@ -193,26 +186,12 @@
         this.propertyEditDialogOpen = true;
       },
       propertyOptionsChanged (property) {
-        var apiUrl = process.env.VUE_APP_API_URL;
-        apiUrl += '/team/'+this.$route.params.teamId+'/templates/'+this.template.id;
-        apiUrl += '/properties/'+property.id;
-
-        var formdata = {
-          name: property.name,
-          fieldType: property.fieldType,
-          propertyOptions: JSON.stringify(property.propertyOptions)
-        }
-        this.$http.put(apiUrl, formdata).then(response => {
-          if (response.status == 200) {
-            var changedProperty = response.body;
-            this.$emit("propertyChanged", property, changedProperty);
-            this.propertyEditDialogOpen = false;
-            this.propertyBeingEditted = null;
-          }
-        })
+        this.$emit("propertyChanged", { property });
+        this.propertyEditDialogOpen = false;
+        this.propertyBeingEditted = null;
       },
       orderChanged (properties) {
-        console.log('Order Changed', properties);
+        console.log('Order Changed', {properties});
         var formdata = {
             properties: properties
         }

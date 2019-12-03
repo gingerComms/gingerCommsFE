@@ -74,72 +74,77 @@
               <v-icon>mdi-android-messages</v-icon>
             </v-tab>
 
-            <v-tabs-items v-model="tab">
-              <v-tab-item value="details">
-                <v-card
-                  flat
-                  tile
-                >
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn small
-                      color="#55cec7"
-                      raised
-                      dark
-                      :disabled="!formdataChanged"
-                      @click="resetFormdata"
-                    >Reset</v-btn>
-                    <v-btn small
-                      color="#55cec7"
-                      raised
-                      dark
-                      :disabled="!formdataChanged"
-                      @click="updateNode"
-                    >Update</v-btn>
-                  </v-card-actions>
+          <v-tabs-items v-model="tab">
+            <v-tab-item value="details">
+              <v-card
+                outlined
+                tile
+              >
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn small
+                    color="#55cec7"
+                    raised
+                    dark
+                    @click="resetFormdata"
+                  >Reset</v-btn>
+                  <v-btn small
+                    color="#55cec7"
+                    raised
+                    dark
+                    @click="updateNode"
+                  >Update</v-btn>
+                </v-card-actions>
 
-                  <v-card-text>
-                    <v-row>
-                      <v-col cols="6" xs="12" class="property-input-col">
-                        <v-text-field
-                          v-model="formdata.title"
-                          label="Title"
-                          placeholder="Title"
-                          filled
-                          dense
-                          rounded
-                          background-color="#f7f9fc"
-                        ></v-text-field>
-                      </v-col>
-                      <v-col
-                        v-for="property in sortedProperties"
-                        v-bind:key="property.id"
-                        cols="6"
-                        xs="12"
-                        class="property-input-col"
-                      >
-                        <template-property-input
-                          :fieldType="property.fieldType"
-                          v-model="formdata.templateData[property.id]"
-                          :label="property.name"
-                          :propertyOptions="property.propertyOptions"
-                        ></template-property-input>
-                      </v-col>
-                    </v-row>
+                <v-card-text>
+                  <v-row>
+                    <v-col cols="6" xs="12" class="property-input-col">
+                      <v-text-field
+                        v-model="formdata.title"
+                        label="Title"
+                        placeholder="Title"
+                        filled
+                        dense
+                        rounded
+                        background-color="#f7f9fc"
+                      ></v-text-field>
+                    </v-col>
+                    <v-col
+                      v-for="property in sortedProperties"
+                      v-bind:key="property.id"
+                      cols="6"
+                      xs="12"
+                      class="property-input-col"
+                    >
+                      <template-property-input
+                        :fieldType="property.fieldType"
+                        v-model="formdata.templateData[property.id]"
+                        :label="property.name"
+                        :propertyOptions="property.propertyOptions"
+                        v-if="property.fieldType != 'select'"
+                      ></template-property-input>
+                      <template-property-input
+                        :fieldType="property.fieldType"
+                        v-model="formdata.templateData[property.id].value"
+                        :label="property.name"
+                        :propertyOptions="property.propertyOptions"
+                        v-if="property.fieldType == 'select'"
+                      ></template-property-input>
+                    </v-col>
+                  </v-row>
 
-                    <div id="content-container">
-                      <!-- <label>Content</label> -->
-                      <tiptap-vuetify
-                        v-model="formdata.content"
-                        :extensions="editorExtensions"
-                        class="editor-box"
-                      >
-                      </tiptap-vuetify>
-                    </div>
-                  </v-card-text>
-
-                </v-card>
-              </v-tab-item>
+                  <div id="content-container">
+                    <!-- <label>Content</label> -->
+                    <tiptap-vuetify
+                      v-model="formdata.content"
+                      :extensions="editorExtensions"
+                      class="editor-box"
+                    >
+                    </tiptap-vuetify>
+                  </div>
+                </v-card-text>
+              </v-card>
+            </v-tab-item>
 
               <v-tab-item v-if="nodeCanHaveChildren" value="nodes">
                 <nodes-tree-view
@@ -213,7 +218,6 @@
       formdataChanged () {
         var currentFormdata = this.formdata;
         var blankFormdata = this.generateBlankFormdata();
-
         if (!_.isEqual(currentFormdata, blankFormdata)) {
           return true;
         }
@@ -275,6 +279,7 @@
           templateData: JSON.stringify(this.formdata.templateData),
           content: this.formdata.content
         }
+        
         this.$http.put(this.detailUrl, formdata).then(response => {
           if (response.status == 200) {
             var node = response.body;
