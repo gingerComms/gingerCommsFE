@@ -182,8 +182,8 @@
 
         var that = this;
         this.$emit("propertyChanged", { property: formdata, updateKeys: false, callback () {
-          that.setStages();
           that.setBlocks();
+          that.setStages();
         }});
       },
       blocksOrderChanged (e, newStage) {
@@ -199,12 +199,17 @@
             index: i.templateData[that.selectedProperty].index,
             templateData: JSON.stringify(i.templateData)
           })
+
+          var node = that.nodes.filter(node => node.id == i.id)[0];
+          that.nodes[that.nodes.indexOf(node)].templateData[that.selectedProperty].index = i.templateData[that.selectedProperty].index;
+          that.nodes[that.nodes.indexOf(node)].templateData[that.selectedProperty].value = newStage.name;
         })
         var apiUrl = process.env.VUE_APP_API_URL + '/team/'+this.parentId+'/templates/'+this.template.id+'/nodes_index';
-        var that = this;
         this.$http.put(apiUrl, formdata).then(function (response) {
           if (response.status == 200) {
-            this.$emit('nodeUpdated')
+            that.$emit('nodeUpdated');
+            that.setBlocks();
+            that.setStages();
           }
         })
       }
