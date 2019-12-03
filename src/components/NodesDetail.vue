@@ -86,14 +86,12 @@
                     color="#55cec7"
                     raised
                     dark
-                    :disabled="!formdataChanged"
                     @click="resetFormdata"
                   >Reset</v-btn>
                   <v-btn small
                     color="#55cec7"
                     raised
                     dark
-                    :disabled="!formdataChanged"
                     @click="updateNode"
                   >Update</v-btn>
                 </v-card-actions>
@@ -123,6 +121,14 @@
                         v-model="formdata.templateData[property.id]"
                         :label="property.name"
                         :propertyOptions="property.propertyOptions"
+                        v-if="property.fieldType != 'select'"
+                      ></template-property-input>
+                      <template-property-input
+                        :fieldType="property.fieldType"
+                        v-model="formdata.templateData[property.id].value"
+                        :label="property.name"
+                        :propertyOptions="property.propertyOptions"
+                        v-if="property.fieldType == 'select'"
                       ></template-property-input>
                     </v-col>
                   </v-row>
@@ -210,7 +216,6 @@
       formdataChanged () {
         var currentFormdata = this.formdata;
         var blankFormdata = this.generateBlankFormdata();
-
         if (!_.isEqual(currentFormdata, blankFormdata)) {
           return true;
         }
@@ -272,6 +277,7 @@
           templateData: JSON.stringify(this.formdata.templateData),
           content: this.formdata.content
         }
+        
         this.$http.put(this.detailUrl, formdata).then(response => {
           if (response.status == 200) {
             var node = response.body;

@@ -16,6 +16,7 @@
             <draggable
               :group="'options'"
               :list="property.propertyOptions.options"
+              v-if="property.propertyOptions.options != undefined"
             >
               <v-list-item
                 v-for="i in property.propertyOptions.options.length"
@@ -45,7 +46,7 @@
           <v-btn
             icon
             color="black"
-            @click="property.propertyOptions.options.push('Option '+(property.propertyOptions.options.length+1))">
+            @click="addNewProperty()">
             <v-icon>mdi-plus</v-icon>
           </v-btn>
         </div>
@@ -99,6 +100,19 @@
     methods: {
       propertyOptionsChanged (property) {
         this.$emit('propertyOptionsChanged', property);
+      },
+      addNewProperty () {
+        if (typeof(this.property.propertyOptions) == 'string') {
+          this.property.propertyOptions = JSON.parse(this.property.propertyOptions);
+        }
+        console.log(typeof(this.property.propertyOptions), this.property.propertyOptions)
+        if (
+
+            this.property.propertyOptions.options == undefined ||
+            this.property.propertyOptions.options == null) {
+          this.property.propertyOptions.options = [];
+        }
+        this.property.propertyOptions.options.push('Option '+(this.property.propertyOptions.options.length+1))
       }
     },
     data () {
