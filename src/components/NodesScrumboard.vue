@@ -182,8 +182,8 @@
 
         var that = this;
         this.$emit("propertyChanged", { property: formdata, updateKeys: false, callback () {
-          that.setBlocks()
-          that.setStages()
+          that.setStages();
+          that.setBlocks();
         }});
       },
       blocksOrderChanged (e, newStage) {
@@ -201,11 +201,10 @@
           })
         })
         var apiUrl = process.env.VUE_APP_API_URL + '/team/'+this.parentId+'/templates/'+this.template.id+'/nodes_index';
+        var that = this;
         this.$http.put(apiUrl, formdata).then(function (response) {
           if (response.status == 200) {
             this.$emit('nodeUpdated')
-            this.setBlocks();
-            this.setStages();
           }
         })
       }
