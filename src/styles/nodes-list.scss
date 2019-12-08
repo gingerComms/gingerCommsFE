@@ -1,0 +1,21 @@
+@import '_variables';
+
+#nodes-list {
+    .display-switch {
+        transition: height 0.3s;
+
+        &:first-child {
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+        }
+
+        &:last-child {
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+        }        
+
+        &.active {
+            height: 3em;
+        }
+    }
+}

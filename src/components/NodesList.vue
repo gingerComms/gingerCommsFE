@@ -4,11 +4,33 @@
       flat
     >
       <v-card-text>
+        <v-row>
+          <v-col cols="4" xs="12">
+            <v-btn
+              class="display-switch"
+              :dark="displayMode != 'list'"
+              color="#55cec7"
+              @click="displayMode = 'list'"
+              :class="{ 'active': displayMode == 'list' }">
+              <v-icon>mdi-format-list-bulleted-square</v-icon>
+            </v-btn>
+            <v-btn
+              class="display-switch"
+              :dark="displayMode != 'scrum'"
+              color="#55cec7"
+              @click="displayMode = 'scrum'"
+              :class="{ 'active': displayMode == 'scrum' }">
+              <v-icon>mdi-format-columns</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+
         <ListTabView
           :headers="topicHeaders"
           :objects="listTabViewFormattedData"
           mode="list"
           :isLoading="isLoading"
+          v-if="displayMode == 'list'"
         >
           <template v-slot:appendedRow>
             <tr id="create-node-row">
@@ -104,6 +126,17 @@
             </v-btn>
           </template>
         </ListTabView>
+
+        <nodes-scrumboard
+          :template="template"
+          :nodes="nodes"
+          :parentType="parentType"
+          :parentId="parentId"
+          @nodeUpdated="nodesListKey += 1"
+          @propertyChanged="propertyChanged"
+          v-if="displayMode == 'scrum'"
+        ></nodes-scrumboard>
+
       </v-card-text>
     </v-card>
   </div>
@@ -112,6 +145,9 @@
 <script>
   import ListTabView from './ListTabView';
   import TemplatePropertyInput from './TemplatePropertyInput';
+  import NodesScrumboard from './NodesScrumboard';
+
+  require("../styles/nodes-list.scss");
 
   export default {
     name: 'nodes-list',
@@ -122,7 +158,8 @@
     },
     components: {
       ListTabView,
-      TemplatePropertyInput
+      TemplatePropertyInput,
+      NodesScrumboard
     },
     computed: {
       topicHeaders () {
@@ -192,6 +229,9 @@
       }
     },
     methods: {
+      propertyChanged ({ property, updateKeys, callback }) {
+        this.$emit('propertyChanged', { property, updateKeys, callback });
+      },
       cleanNode (node) {
         // Applies any validation/cleanup that may be required after a
         // property modification
@@ -336,6 +376,7 @@
         },
         isLoading: false,
         createOpen: false,
+        displayMode: 'list',
         openMenus: {}  // Used to keep track of menus that are open 
       }
     },

@@ -42,10 +42,6 @@
             Topics
             <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
-          <v-tab href="#nodes-scrumboard">
-            Topics Scrumboard
-            <v-icon>mdi-format-list-bulleted</v-icon>
-          </v-tab>
           <v-tab href="#details">
             Details
             <v-icon>mdi-pen</v-icon>
@@ -61,19 +57,8 @@
                 :key="nodesListKey"
                 :parentType="'team'"
                 :parentId="$route.params.teamId"
-                @nodeUpdated="nodesScrumboardKey += 1"
-              ></nodes-list>
-            </v-tab-item>
-
-            <v-tab-item value="nodes-scrumboard">
-              <nodes-scrumboard
-                :template="template"
-                :key="nodesScrumboardKey"
-                :parentType="'team'"
-                :parentId="$route.params.teamId"
-                @nodeUpdated="nodesListKey += 1"
                 @propertyChanged="propertyChanged"
-              ></nodes-scrumboard>
+              ></nodes-list>
             </v-tab-item>
 
             <v-tab-item value="details">
@@ -104,7 +89,6 @@
   import TemplateEdit from './TemplateEdit';
   import TemplatePropertiesList from './TemplatePropertiesList';
   import NodesList from './NodesList';
-  import NodesScrumboard from './NodesScrumboard';
   require("../styles/templates-detail.scss");
 
   export default {
@@ -113,8 +97,7 @@
     components: {
       TemplateEdit,
       TemplatePropertiesList,
-      NodesList,
-      NodesScrumboard
+      NodesList
     },
     methods: {
       getTemplate () {
@@ -166,7 +149,6 @@
             console.log('Changed', this.template.properties);
             if (updateKeys === true) {
               this.nodesListKey += 1;
-              this.nodesScrumboardKey += 1;
             }
             if (callback) {
               callback();
@@ -189,7 +171,6 @@
         template: {},
         tab: null,
         nodesListKey: 1,
-        nodesScrumboardKey: 1 // Used to force update the nodes-list view
       }
     },
     created () {
