@@ -4,23 +4,35 @@
       flat
       >
       <v-card-title class="headline">
+        <v-row>
+          <v-col cols="6" xs="12">
+            {{ team.name }}
+          </v-col>
+          <v-col cols="6" xs="12" class="text-lg-right">
+            <v-chip
+              color="black"
+              small
+              style="color: white"
+            >Team</v-chip>
+          </v-col>
         <v-badge
           color="#55cec7"
           left
         >
-          <template v-slot:badge>
+          <!-- <template v-slot:badge>
             T
-          </template>
-          <div>{{ team.name }}</div>
+          </template> -->
         </v-badge>
+        </v-row>
       </v-card-title>
 
       <v-card-text>
         <v-tabs
           v-model="tab"
-          background-color="#55cec7"
-          centered
-          dark
+          background-color="transparent"
+          color="#55cec7"
+          left
+          flat
           icons-and-text
         >
           <v-tabs-slider></v-tabs-slider>

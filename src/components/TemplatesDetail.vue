@@ -31,9 +31,11 @@
       <v-card-text>
         <v-tabs
           v-model="tab"
-          background-color="#55cec7"
-          centered
-          dark
+          background-color="transparent"
+          color="#55cec7"
+          left
+          flat
+
           icons-and-text
         >
           <v-tabs-slider></v-tabs-slider>

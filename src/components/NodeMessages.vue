@@ -5,17 +5,39 @@
     <v-card-text>
       <div id="messages-list" v-scroll="messagesScrolled">
         <div class="message" v-for="message in messages" v-scroll:#messages-list="messagesScrolled" v-bind:key="message.id">
-          <div class="msgDetails">
-            <div class="author">
-              {{ message.author.fullName }}
-            </div>
-            <div class="sentAt">
+          <v-row>
+            <v-col cols="1" md="1">
+              <v-btn
+                  color="#55cec7"
+                  dark
+                  fab
+                  small
+                  id="back-btn"
+                  elevation="0"
+                  no-gutters
+
+                >
+                <v-icon>person</v-icon>
+              </v-btn>
+            </v-col>
+            <v-col class="msgDetails" cols="9" md="4">
+              <div class="author">
+                {{ message.author.fullName }}
+              </div>
+            </v-col>
+            <v-col class="sentAt" cols="2" md="2">
               {{ message.sent_at }}
-            </div>
-          </div>
-          <div class="text">
-            {{ message.text }}
-          </div>
+            </v-col>
+          </v-row>
+
+          <v-row class="text" >
+            <v-col cols="1" md="1">
+
+            </v-col>
+            <v-col cols="11" md="1">
+              {{ message.text }}
+            </v-col>
+          </v-row>
         </div>
       </div>
 
