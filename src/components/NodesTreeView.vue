@@ -19,17 +19,20 @@
         >Create Topic</v-btn>
 
         <v-treeview
-          open-all
+          open-on-click
           :items="nodes"
           item-children="children"
           item-key="id"
           item-text="title"
           hoverable
+          :load-children="getNodeChildrenOnToggle"
+          :open.sync="open"
+          v-bind:key="treeKey"
         >
           <template v-slot:append="{ item }">
             <v-row>
               <v-col
-                :cols="nodes.indexOf(item) >= 0 && item.template.canHaveChildren ? 8:9"
+                :cols="8"
                 style="text-align: left;">
                 <v-chip
                   :color="item.template.pillBackgroundColor"
@@ -39,12 +42,12 @@
               </v-col>
 
               <v-col
-                :cols="nodes.indexOf(item) >= 0 && item.template.canHaveChildren ? 4:3"
+                :cols="4"
                 style="text-align: right;">
                 <v-btn
                   icon
                   @click="openCreateDialog(item.id)"
-                  v-if="nodes.indexOf(item) >= 0 && item.template.canHaveChildren"
+                  v-if="item.template.canHaveChildren"
                 >
                   <v-icon color="#55cec7">mdi-plus</v-icon>
                 </v-btn>
@@ -133,6 +136,14 @@
           this.nodes = response.body;
         })
       },
+      async getNodeChildrenOnToggle (item) {
+        console.log(item)
+        var apiUrl = process.env.VUE_APP_API_URL + '/coreVertex/' + item.id + '/tree_view';
+        return this.$http.get(apiUrl).then(response => {
+          console.log('Children toggle', response.body, item)
+          item.children = response.body;
+        })
+      },
       nodeFavoriteToggled (nodeId) {
         var node = this.nodes.filter(node => node.id == nodeId)[0];
         var index = this.nodes.indexOf(node);
@@ -157,10 +168,22 @@
         this.showCreateDialog = newValue;
         this.createTargetParentNode = null;
       },
+      recursiveNodeCreatedLoop (addedNode, nodes, targetParentId) {
+        var that = this;
+        nodes.forEach(function (node) {
+          if (node.id == targetParentId) {
+            node.children.push(addedNode);
+            return;
+          } else {
+            if (node.template.canHaveChildren) {
+              that.recursiveNodeCreatedLoop(addedNode, node.children, targetParentId);
+            }
+          }
+        })
+      },
       nodeCreated (node, parentNodeId) {
         if (parentNodeId !== this.parentNodeId) {
-          var parentNodeIndex = this.nodes.indexOf(this.nodes.filter(item => item.id == parentNodeId)[0])
-          this.nodes[parentNodeIndex].children.push(node);
+          this.recursiveNodeCreatedLoop(node, this.nodes, parentNodeId);
         } else {
           this.nodes.push(node);
         }
@@ -168,10 +191,12 @@
       nodeMoved (dropLocation) {
         var apiUrl = process.env.VUE_APP_API_URL + '/coreVertex/' + this.movingNode + '/change_parent';
         var that = this;
+        console.log(dropLocation);
         // eslint-disable-next-line
         this.$http.put(apiUrl, {newParent: dropLocation.id}).then(response => {
           that.getNodesWithChildren();
           that.movingNode = null;
+          that.treeKey += 1;
           /*
           var movedNode = that.nodes.filter(node => node.id == that.movingNode)[0];
           var movedNodeIndex = that.nodes.indexOf(movedNode);
@@ -204,12 +229,13 @@
     data () {
       return {
         tree: [],
-        open: [], // All nodes that are toggled open right now
+        open: [],
         nodes: [],
         createTargetParentNode: null,
         showCreateDialog: false,
         movingNode: null,
-        favoritesKey: 1
+        favoritesKey: 1,
+        treeKey: 1
       }
     },
     created () {

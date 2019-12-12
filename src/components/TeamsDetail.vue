@@ -46,6 +46,11 @@
             <v-icon>mdi-pen</v-icon>
           </v-tab>
 
+          <v-tab href="#nodes-tree">
+            Tree View
+            <v-icon>mdi-format-list-bulleted</v-icon>
+          </v-tab>
+
           <v-tab href="#members">
             Members
             <v-icon>mdi-account-group</v-icon>
@@ -71,6 +76,14 @@
               </v-card>
             </v-tab-item>
 
+            <v-tab-item value="nodes-tree">
+              <nodes-tree-view
+                :parentNodeType="'team'"
+                :parentNodeId="team.id"
+                :parentCanHaveChildren="true"
+              ></nodes-tree-view>
+            </v-tab-item>
+
             <v-tab-item value="members">
               <assignees-list
                 :nodeId="$route.params.teamId"
@@ -89,6 +102,7 @@
 
   import TemplatesList from "./TemplatesList";
   import TeamEdit from './TeamEdit';
+  import NodesTreeView from './NodesTreeView';
   import AssigneesList from './AssigneesList';
 
   export default {
@@ -96,7 +110,8 @@
     components: {
       TemplatesList,
       TeamEdit,
-      AssigneesList
+      AssigneesList,
+      NodesTreeView
     },
     props: [],
     methods: {

@@ -97,10 +97,20 @@
     },
     methods: {
       createNode () {
-        this.formdata.templateData = JSON.stringify(this.formdata.templateData);
+        var templateData = {};
+        var that = this;
+        this.targetedTemplate.properties.forEach(function (prop) {
+          if (prop.fieldType != 'select') {
+            templateData[prop.id] = that.formdata.templateData[prop.id]
+          } else {
+            templateData[prop.id] = { value: that.formdata.templateData[prop.id], index: 0 }
+          }
+        })
+
+        this.formdata.templateData = JSON.stringify(templateData);
         var apiUrl = process.env.VUE_APP_API_URL + '/'+this.parentNodeType+'/'+this.parentNodeId;
         apiUrl += '/templates/'+this.selectedTemplate+'/nodes';
-        var that = this;
+        
         this.$http.post(apiUrl, this.formdata).then(response => {
           if (response.status == 201) {
             var template = response.body.template;
