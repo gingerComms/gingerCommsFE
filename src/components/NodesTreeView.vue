@@ -172,10 +172,15 @@
         var that = this;
         nodes.forEach(function (node) {
           if (node.id == targetParentId) {
-            node.children.push(addedNode);
+            if (node.children == undefined) {
+              node.children = [addedNode];
+              that.treeKey += 1
+            } else {
+              node.children.push(addedNode);
+            }
             return;
           } else {
-            if (node.template.canHaveChildren) {
+            if (node.template.canHaveChildren && node.children != undefined) {
               that.recursiveNodeCreatedLoop(addedNode, node.children, targetParentId);
             }
           }
