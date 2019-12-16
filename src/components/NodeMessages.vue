@@ -2,42 +2,24 @@
   <v-card
     flat
     id="node-messages">
-    <v-card-text>
+    <v-card-text class="chat-wrap">
       <div id="messages-list" v-scroll="messagesScrolled">
         <div class="message" v-for="message in messages" v-scroll:#messages-list="messagesScrolled" v-bind:key="message.id">
-          <v-row>
-            <v-col cols="1" md="1">
-              <v-btn
-                  color="#55cec7"
-                  dark
-                  fab
-                  small
-                  id="back-btn"
-                  elevation="0"
-                  no-gutters
+          <div class="chat-avatar" cols="1" md="1">
+            <img src="../assets/images/img-2.png" alt="">
+          </div>
+          <div class="msgDetails" cols="8" md="4">
+            <div class="chat-title">
+              <h3><a href="#">{{ message.author.fullName }}</a></h3>
+              <span>{{ message.sent_at }}</span>
+            </div>
+          </div>
 
-                >
-                <v-icon>person</v-icon>
-              </v-btn>
-            </v-col>
-            <v-col class="msgDetails" cols="9" md="4">
-              <div class="author">
-                {{ message.author.fullName }}
-              </div>
-            </v-col>
-            <v-col class="sentAt" cols="2" md="2">
-              {{ message.sent_at }}
-            </v-col>
-          </v-row>
+          <div class="chat-body" >
 
-          <v-row class="text" >
-            <v-col cols="1" md="1">
-
-            </v-col>
-            <v-col cols="11" md="1">
               {{ message.text }}
-            </v-col>
-          </v-row>
+
+          </div>
         </div>
       </div>
 
