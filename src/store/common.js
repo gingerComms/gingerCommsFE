@@ -8,7 +8,9 @@ const defaults = {
   snackbarError: {
     message: '',
     show: false
-  }
+  },
+  activeTeamId: '',
+  activeTeamUsers: []
 }
 
 // Global module loaded on first app load.
@@ -40,6 +42,13 @@ export default {
         show: show
       }
       console.log('Updated snackbar', state.snackbarError)
+    },
+    updateActiveTeam (state, activeTeamId) {
+      state.activeTeamId = activeTeamId;
+    },
+    updateActiveTeamUsers (state, activeTeamUsers) {
+      // Updates the users array with the users assigned to the active team
+      state.activeTeamUsers = activeTeamUsers;
     }
   },
 

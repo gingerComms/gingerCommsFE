@@ -11,10 +11,10 @@ import en from 'vee-validate/dist/locale/en';
 // Vuetify Implementation before App import to order styles
 import vuetify from './plugins/vuetify';
 import App from './App.vue';
+import networking from './networking/interceptors';
 import router from './router/router';
 import store from './store';
 import SideNav from './components/SideNav.vue';
-import networking from './networking/interceptors';
 import './utils/globalUtils';
 
 networking.addInterceptors();

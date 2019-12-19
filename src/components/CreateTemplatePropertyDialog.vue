@@ -115,7 +115,8 @@
           'string': '{}',
           'number': '{}',
           'select': '{"options": []}',
-          'date': '{}'
+          'date': '{}',
+          'user': '{}'
         }
       }
     }

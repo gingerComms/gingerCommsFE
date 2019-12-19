@@ -49,7 +49,8 @@ import Vuetify, {
   Scroll,
   VToolbar,
   VToolbarTitle,
-  VToolbarItems
+  VToolbarItems,
+  VAutocomplete
 } from 'vuetify/lib'
 
 const vuetify = new Vuetify()
@@ -98,7 +99,8 @@ Vue.use(Vuetify, {
     VToolbarItems,
     VListItemGroup,
     VListItemIcon,
-    VListItemContent
+    VListItemContent,
+    VAutocomplete
   },
   directives: {
     Scroll

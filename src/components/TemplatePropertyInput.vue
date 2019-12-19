@@ -68,12 +68,21 @@
         >OK</v-btn>
       </v-date-picker>
     </v-menu>
+    <user-search-field
+      v-if="fieldType == 'user'"
+      v-model="propertyValue"
+      :users="$store.state.common.activeTeamUsers"
+    ></user-search-field>
   </div>
 </template>
 
 <script>
+  import UserSearchField from './UserSearchField';
   export default {
     name: 'template-property-input',
+    components: {
+      UserSearchField
+    },
     props: {
       fieldType: String,
       value: String,
