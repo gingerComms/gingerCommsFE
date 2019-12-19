@@ -99,7 +99,15 @@
             <v-edit-dialog
               v-bind:key="property.id"
               @close="nodeEditted(object, property.fieldType)"
-            > {{ object[property.id] }}
+            >
+              <span v-if="property.fieldType !== 'user'">{{ object[property.id] }}</span>
+              <span v-if="property.fieldType == 'user'">
+                <user-search-field
+                  v-model="object[property.id]"
+                  :disabled="true"
+                  :users="$store.state.common.activeTeamUsers"
+                ></user-search-field>
+              </span>
               <template v-slot:input>
                 <template-property-input
                   :fieldType="fieldTypeFromPropertyId(property.id)"
@@ -146,6 +154,7 @@
   import ListTabView from './ListTabView';
   import TemplatePropertyInput from './TemplatePropertyInput';
   import NodesScrumboard from './NodesScrumboard';
+  import UserSearchField from './UserSearchField';
 
   require("../styles/nodes-list.scss");
 
@@ -159,7 +168,8 @@
     components: {
       ListTabView,
       TemplatePropertyInput,
-      NodesScrumboard
+      NodesScrumboard,
+      UserSearchField
     },
     computed: {
       topicHeaders () {

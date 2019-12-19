@@ -217,7 +217,8 @@
           { text: "String", value: "string" },
           { text: "Number", value: "number" },
           { text: "Select", value: "select" },
-          { text: "Date", value: "date" }
+          { text: "Date", value: "date" },
+          { text: "User", value: "user" }
         ],
         isLoading: false,
         propertyEditDialogOpen: false,

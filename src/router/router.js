@@ -24,4 +24,18 @@ router.beforeEach((to, from, next) => {
     }
 });
 
+// Active Team Modifier
+router.beforeEach((to, from, next) => {
+    if (to.params.teamId !== undefined) {
+        // Updating the active team in store if the route has a teamId param
+        store.commit('common/updateActiveTeam', to.params.teamId);
+        var apiUrl = process.env.VUE_APP_API_URL + '/team/'+to.params.teamId+'/assignees';
+        Vue.http.get(apiUrl).then(response => {
+            store.commit('common/updateActiveTeamUsers', response.body);
+        })
+    }
+    
+    next();
+});
+
 export default router;
