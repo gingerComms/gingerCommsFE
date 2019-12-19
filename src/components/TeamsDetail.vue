@@ -1,7 +1,7 @@
 <template>
   <div id="teams-detail" class="template-content">
     <v-card
-      flat
+      
       >
       <v-card-title class="headline">
         <v-row>

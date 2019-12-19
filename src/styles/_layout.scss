@@ -1,44 +1,86 @@
 @import "_variables";
 @import "_account-switch";
 
+
 .template-content {
     padding: 1em 4em 0em 8em;
+    background:$pale-blue;
 
     #base-card.v-card {
     padding-top: 20px;
     top: 10px;
-
+    background: #fff;
+    padding: 10px;
+    position: relative;
+    min-height: 650px;
+    -moz-box-shadow: 0 0 15px rgba(0,0,0, 0.05);
+    -webkit-box-shadow: 0 0 15px rgba(0,0,0, 0.05);
+    box-shadow: 0 0 15px rgba(0,0,0, 0.05);
+    -moz-border-radius: 8px;
+    -webkit-border-radius: 8px;
+    border-radius: 8px;
     }
 
     #back-btn {
-        left: -10px;
+        position: relative;
+        display: block;
+        left: 0px;
         top: 0px;
+        color: $pure-white;
+        background-color: $blue;
+        width: 32px;
+        height: 32px;
     }
+
+    #breadcrumbs {
+        .v-breadcrumbs {
+            position: absolute;
+            top: 10px;
+            left: 140px;
+            padding: 5px 0 0 0;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+
+        }
+      }
 }
 
 #side-nav {
-    padding: 1em 0.1em;
-    background-color: $base-white;
+    padding: 0 0.1em;
     display: flex;
     flex-direction: column;
     position: fixed;
     top: 0; left: 0;
     height: 100vh;
-    width: 4em;
-    background-color: $blue;
+    width: 5em;
+
 
     a {
         width: 100%;
-        color: $pure-white;
+
+        color: $blue;
+        padding: 2px 2px 2px 2px;
+        margin: 2px;
+        font-size: 14px;
+        font-weight: 600;
+        display: block;
+        border: 1px solid $blue-border;
+        position: relative;
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        border-radius: 7px;
 
         img {
             margin-top: 1em;
+            margin-bottom: 1em;
             width: 100%;
             height: auto;
         }
 
         &:hover {
-            color: $grey;
+            color: $pure-white;
+            background-color: $blue;
         }
     }
 
@@ -50,12 +92,14 @@
         flex-direction: column;
         list-style: none;
         font-size: 14px;
-        padding: 0.5em 0 2em;
+        padding: 0.5em 0 0.5em;
+
 
         li {
             margin-right: auto;
             width: 100%;
             text-align: center;
+            color: $blue;
         }
 
         li.end {
