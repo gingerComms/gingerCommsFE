@@ -48,6 +48,7 @@
                     v-model="newNodeData.templateData[prop.id]"
                     :label="prop.text"
                     :propertyOptions="getPropertyOptions(prop.id)"
+                    v-if="prop.fieldType !== 'file'"
                   ></template-property-input>
                 </span>
               </td>
@@ -100,7 +101,12 @@
               v-bind:key="property.id"
               @close="nodeEditted(object, property.fieldType)"
             >
-              <span v-if="property.fieldType !== 'user'">{{ object[property.id] }}</span>
+              <span v-if="property.fieldType !== 'user' && property.fieldType !== 'file'">
+                {{ object[property.id] }}
+              </span>
+              <span v-if="property.fieldType == 'file'">
+                {{ object[property.id].files.length }} Files
+              </span>
               <span v-if="property.fieldType == 'user'">
                 <user-search-field
                   v-model="object[property.id]"
@@ -114,6 +120,10 @@
                   v-model="object[property.id]"
                   :label="property.text"
                   :propertyOptions="getPropertyOptions(property.id)"
+                  nodeType="coreVertex"
+                  :nodeId="object.id"
+                  :propertyId="property.id"
+                  @filesUploaded="nodeEditted(object, property.fieldType)"
                 ></template-property-input>
               </template>
             </v-edit-dialog>
@@ -277,9 +287,13 @@
         var templateData = {};
         var that = this;
         this.editableTemplateProperties().forEach(function (prop) {
-          if (prop.fieldType != 'select') {
+          console.log(prop.fieldType)
+          if (prop.fieldType != 'select' && prop.fieldType != 'file') {
             templateData[prop.id] = that.newNodeData.templateData[prop.id]
-          } else {
+          } else if (prop.fieldType == 'file') {
+            templateData[prop.id] = {files: []}
+            console.log(templateData);
+          } else if (prop.fieldType == 'select') {
             if (that.newNodeData.templateData[prop.id]) {
               var sameFieldNodes = that.nodes.filter(node => node.templateData[prop.id].value == that.newNodeData.templateData[prop.id])
               templateData[prop.id] = { value: that.newNodeData.templateData[prop.id], index: sameFieldNodes.length }

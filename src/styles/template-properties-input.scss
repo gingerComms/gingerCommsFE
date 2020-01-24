@@ -1,0 +1,30 @@
+@import "variables";
+@import "layout";
+
+.files {
+    .uploaded-file-card {
+        transition: 0.2s all;
+
+        &:hover {
+            background-color: $grey;
+        }
+    }
+
+    #dropzone {
+        border: none;
+        padding: 0;
+        min-height: 0;
+    }
+}
+
+
+.dropzone-custom-content {
+    min-height: 50px;
+    background-color: $grey;
+    transition: 0.2s all;
+    text-align: center;
+
+    &:hover {
+        background-color: $dark-grey;
+    };
+}
