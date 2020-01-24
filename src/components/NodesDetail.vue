@@ -1,18 +1,16 @@
 <template>
-  <div class="template-content" id="nodes-detail" color="#55cec7">
+  <div class="template-content" color="#55cec7">
     <div v-if="this.template && this.formdata">
-      <v-btn
-          color="#55cec7"
+      <v-btn cols="1" md="1" id="back-btn"
           dark
           fab
           small
-          id="back-btn"
           elevation="0"
           @click="$router.back()"
         >
         <v-icon>mdi-arrow-left</v-icon>
       </v-btn>
-      <div id="breadcrumbs">
+      <div id="breadcrumbs" cols="8" md="4">
         <v-breadcrumbs large :items="breadcrumbsData">
         </v-breadcrumbs>
       </div>
@@ -283,7 +281,7 @@
           templateData: JSON.stringify(this.formdata.templateData),
           content: this.formdata.content
         }
-        
+
         this.$http.put(this.detailUrl, formdata).then(response => {
           if (response.status == 200) {
             var node = response.body;

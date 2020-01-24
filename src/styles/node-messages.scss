@@ -60,7 +60,7 @@
                         margin: 0;
                     }
                         .chat-title h3 a{
-                            color: #374458;
+                            color: $base-black;
                         }
                         .chat-title h3 a:hover{
                             text-decoration: underline;
@@ -72,9 +72,10 @@
                         display: block;
                         font-weight: 500;
                         opacity: 0.3;
+
                     }
                         .chat-title span a{
-                            color: #374458;
+                            color: $blue;
                         }
                         .chat-title span a:hover{
                             text-decoration: underline;
@@ -90,95 +91,3 @@
         }
     }
 }
-
-.chat-wrap{
-}
-    .chat-section{
-        position: relative;
-        padding: 0 0 15px 50px;
-    }
-        .chat-avatar{
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 32px;
-            height: 32px;
-            -moz-border-radius: 50%;
-            -webkit-border-radius: 50%;
-            border-radius: 50%;
-        }
-            .chat-avatar img{
-                display: block;
-                width: 100%;
-                height: auto;
-                -moz-border-radius: 50%;
-                -webkit-border-radius: 50%;
-                border-radius: 50%;
-            }
-        .chat-title{
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            padding: 0 0 15px;
-        }
-            .chat-title h3{
-                font-size: 14px;
-                font-weight: 600;
-                width: calc(100% - 245px);
-                margin: 0;
-            }
-                .chat-title h3 a{
-                    color: #374458;
-                }
-                .chat-title h3 a:hover{
-                    text-decoration: underline;
-                }
-            .chat-title span{
-                margin-left: auto;
-                width: 240px;
-                text-align: right;
-                display: block;
-                font-weight: 500;
-                opacity: 0.3;
-            }
-                .chat-title span a{
-                    color: #374458;
-                }
-                .chat-title span a:hover{
-                    text-decoration: underline;
-                }
-        .chat-section p{
-            margin: 0 0 7px;
-        }
-        .chat-body{
-            width: calc(100% - 200px);
-            font-size: 14px;
-            font-weight: 500;
-            line-height: 1.8;
-        }
-.chat-message{
-    display: flex;
-    flex-wrap: wrap;
-}
-    .chat-message .form-control{
-        font-size: 14px;
-        font-weight: 500;
-        color: #aab0ba;
-        width: calc(100% - 145px);
-        height: 56px;
-        line-height: 56px;
-        padding: 0 20px;
-        border: none;
-        background: #f7f9fc;
-        -moz-border-radius: 8px;
-        -webkit-border-radius: 8px;
-        border-radius: 8px;
-    }
-    .chat-message .btn{
-        margin-left: auto;
-        width: 125px;
-        height: 56px;
-        line-height: 56px;
-        text-align: center;
-        padding: 0;
-    }
