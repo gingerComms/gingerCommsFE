@@ -116,7 +116,8 @@
           'number': '{}',
           'select': '{"options": []}',
           'date': '{}',
-          'user': '{}'
+          'user': '{}',
+          'file': '{}'
         }
       }
     }

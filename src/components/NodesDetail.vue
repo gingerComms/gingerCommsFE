@@ -120,6 +120,10 @@
                         :label="property.name"
                         :propertyOptions="property.propertyOptions"
                         v-if="property.fieldType != 'select'"
+                        nodeType="coreVertex"
+                        :nodeId="node.id"
+                        :propertyId="property.id"
+                        @filesUploaded="updateNode"
                       ></template-property-input>
                       <template-property-input
                         :fieldType="property.fieldType"

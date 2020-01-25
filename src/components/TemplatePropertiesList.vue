@@ -218,7 +218,8 @@
           { text: "Number", value: "number" },
           { text: "Select", value: "select" },
           { text: "Date", value: "date" },
-          { text: "User", value: "user" }
+          { text: "User", value: "user" },
+          { text: "File", value: "file" }
         ],
         isLoading: false,
         propertyEditDialogOpen: false,
