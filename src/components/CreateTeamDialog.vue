@@ -19,6 +19,18 @@
               <span class="error">{{ errors[0] }}</span>
             </ValidationProvider>
           </div>
+
+          <div class="form-control">
+            <ValidationProvider
+              rules="required"
+              v-slot="{ errors }"
+              name="Password"
+            >
+              <label for="password">Password</label>
+              <input type="password" placeholder="Team Level Password" name="password" v-model="formdata.password" required>
+              <span class="error">{{ errors[0] }}</span>
+            </ValidationProvider>
+          </div>
         </v-card-text>
 
         <v-card-actions>
@@ -82,7 +94,8 @@
     data () {
       return {
         formdata: {
-          name: ''
+          name: '',
+          password: ''
         }
       }
     }
