@@ -1,9 +1,15 @@
 <template>
   <v-autocomplete
     v-model="selectedUser"
+    
     :items="userItems"
     :disabled="disabled"
     dense
+    color="green darken-1"
+    filled
+    dense
+    rounded
+    background-color="#f7f9fc"
   ></v-autocomplete>
 </template>
 
@@ -13,6 +19,7 @@
     props: {
       value: String,
       users: Array,
+      label: String,
       disabled: Boolean
     },
     computed: {

@@ -11,7 +11,8 @@
           <div class="msgDetails" cols="8" md="4">
             <div class="chat-title">
               <h3><a href="#">{{ message.author.fullName }}</a></h3>
-              <span>{{ message.sent_at }}</span>
+              <span>{{message.sent_at}}</span>
+
             </div>
           </div>
 
@@ -37,6 +38,7 @@
 </template>
 
 <script>
+  
   require("../styles/node-messages.scss");
 
   export default {
@@ -104,6 +106,9 @@
         } else if (scrollTop >= (scrollHeight - offsetHeight)) {
           this.getMessages("after", this.messages[this.messages.length-1].sent_at);
         }
+      },
+      moment: function (date) {
+        return moment(date);
       }
     },
     data () {
@@ -114,6 +119,7 @@
     },
     created () {
       this.getMessages();
-    }
+    },
+
   }
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div class="template-content" color="#55cec7">
+  <div class="template-content">
     <div v-if="this.template && this.formdata">
       <v-btn cols="1" md="1" id="back-btn"
           dark
@@ -19,7 +19,6 @@
         id="base-card"
         >
         <v-card-title class="headline" style="display: block;">
-
           <v-row>
             <v-col cols="6" xs="12">
               {{ node.title }}
@@ -40,15 +39,14 @@
               ></favorite-node-star>
             </v-col>
           </v-row>
-
-
         </v-card-title>
 
         <v-card-text>
           <v-tabs
+            class="tab-general"
             v-model="tab"
             background-color="transparent"
-            color="#55cec7"
+
             left
             flat
             icons-and-text
@@ -75,8 +73,10 @@
           <v-tabs-items v-model="tab">
             <v-tab-item value="details">
               <v-card
+                class="card-details"
                 outlined
                 tile
+
               >
                 <v-card-actions>
                   <v-spacer></v-spacer>
@@ -163,7 +163,6 @@
         </v-card-text>
       </v-card>
     </div>
-
   </div>
 </template>
 

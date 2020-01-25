@@ -3,7 +3,7 @@
     <!-- The purpose of this component is to return the correct input field
         based on the property's fieldType
     -->
-    <v-text-field
+      <v-text-field
       v-model="propertyValue"
       :label="label"
       :placeholder="label"
@@ -11,6 +11,7 @@
       filled
       dense
       rounded
+
       background-color="#f7f9fc"
     ></v-text-field>
     <v-text-field
@@ -71,6 +72,7 @@
     <user-search-field
       v-if="fieldType == 'user'"
       v-model="propertyValue"
+      :label ="label"
       :users="$store.state.common.activeTeamUsers"
     ></user-search-field>
   </div>
@@ -78,6 +80,8 @@
 
 <script>
   import UserSearchField from './UserSearchField';
+  require("../styles/TemplatePropertyInput.scss");
+
   export default {
     name: 'template-property-input',
     components: {
