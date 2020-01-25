@@ -108,7 +108,8 @@
         }
       },
       moment: function (date) {
-        return moment(date);
+        return date;
+        // return moment(date);
       }
     },
     data () {

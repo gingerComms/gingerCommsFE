@@ -10,10 +10,6 @@ const defaults = {
     show: false
   },
   activeTeamId: '',
-  activeTeamPassword: {
-    teamId: '',  // If this matches the activeTeamId, it means we're on point
-    password: ''
-  },
   activeTeamUsers: []
 }
 
@@ -53,9 +49,6 @@ export default {
     updateActiveTeamUsers (state, activeTeamUsers) {
       // Updates the users array with the users assigned to the active team
       state.activeTeamUsers = activeTeamUsers;
-    },
-    updateActiveTeamPassword (state, activeTeamPassword) {
-      state.activeTeamPassword = activeTeamPassword;
     }
   },
 

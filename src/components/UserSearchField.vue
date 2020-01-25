@@ -7,7 +7,6 @@
     dense
     color="green darken-1"
     filled
-    dense
     rounded
     background-color="#f7f9fc"
   ></v-autocomplete>

@@ -178,7 +178,7 @@
       },
       downloadFile (file) {
         var apiUrl = process.env.VUE_APP_API_URL + '/' + this.nodeType + '/' + this.nodeId + '/' + this.propertyId + '/generate_s3_get';
-        var formdata = { filePath: file.name, password: this.$store.state.common.activeTeamPassword.password }
+        var formdata = { filePath: file.name }
         this.$http.post(apiUrl, formdata).then(response => {
           window.open(response.body.url, '_blank');
         })
@@ -200,7 +200,7 @@
       },
       deleteFile (file) {
         var apiUrl = process.env.VUE_APP_API_URL + '/' + this.nodeType + '/' + this.nodeId + '/' + this.propertyId + '/delete_file';
-        var formdata = { filePath: file.name, password: this.$store.state.common.activeTeamPassword.password };
+        var formdata = { filePath: file.name };
         var fileIndex = this.value.files.indexOf(file);
         var that = this;
         this.$http.post(apiUrl, formdata).then(response => {
@@ -228,10 +228,7 @@
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.common.authToken
           },
-          sendFileToServer: false,
-          params: {
-            "password": this.$store.state.common.activeTeamPassword.password
-          }
+          sendFileToServer: false
         },
         dropzoneKey: 1
       }
