@@ -104,7 +104,7 @@
               <span v-if="property.fieldType !== 'user' && property.fieldType !== 'file'">
                 {{ object[property.id] }}
               </span>
-              <span v-if="property.fieldType == 'file'">
+              <span v-if="property.fieldType == 'file' && object[property.id] !== undefined">
                 {{ object[property.id].files.length }} Files
               </span>
               <span v-if="property.fieldType == 'user'">
@@ -287,12 +287,10 @@
         var templateData = {};
         var that = this;
         this.editableTemplateProperties().forEach(function (prop) {
-          console.log(prop.fieldType)
           if (prop.fieldType != 'select' && prop.fieldType != 'file') {
             templateData[prop.id] = that.newNodeData.templateData[prop.id]
           } else if (prop.fieldType == 'file') {
             templateData[prop.id] = {files: []}
-            console.log(templateData);
           } else if (prop.fieldType == 'select') {
             if (that.newNodeData.templateData[prop.id]) {
               var sameFieldNodes = that.nodes.filter(node => node.templateData[prop.id].value == that.newNodeData.templateData[prop.id])

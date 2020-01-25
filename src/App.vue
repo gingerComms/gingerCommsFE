@@ -25,6 +25,10 @@
         :key="inboxKey"
         @closeInbox="showInboxToggled"
       ></inbox-dialog>
+      <team-authentication-dialog
+        :showDialog="showTeamPasswordDialog"
+        @dialogClosed="showTeamPasswordDialog = false"
+      ></team-authentication-dialog>
     </v-app>
   </div>
 </template>
@@ -32,19 +36,22 @@
 <script>
 import { VSnackbar, VApp } from 'vuetify/lib';
 import InboxDialog from './components/InboxDialog';
+import TeamAuthenticationDialog from './components/TeamAuthenticationDialog';
 
 export default {
   name: 'app',
   components: {
     'v-snackbar': VSnackbar,
     'v-app': VApp,
-    InboxDialog
+    InboxDialog,
+    TeamAuthenticationDialog
   },
   data () {
     return {
       snackbarTimeout: 2000,
       showInbox: false,
-      inboxKey: 1
+      inboxKey: 1,
+      showTeamPasswordDialog: false
     }
   },
   computed: {
@@ -64,6 +71,30 @@ export default {
         this.inboxKey += 1;
       }
       this.showInbox = value;
+    }
+  },
+  watch: {
+    $route(to) {
+      var that = this;
+      if (to.params.teamId !== undefined) {
+        if (that.$store.state.common.activeTeamPassword.password == '') {
+          this.showTeamPasswordDialog = true;
+        } else if (that.$store.state.common.activeTeamPassword.teamId !== to.params.teamId) {
+          this.showTeamPasswordDialog = true;
+        }
+      } else {
+        that.$store.commit('common/updateActiveTeamPassword', {
+          teamId: '',
+          password: ''
+        })
+        that.showTeamPasswordDialog = false;
+      }
+    }
+  },
+  mounted () {
+    console.log('Mounted', this.$route.params.teamId)
+    if (this.$store.state.common.activeTeamPassword.password == '' && this.$route.params.teamId !== undefined && this.$store.state.common.authToken) {
+      this.showTeamPasswordDialog = true;
     }
   }
 }

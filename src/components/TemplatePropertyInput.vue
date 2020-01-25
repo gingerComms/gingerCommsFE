@@ -78,7 +78,7 @@
     <v-card
       flat
       outlined
-      v-if="fieldType == 'file'"
+      v-if="fieldType == 'file' && this.value !== undefined"
     >
       <v-card-text class="files">
         <v-card
@@ -145,7 +145,7 @@
     props: {
       fieldType: String,
       label: String,
-      propertyOptions: Object,
+      propertyOptions: [Object, String],
       propertyId: String,
       nodeType: String,
       nodeId: String,
@@ -178,7 +178,7 @@
       },
       downloadFile (file) {
         var apiUrl = process.env.VUE_APP_API_URL + '/' + this.nodeType + '/' + this.nodeId + '/' + this.propertyId + '/generate_s3_get';
-        var formdata = { filePath: file.name }
+        var formdata = { filePath: file.name, password: this.$store.state.common.activeTeamPassword.password }
         this.$http.post(apiUrl, formdata).then(response => {
           window.open(response.body.url, '_blank');
         })
@@ -200,7 +200,7 @@
       },
       deleteFile (file) {
         var apiUrl = process.env.VUE_APP_API_URL + '/' + this.nodeType + '/' + this.nodeId + '/' + this.propertyId + '/delete_file';
-        var formdata = { filePath: file.name };
+        var formdata = { filePath: file.name, password: this.$store.state.common.activeTeamPassword.password };
         var fileIndex = this.value.files.indexOf(file);
         var that = this;
         this.$http.post(apiUrl, formdata).then(response => {
@@ -228,9 +228,21 @@
           headers: {
             'Authorization': 'Bearer ' + this.$store.state.common.authToken
           },
-          sendFileToServer: false
+          sendFileToServer: false,
+          params: {
+            "password": this.$store.state.common.activeTeamPassword.password
+          }
         },
         dropzoneKey: 1
+      }
+    },
+    mounted () {
+      if (this.value == undefined) {
+        if (this.fieldType == 'file') {
+          this.$emit('input', {files: []})
+        } else {
+          this.$emit('input', '')
+        }
       }
     }
   }
