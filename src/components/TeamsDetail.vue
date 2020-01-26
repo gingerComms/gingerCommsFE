@@ -1,7 +1,7 @@
 <template>
   <div id="teams-detail" class="template-content">
     <v-card
-      
+
       >
       <v-card-title class="headline">
         <v-row>
@@ -36,20 +36,26 @@
           icons-and-text
         >
           <v-tabs-slider></v-tabs-slider>
+
+          <v-tab href="#nodes-tree">
+            Topics
+            <v-icon>mdi-format-list-bulleted</v-icon>
+          </v-tab>
+
           <v-tab href="#templates">
             Templates
             <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
+
+
+
 
           <v-tab href="#details">
             Details
             <v-icon>mdi-pen</v-icon>
           </v-tab>
 
-          <v-tab href="#nodes-tree">
-            Tree View
-            <v-icon>mdi-format-list-bulleted</v-icon>
-          </v-tab>
+
 
           <v-tab href="#members">
             Members
@@ -79,7 +85,7 @@
             <v-tab-item value="nodes-tree">
               <nodes-tree-view
                 :parentNodeType="'team'"
-                :parentNodeId="team.id"
+                :parentNodeId="$route.params.teamId"
                 :parentCanHaveChildren="true"
               ></nodes-tree-view>
             </v-tab-item>
