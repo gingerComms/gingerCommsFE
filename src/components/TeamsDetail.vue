@@ -47,15 +47,10 @@
             <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
 
-
-
-
           <v-tab href="#details">
             Details
             <v-icon>mdi-pen</v-icon>
           </v-tab>
-
-
 
           <v-tab href="#members">
             Members

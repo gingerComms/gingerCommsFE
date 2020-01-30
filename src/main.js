@@ -16,6 +16,9 @@ import router from './router/router';
 import store from './store';
 import SideNav from './components/SideNav.vue';
 import './utils/globalUtils';
+import VueMoment from 'vue-moment';
+
+Vue.use(VueMoment)
 
 networking.addInterceptors();
 

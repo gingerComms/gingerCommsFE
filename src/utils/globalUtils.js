@@ -35,4 +35,15 @@ Vue.mixin({
   }
 })
 
+Vue.filter('humanizeDate', function (date, moment) {
+    var diff = moment(date) - moment(new Date());
+    var twoDays = 172800000;
+    console.log('filter', diff)
+    if (diff < twoDays) {
+        return moment.duration(diff).humanize(true);
+    } else {
+        return moment.format(date);
+    }
+})
+
 export default { }

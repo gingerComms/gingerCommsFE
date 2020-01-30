@@ -58,7 +58,7 @@
                   {{ item.last_message.text.slice(0, 65) }}</td>
                 <td v-if="!item.last_message"></td>
 
-                <td v-if="item.last_message">{{ item.last_message.sent_at }}</td>
+                <td v-if="item.last_message">{{ item.last_message.sent_at | humanizeDate($moment) }}</td>
                 <td v-if="!item.last_message"></td>
               </tr>
             </tbody>
@@ -95,12 +95,12 @@
     },
     methods: {
       getInboxNodes () {
+        var that = this;
         this.$http.get(this.apiUrl).then(response => {
-          this.chatNodes = response.body;
+          that.chatNodes = response.body;
         })
       },
       getNodeLink (node) {
-        console.log(node)
         if (node.nodeType == 'team') {
           return '/teams/'+node.id;
         } else {

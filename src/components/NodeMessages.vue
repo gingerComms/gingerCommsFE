@@ -11,7 +11,7 @@
           <div class="msgDetails" cols="8" md="4">
             <div class="chat-title">
               <h3><a href="#">{{ message.author.fullName }}</a></h3>
-              <span>{{message.sent_at}}</span>
+              <span>{{ message.sent_at | humanizeDate($moment) }}</span>
 
             </div>
           </div>
