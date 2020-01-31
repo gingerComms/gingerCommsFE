@@ -36,13 +36,15 @@ Vue.mixin({
 })
 
 Vue.filter('humanizeDate', function (date, moment) {
-    var diff = moment(date) - moment(new Date());
-    var twoDays = 172800000;
+    date = moment(date)
+    var diff = date.diff(moment(new Date()), 'hours')
     console.log('filter', diff)
-    if (diff < twoDays) {
-        return moment.duration(diff).humanize(true);
-    } else {
-        return moment.format(date);
+    if (diff > -20) {
+        return moment.duration(date - moment(new Date())).humanize(true);
+    } else if (diff <= -20 && diff > -44) {
+        return "Yesterday at " + date.format("HH:MM");
+    } else if (diff <= -44) {
+        return moment(date).format("MM DD, YYYY") + " at " + moment(date).format("HH:MM A")
     }
 })
 
