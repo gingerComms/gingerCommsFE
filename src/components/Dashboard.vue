@@ -6,6 +6,7 @@
           <template class="create-team-button" v-slot:activator="{ on }">
             <div class="create-team-button" v-on="on" @click.stop="createTeamDialog=true">
               <h2>Teams</h2>
+              <span>{{ $store.state.common.activeAccount.title }}</span>
             </div>
           </template>
           <span>Create Team</span>

@@ -33,6 +33,11 @@
             this.$store.commit('common/updateActiveAccount', this.accounts[0]);
           }
         })
+      },
+      accountCreated (account) {
+        // Created account passed down by the side-nav
+        console.log('Added', account)
+        this.accounts.push(account);
       }
     },
     data () {
