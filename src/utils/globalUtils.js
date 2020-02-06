@@ -44,7 +44,7 @@ Vue.filter('humanizeDate', function (date, moment) {
     } else if (diff <= -20 && diff > -44) {
         return "Yesterday at " + date.format("HH:MM");
     } else if (diff <= -44) {
-        return moment(date).format("MM DD, YYYY") + " at " + moment(date).format("HH:MM A")
+        return moment(date).format("MMM DD, YYYY") + " at " + moment(date).format("HH:MM A")
     }
 })
 
