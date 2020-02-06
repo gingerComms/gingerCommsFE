@@ -1,7 +1,7 @@
 <template>
   <div id="dashboard" class="template-content">
     <div class="row mb-1 mt-1 header-row">
-      <div class="col-3">
+      <div class="team-header-container col-3">
         <v-tooltip bottom nudge-left="45">
           <template class="create-team-button" v-slot:activator="{ on }">
             <div class="create-team-button" v-on="on" @click.stop="createTeamDialog=true">
