@@ -72,6 +72,11 @@ export default {
       }
       this.showInbox = value;
     }
+  },
+  mounted () {
+    if (this.isAuthenticated) {
+      this.getUserAccounts();
+    }
   }
 }
 </script>

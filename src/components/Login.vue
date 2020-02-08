@@ -82,6 +82,7 @@
             this.loginSubmitted = true;
             this.$store.commit('common/updateUser', { authToken: response.body.token, userObj: response.body.user })
             this.$router.push("/dashboard");
+            this.getUserAccounts();
           }
         })
       }
@@ -96,7 +97,7 @@
         loginSubmitted: false
       }
     },
-    created () {
+    mounted () {
       this.$store.commit('common/resetStore')
     }
   }

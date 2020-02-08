@@ -31,6 +31,21 @@ Vue.mixin({
             }
         }
         return temp;
+    },
+    // Retrieves all accounts for the authenticated user
+    getUserAccounts (page) {
+      if (!page) page = 1;
+
+      if (this.$store.state.common.authToken) {
+        this.$http.get(
+          process.env.VUE_APP_API_URL + '/auth/accounts/'
+        ).then(response => {
+          if (response.status == 200) {
+            this.$store.commit('common/updateUserAccounts', response.body);
+            this.$store.commit('common/updateActiveAccount', response.body[0]);
+          }
+        })
+      }
     }
   }
 })

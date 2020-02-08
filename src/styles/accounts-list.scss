@@ -1,0 +1,26 @@
+@import "variables";
+
+#accounts-list {
+    width: 100%;
+
+    .theme--dark.v-card > .v-card__text {
+        color: rgba(255, 255, 255, 1);
+    }
+
+    .headline {
+        padding-top: 22px;
+        padding-bottom: 0px;
+
+        .col, .row {
+            padding-bottom: 0; padding-top: 0;
+        }
+    }
+
+    .row {
+        padding-top: 15px;
+
+        h5 {
+            text-align: center;
+        }
+    }
+}

@@ -1,8 +1,13 @@
 <template>
   <div id="account-switch">
     <div id="accounts-container">
-      <div @click="accountSwitched(account)" class="img-container" v-for="account in accounts" v-bind:key="account.id">
-        <img src="../assets/images/user-placeholder-sm.png" :title="account.title"> <!-- TODO: Add IMG to accounts -->
+      <div @click="accountSwitched(account)" class="img-container" v-for="account in $store.state.common.userAccounts" v-bind:key="account.id">
+        <v-tooltip bottom>
+          <template v-slot:activator="{ on }">
+            <img  v-on="on" src="../assets/images/user-placeholder-sm.png" :title="account.title"> <!-- TODO: Add IMG to accounts -->
+          </template>
+          <span>{{ account.title }}</span>
+        </v-tooltip>
       </div>
     </div>
   </div>
@@ -20,32 +25,17 @@
         }
         this.accounts.splice(this.accounts.indexOf(account), 1);
         this.accounts.unshift(account);
-        this.$store.state.common.activeAccount = account;
-      },
-      loadAccounts (page) {
-        if (!page) page = 1;
-
-        this.$http.get(
-          process.env.VUE_APP_API_URL + '/auth/accounts/'
-        ).then(response => {
-          if (response.status == 200) {
-            this.accounts = response.body;
-            this.$store.commit('common/updateActiveAccount', this.accounts[0]);
-          }
-        })
+        this.$store.commit('common/updateActiveAccount', account);
       },
       accountCreated (account) {
         // Created account passed down by the side-nav
-        this.accounts.push(account);
+        this.$store.commit('common/userAccountCreated', account);
       }
     },
     data () {
       return {
         accounts: []
       }
-    },
-    created () {
-      this.loadAccounts();
     }
   }
 </script>

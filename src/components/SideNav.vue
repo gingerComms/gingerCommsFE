@@ -1,11 +1,6 @@
 <template>
   <div id="side-nav">
     <router-link to="/"><img src="../assets/images/logo.png"></router-link>
-    <account-create-dialog
-      :showDialog="accountCreateDialogOpen"
-      @dialogClosed="accountCreateDialogOpen = false;"
-      @accountCreated="accountCreated"
-    ></account-create-dialog>
 
     <ul class="mr-auto">
       <li v-if="isAuthenticated">
@@ -31,15 +26,14 @@
         </v-tooltip>
       </li>
 
-      <li v-if="isAuthenticated && $route.path == '/dashboard'">
+      <li v-if="isAuthenticated">
         <v-tooltip right>
           <template v-slot:activator="{ on }">
-            <a>
-              <i class="material-icons md-36" v-on="on"
-                @click="accountCreateDialogOpen = true;">add_box</i>
-            </a>
+            <router-link to="/accounts">
+              <i class="material-icons md-36" v-on="on">account_box</i>
+            </router-link>
           </template>
-          <span>Create Account</span>
+          <span>Accounts List</span>
         </v-tooltip>
       </li>
 
@@ -75,13 +69,12 @@
 
 <script>
   import AccountSwitch from '@/components/AccountSwitch';
-  import AccountCreateDialog from '@/components/AccountCreateDialog';
+  
 
   export default {
     name: "side-nav",
     components: {
       'account-switch': AccountSwitch,
-      AccountCreateDialog
     },
     computed: {
       isAuthenticated () {
@@ -95,15 +88,11 @@
       },
       showInbox () {
         this.$emit('showInbox', true);
-      },
-      accountCreated (account) {
-        this.$refs.accountSwitch.accountCreated(account);
       }
     },
     data () {
       return {
-        title: 'VPMO',
-        accountCreateDialogOpen: false
+        title: 'VPMO'
       }
     }
   }

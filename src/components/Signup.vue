@@ -100,6 +100,7 @@
             this.signUpStatus = true;
             this.$store.commit('common/updateUser', { authToken: response.body.token, userObj: response.body.user })
             this.$router.push("/dashboard");
+            this.getUserAccounts();
           }
         })
       }

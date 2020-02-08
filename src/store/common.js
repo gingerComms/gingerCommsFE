@@ -10,6 +10,7 @@ const defaults = {
     show: false
   },
   activeTeamId: '',
+  userAccounts: [],
   activeTeamUsers: []
 }
 
@@ -49,6 +50,12 @@ export default {
     updateActiveTeamUsers (state, activeTeamUsers) {
       // Updates the users array with the users assigned to the active team
       state.activeTeamUsers = activeTeamUsers;
+    },
+    updateUserAccounts (state, userAccounts) {
+      state.userAccounts = userAccounts;
+    },
+    userAccountCreated (state, account) {
+      state.userAccounts.push(account);
     }
   },
 
