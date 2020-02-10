@@ -1,15 +1,21 @@
 <template>
-  <v-autocomplete
-    v-model="selectedUser"
-    
-    :items="userItems"
-    :disabled="disabled"
-    dense
-    color="green darken-1"
-    filled
-    rounded
-    background-color="#f7f9fc"
-  ></v-autocomplete>
+  <div>
+    <v-autocomplete
+      v-model="selectedUser"
+      :value="selectedUser"
+      :label="label"
+      :items="userItems"
+      :disabled="disabled"
+      :search-input.sync="search"
+      :loading="isLoading"
+      dense
+      return-object
+      color="green darken-1"
+      filled
+      rounded
+      background-color="#f7f9fc"
+    ></v-autocomplete>
+  </div>
 </template>
 
 <script>
@@ -19,7 +25,8 @@
       value: String,
       users: Array,
       label: String,
-      disabled: Boolean
+      disabled: Boolean,
+      allowAPISearch: Boolean
     },
     computed: {
       userItems () {
@@ -41,8 +48,34 @@
         }
       }
     },
+    watch: {
+      search (val) {
+        if (val == null) {
+          this.search = this.selectedUser;
+          return
+        }
+        if (val == this.selectedUser) {
+          return;
+        }
+        if (val.length < 3) return
+
+        // Making sure that searching the backend is allowed
+        if (!this.allowAPISearch) return
+
+        // Items have already been requested
+        if (this.isLoading) return
+
+        this.isLoading = true
+        this.$http.get(process.env.VUE_APP_API_URL+'/auth/users?fullName='+val).then(response => {
+          this.users = response.body;
+          this.isLoading = false;
+        })
+      }
+    },
     data () {
       return {
+        search: null,
+        isLoading: false
       }
     }
   }

@@ -21,6 +21,11 @@
             <v-icon>mdi-format-list-bulleted</v-icon>
           </v-tab>
 
+          <v-tab href="#admins">
+            Admins
+            <v-icon>mdi-account-group</v-icon>
+          </v-tab>
+
           <v-tabs-items v-model="tab">
             <v-tab-item value="teams">
               <v-card flat>
@@ -28,6 +33,16 @@
                   :containerDisplayMode="'list'"
                   :accountId="this.account.id"
                 ></account-teams-list>
+              </v-card>
+            </v-tab-item>
+
+            <v-tab-item value="admins">
+              <v-card flat>
+                <account-admins-list
+                  :admins="account.admins"
+                  :accountId="account.id"
+                  @adminAdded="adminAdded"
+                ></account-admins-list>
               </v-card>
             </v-tab-item>
           </v-tabs-items>
@@ -39,16 +54,18 @@
 
 <script>
   import AccountTeamsList from '@/components/AccountTeamsList';
+  import AccountAdminsList from '@/components/AccountAdminsList';
 
   export default {
     name: 'account-detail',
     components: {
-      AccountTeamsList
+      AccountTeamsList,
+      AccountAdminsList
     },
     computed: {
       apiUrl () {
         var apiUrl = process.env.VUE_APP_API_URL;
-        apiUrl += '/auth/account/'+this.$route.params.accountId+'/add_remove_user';
+        apiUrl += '/auth/account/'+this.$route.params.accountId+'/admins';
         return apiUrl;
       }
     },
@@ -60,6 +77,9 @@
             that.account = response.body;
           }
         })
+      },
+      adminAdded (admin) {
+        this.account.admins.push(admin);
       }
     },
     data () {
