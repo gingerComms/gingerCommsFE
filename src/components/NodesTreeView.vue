@@ -15,7 +15,7 @@
           color="#55cec7"
           dark
           class="mb-2"
-          @click="openCreateDialog(parentNodeId)"
+          @click="openCreateDialog(parentNodeId, parentNodeType)"
         >Create Topic</v-btn>
 
         <v-treeview
@@ -46,7 +46,7 @@
                 style="text-align: right;">
                 <v-btn
                   icon
-                  @click="openCreateDialog(item.id)"
+                  @click="openCreateDialog(item.id, 'coreVertex')"
                   v-if="item.template.canHaveChildren"
                 >
                   <v-icon color="#55cec7">mdi-plus</v-icon>
@@ -101,7 +101,7 @@
 
     <create-node-dialog
       :parentNodeId="createTargetParentNode.id"
-      :parentNodeType="'coreVertex'"
+      :parentNodeType="createTargetParentNode.nodeType"
       :showDialog="showCreateDialog"
       v-if="createTargetParentNode"
       @dialogToggled="createDialogToggled"
@@ -160,8 +160,8 @@
         }
         this.favoritesKey += 1;
       },
-      openCreateDialog (nodeId) {
-        this.createTargetParentNode = { id: nodeId };
+      openCreateDialog (nodeId, nodeType) {
+        this.createTargetParentNode = { id: nodeId, nodeType: nodeType };
         this.showCreateDialog = true;
       },
       createDialogToggled (newValue) {
