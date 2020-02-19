@@ -50,7 +50,11 @@ import Vuetify, {
   VToolbar,
   VToolbarTitle,
   VToolbarItems,
-  VAutocomplete
+  VAutocomplete,
+  VImg,
+  VHover,
+  VExpandTransition,
+  VProgressCircular
 } from 'vuetify/lib'
 
 const vuetify = new Vuetify()
@@ -100,7 +104,11 @@ Vue.use(Vuetify, {
     VListItemGroup,
     VListItemIcon,
     VListItemContent,
-    VAutocomplete
+    VAutocomplete,
+    VImg,
+    VHover,
+    VExpandTransition,
+    VProgressCircular
   },
   directives: {
     Scroll

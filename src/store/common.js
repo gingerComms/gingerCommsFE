@@ -56,6 +56,12 @@ export default {
     },
     userAccountCreated (state, account) {
       state.userAccounts.push(account);
+    },
+    accountChanged (state, changedAccount) {
+      var index = state.userAccounts.indexOf(
+        state.userAccounts.filter(ac => ac.id == changedAccount.id)[0])
+      state.userAccounts[index].title = changedAccount.title;
+      state.userAccounts[index].avatarLink = changedAccount.avatarLink;
     }
   },
 

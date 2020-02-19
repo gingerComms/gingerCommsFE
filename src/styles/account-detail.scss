@@ -1,0 +1,22 @@
+@import "_variables";
+
+#account-detail {
+    .v-image {
+        width: 75px;
+        height: 75px;
+        border-radius: 50%;
+    }
+
+    .account-title-input {
+        font-size: 1em;
+        margin-top: 8px;
+
+        .v-input__append-outer {
+            margin-top: 8px;
+        }
+
+        input {
+            padding-top: 0; padding-bottom: 0;
+        }
+    }    
+}
