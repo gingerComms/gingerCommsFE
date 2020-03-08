@@ -54,7 +54,9 @@ import Vuetify, {
   VImg,
   VHover,
   VExpandTransition,
-  VProgressCircular
+  VProgressCircular,
+  VNavigationDrawer,
+  VDivider
 } from 'vuetify/lib'
 
 const vuetify = new Vuetify()
@@ -108,7 +110,9 @@ Vue.use(Vuetify, {
     VImg,
     VHover,
     VExpandTransition,
-    VProgressCircular
+    VProgressCircular,
+    VNavigationDrawer,
+    VDivider
   },
   directives: {
     Scroll

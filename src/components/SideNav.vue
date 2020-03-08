@@ -1,4 +1,64 @@
 <template>
+  <v-navigation-drawer
+    v-model="drawer"
+    permanent
+    absolute
+    expand-on-hover
+  >
+    <v-list-item class="px-2">
+      <v-list-item-avatar>
+        <v-img :src="require('../assets/images/logo.png')" height="20px" width="50px" contain></v-img>
+      </v-list-item-avatar>
+    </v-list-item>
+
+    <v-divider></v-divider>
+
+    <v-list dense>
+      <v-list-item
+        v-for="item in items"
+        :key="item.title"
+        link
+        :to="item.url"
+        @click="item.onclick"
+      >
+        <v-list-item-icon>
+          <v-icon>{{ item.icon }}</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>{{ item.title }}</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item
+        link
+        @click="logout"
+        v-if="$store.state.common.authToken.length > 0"
+      >
+        <v-list-item-icon>
+          <v-icon>mdi-logout</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Logout</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item
+        link
+        to="/login"
+        v-if="$store.state.common.authToken.length == 0"
+      >
+        <v-list-item-icon>
+          <v-icon>mdi-login</v-icon>
+        </v-list-item-icon>
+
+        <v-list-item-content>
+          <v-list-item-title>Login</v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+  <!--
   <div id="side-nav">
     <router-link to="/"><img src="../assets/images/logo.png"></router-link>
 
@@ -65,6 +125,8 @@
       </li>
     </ul>
   </div>
+  -->
+  </v-navigation-drawer>
 </template>
 
 <script>
@@ -74,7 +136,7 @@
   export default {
     name: "side-nav",
     components: {
-      'account-switch': AccountSwitch,
+      'account-switch': AccountSwitch,  // Unused at the moment
     },
     computed: {
       isAuthenticated () {
@@ -92,7 +154,14 @@
     },
     data () {
       return {
-        title: 'VPMO'
+        title: 'VPMO',
+        drawer: true,
+        mini: true,
+        items: [
+          { title: 'Dashboard', icon: 'mdi-home-city', url: '/dashboard' },
+          { title: 'Inbox', icon: 'mdi-mail', onclick: this.showInbox },
+          { title: 'Accounts', icon: 'mdi-account-multiple', url: '/accounts' }
+        ]
       }
     }
   }

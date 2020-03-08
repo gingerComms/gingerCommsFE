@@ -2,6 +2,11 @@
 @import "_account-switch";
 
 
+.v-navigation-drawer--mini-variant {
+    width: 60px !important;
+}
+
+
 .template-content {
     padding: 1em 4em 0em 8em;
     background:$pale-blue;
@@ -24,9 +29,6 @@
       }
 
     }
-
-
-
 
     #back-btn {
         position: relative;
