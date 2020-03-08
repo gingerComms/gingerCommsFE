@@ -130,13 +130,13 @@
 </template>
 
 <script>
-  import AccountSwitch from '@/components/AccountSwitch';
+  // import AccountSwitch from '@/components/AccountSwitch';
   
 
   export default {
     name: "side-nav",
     components: {
-      'account-switch': AccountSwitch,  // Unused at the moment
+      // 'account-switch': AccountSwitch,  // Unused at the moment
     },
     computed: {
       isAuthenticated () {
